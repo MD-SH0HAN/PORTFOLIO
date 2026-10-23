@@ -1,0 +1,189 @@
+name: Portfolio quality checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  static-and-unit:
+    name: Static validation and API unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-ci.txt
+            projects/observability-lab/api/requirements.txt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Check portfolio HTML and local assets
+        run: python scripts/check_portfolio.py
+
+      - name: Install static-check and API dependencies
+        run: python -m pip install -r requirements-ci.txt -r projects/observability-lab/api/requirements.txt
+
+      - name: Check CSS syntax
+        run: python scripts/check_stylesheet.py
+
+      - name: Validate release and Pages deployment contracts
+        run: python scripts/check_release_config.py
+
+      - name: Validate Compose, Prometheus, and Grafana configuration contracts
+        run: python scripts/check_infrastructure_config.py
+
+      - name: Check JavaScript syntax
+        run: node --check script.js
+
+      - name: Run observability API unit and HTTP tests
+        run: python -m unittest discover -s projects/observability-lab/tests -v
+
+  browser-e2e:
+    name: Chromium visual layout and interaction tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-browser.txt
+
+      - name: Install browser test dependency
+        run: python -m pip install -r requirements-browser.txt
+
+      - name: Install Chromium and system dependencies
+        run: python -m playwright install --with-deps chromium
+
+      - name: Run real-browser regression tests
+        env:
+          PORTFOLIO_TEST_ARTIFACTS: test-results/browser
+        run: python -m unittest discover -s tests/browser -p 'test_*.py' -v
+
+      - name: Build Pages files for offline-safe Chromium smoke checks
+        run: python scripts/build_pages.py
+
+      - name: Run in-memory Chromium interaction and accessibility checks
+        run: python scripts/smoke_browser_in_memory.py --root dist --screenshots
+
+      - name: Upload screenshots and diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: portfolio-browser-failure-artifacts
+          path: |
+            test-results/browser/
+            test-results/browser-in-memory/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  observability-integration:
+    name: Docker Compose API → Prometheus → Grafana integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Generate an ephemeral Grafana test password
+        shell: bash
+        run: echo "GRAFANA_ADMIN_PASSWORD=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')" >> "$GITHUB_ENV"
+
+      - name: Validate Docker Compose configuration
+        run: docker compose --env-file projects/observability-lab/.env.example -f projects/observability-lab/docker-compose.yml config --quiet
+
+      - name: Build and start the full observability stack
+        run: docker compose --env-file projects/observability-lab/.env.example -f projects/observability-lab/docker-compose.yml up --build --detach --wait --wait-timeout 120
+
+      - name: Verify live API metrics, Prometheus alerts, and Grafana provisioning
+        run: python scripts/smoke_observability.py
+
+      - name: Collect container diagnostics on failure
+        if: failure()
+        run: docker compose --env-file projects/observability-lab/.env.example -f projects/observability-lab/docker-compose.yml ps && docker compose --env-file projects/observability-lab/.env.example -f projects/observability-lab/docker-compose.yml logs --no-color --tail=250
+
+      - name: Stop the stack and remove CI volumes
+        if: always()
+        run: docker compose --env-file projects/observability-lab/.env.example -f projects/observability-lab/docker-compose.yml down --volumes --remove-orphans
+
+  deploy-pages:
+    name: Build and deploy GitHub Pages
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    needs:
+      - static-and-unit
+      - browser-e2e
+      - observability-integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Build the minimal static-site artifact
+        env:
+          PORTFOLIO_SITE_URL: ${{ vars.PORTFOLIO_SITE_URL }}
+        run: python scripts/build_pages.py
+
+      - name: Validate the built Pages artifact
+        run: python scripts/check_portfolio.py --root dist
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+          # GitHub Pages artifacts exclude dotfiles by default; retain .nojekyll.
+          include-hidden-files: true
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1
