@@ -369,9 +369,18 @@ def main() -> int:
             active_id = search.get_attribute("aria-activedescendant")
             assert active_id and page.locator(f"#{active_id}").get_attribute("role") == "option", f"active option mismatch: {active_id}"
             search.press("Enter")
-            page.wait_for_function("!document.querySelector('#commandDialog').open")
+            # Wait for the modal to close AND for the command action to finish.
+            # Checking both prevents a click from racing the modal backdrop.
+            page.wait_for_function(
+                """() => {
+                  const dialog = document.querySelector('#commandDialog');
+                  const filter = document.querySelector('[data-filter="cloud"]');
+                  return dialog && !dialog.open && filter &&
+                         filter.getAttribute('aria-pressed') === 'true';
+                }""",
+                timeout=5000,
+            )
             cloud_filter = page.locator('[data-filter="cloud"]')
-            page.wait_for_function("document.querySelector('[data-filter=\"cloud\"]').getAttribute('aria-pressed') === 'true'", timeout=3000)
             cloud_pressed = cloud_filter.get_attribute("aria-pressed")
             assert str(cloud_pressed).strip().lower() == "true", f"cloud filter did not activate: {cloud_pressed!r}"
             page.wait_for_function("document.querySelectorAll('.project-card[data-category][hidden]').length === 2", timeout=3000)
@@ -397,8 +406,17 @@ def main() -> int:
             assert active_id == "command-option-1", f"ArrowDown did not move active option: {active_id}"
             assert page.locator(f"#{active_id}").get_attribute("aria-selected") == "true"
             search.press("Enter")
-            page.wait_for_function("document.querySelector('[data-filter=\"delivery\"]').getAttribute('aria-pressed') === 'true'", timeout=3000)
-            page.wait_for_function("document.querySelectorAll('.project-card[data-category][hidden]').length === 2", timeout=3000)
+            # Wait for the modal to close AND for the selected filter to activate.
+            page.wait_for_function(
+                """() => {
+                  const dialog = document.querySelector('#commandDialog');
+                  const filter = document.querySelector('[data-filter="delivery"]');
+                  return dialog && !dialog.open && filter &&
+                         filter.getAttribute('aria-pressed') === 'true';
+                }""",
+                timeout=5000,
+            )
+            page.wait_for_function("document.querySelectorAll('.project-card[data-category][hidden]').length === 2", timeout=5000)
             assert page.locator('.project-card[data-category]:not([hidden])').count() == 2, "keyboard-selected delivery filter did not show the two delivery cards"
             page.locator('[data-filter="all"]').click()
             page.wait_for_function("document.querySelectorAll('.project-card[data-category][hidden]').length === 0", timeout=3000)
