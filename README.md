@@ -2,9 +2,11 @@
 
 <p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
+</p>
+
+<p align="center">
   <br />
-  <br />
-  A responsive, monochrome portfolio exploring how platform teams turn infrastructure capabilities into a useful internal product for application developers.
+  A responsive, monochrome portfolio showcasing how platform teams simplify infrastructure for developers.
 </p>
 
 <p align="center">
