@@ -2,11 +2,10 @@
 
 <p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
-</p>
-
-<p align="center">
   <br />
-  A responsive, monochrome portfolio showcasing how platform teams simplify infrastructure for developers.
+  <span style="font-family: 'Times New Roman', Times, serif;">
+    A responsive, monochrome portfolio showcasing how platform teams simplify infrastructure for developers.
+  </span>
 </p>
 
 <p align="center">
