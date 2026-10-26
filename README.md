@@ -14,7 +14,10 @@
   <a href="https://github.com/MD-SH0HAN/PORTFOLIO">
     <img alt="View source repository" src="https://img.shields.io/badge/Source-View%20repository-2F3136?style=for-the-badge&logo=github&logoColor=white" />
   </a>
-  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/portfolio-quality.yml">
+  </p>
+  
+  <p
+  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml.yml">
     <img alt="Portfolio quality workflow" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml/badge.svg" />
   </a>
 </p>
