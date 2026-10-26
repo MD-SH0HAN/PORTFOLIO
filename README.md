@@ -10,9 +10,6 @@
   <a href="https://md-sh0han.github.io/PORTFOLIO/">
     <img alt="Open portfolio website" src="https://img.shields.io/badge/Portfolio-Visit%20the%20site-2F3136?style=for-the-badge&logo=github&logoColor=white" />
   </a>
-  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/portfolio-quality.yml">
-    <img alt="Portfolio quality workflow status" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/portfolio-quality.yml/badge.svg" />
-  </a>
 </p>
 
 <p align="center">
@@ -29,7 +26,7 @@
 > **Scope and integrity:** This portfolio deliberately separates runnable source code from conceptual models, browser-only simulations, and planned build briefs. The observability reference lab is the included local implementation. The IDP, service catalog, platform APIs, policy engine, and planned golden paths are **not** presented as completed production systems.
 
 **Repository:** [MD-SH0HAN/PORTFOLIO](https://github.com/MD-SH0HAN/PORTFOLIO)  
-**Portfolio URL:** [md-sh0han.github.io/PORTFOLIO](https://md-sh0han.github.io/PORTFOLIO/) *(verify the deployed URL in the repository's Pages and Actions settings)*
+**Portfolio URL:** [md-sh0han.github.io/PORTFOLIO](https://md-sh0han.github.io/PORTFOLIO/)
 
 ## On this page
 
