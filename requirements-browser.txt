@@ -1,0 +1,2 @@
+# Pinned browser automation dependency used by the Playwright smoke suite.
+playwright==1.64.0

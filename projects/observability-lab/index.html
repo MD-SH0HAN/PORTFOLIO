@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="author" content="MD Shohan">
+  <link rel="canonical" href="https://md-sh0han.github.io/PORTFOLIO/projects/observability-lab/">
+  <meta name="description" content="A local platform-observability reference lab built with Python, Docker Compose, Prometheus, and Grafana. Includes tests, dashboards, and alert rules.">
+  <meta property="og:title" content="Platform Observability Lab - MD SHOHAN">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://md-sh0han.github.io/PORTFOLIO/projects/observability-lab/">
+  <meta property="og:site_name" content="MD SHOHAN - Platform Engineer">
+  <meta property="og:image" content="https://md-sh0han.github.io/PORTFOLIO/Profile%20Photo.webp">
+  <meta property="og:image:alt" content="Portrait of MD Shohan">
+  <meta property="og:description" content="A local platform-observability reference stack for service health, metrics, dashboards, and alerting practice.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://md-sh0han.github.io/PORTFOLIO/Profile%20Photo.webp">
+  <meta name="twitter:title" content="Platform Observability Lab - MD SHOHAN">
+  <meta name="twitter:description" content="A platform-observability reference lab with Python, Prometheus, Grafana, and reproducible tests.">
+  <title>Platform Observability Lab - MD SHOHAN</title>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .lab-page-main{padding:65px 0 100px}.lp-crumb{font:10.3px var(--mono);letter-spacing:.1em;color:var(--muted);margin-bottom:24px}.lp-crumb a{color:var(--text-soft)}.lp-hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:48px;padding:42px 0 70px}.lp-eyebrow{display:flex;align-items:center;gap:10px;font:10.3px var(--mono);letter-spacing:.13em;color:var(--muted)}.lp-hero h1{font-size:clamp(45.4px,5.6vw,75.6px);line-height:1.04;letter-spacing:-.075em;font-weight:600;margin:24px 0 20px}.lp-hero h1 span{display:block;color:var(--muted)}.lp-lede{font-size:15.1px;line-height:1.95;color:var(--text-soft);max-width:570px}.lp-buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}.lp-state{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:8px 11px;font:9.2px var(--mono);letter-spacing:.07em;color:var(--text-soft)}.lp-state i{width:5px;height:5px;border-radius:50%;background:var(--text-soft)}.lp-art{padding:24px;border-radius:25px;position:relative;overflow:hidden;min-height:290px;background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.1),transparent 68%),linear-gradient(145deg,var(--panel-strong),var(--panel))}.lp-art::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:34px 34px;opacity:.25;mask-image:radial-gradient(ellipse,black,transparent 78%)}.lp-art-top,.lp-art-foot{position:relative;z-index:1;display:flex;justify-content:space-between;gap:10px;font:9.2px var(--mono);letter-spacing:.09em;color:var(--muted)}.lp-flow{position:relative;z-index:1;display:grid;grid-template-columns:1fr 22px 1fr;align-items:center;gap:8px;margin:28px 0}.lp-flow-col{display:grid;gap:11px}.lp-node{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line-strong);background:color-mix(in srgb,var(--bg) 78%,transparent);border-radius:13px;min-width:0}.lp-node-icon{flex:0 0 30px;width:30px;height:30px;display:grid;place-items:center;border-radius:9px;border:1px solid var(--line);font:11.5px var(--mono);color:var(--text-soft)}.lp-node b{display:block;font-size:11.5px}.lp-node small{display:block;font-size:9.2px;color:var(--muted);margin-top:2px}.lp-arrow{font:19.4px var(--mono);color:var(--muted);text-align:center}.lp-art-foot{border-top:1px solid var(--line);padding-top:13px}.lp-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:78px}.lp-stat{padding:18px;border:1px solid var(--line);background:var(--panel);border-radius:15px}.lp-stat strong{display:block;font-size:24.8px;letter-spacing:-.05em}.lp-stat span{display:block;font:9.2px var(--mono);color:var(--muted);letter-spacing:.07em;margin-top:7px}.lp-section{padding:62px 0;border-top:1px solid var(--line)}.lp-section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:26px}.lp-section-head h2{font-size:clamp(30.2px,3.5vw,45.4px);letter-spacing:-.065em;line-height:1.12;margin:10px 0 0}.lp-section-head p{max-width:450px;font-size:12.6px;line-height:1.9;color:var(--muted);margin:0}.lp-kicker{font:9.2px var(--mono);letter-spacing:.12em;color:var(--muted)}.lp-architecture{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.lp-component{position:relative;padding:21px;border:1px solid var(--line);background:var(--panel);border-radius:16px;min-width:0}.lp-component .lp-component-id{font:9.2px var(--mono);color:var(--muted)}.lp-component h3{font-size:15.1px;margin:19px 0 8px}.lp-component p{font-size:11.5px;line-height:1.8;color:var(--muted);margin:0 0 15px}.lp-component code{font:9.2px var(--mono);color:var(--text-soft);overflow-wrap:anywhere}.lp-code-list{display:grid;gap:13px}.lp-code{position:relative;border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:17px 17px 18px;min-width:0}.lp-code-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--muted);font:9.2px var(--mono);letter-spacing:.08em}.lp-code pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;color:var(--text-soft);font:12.6px/1.9 var(--mono)}.lp-copy{flex:0 0 auto;border:1px solid var(--line);background:var(--panel-strong);border-radius:8px;padding:7px 9px;color:var(--text);font:9.2px var(--mono);cursor:pointer}.lp-copy:hover{border-color:var(--line-strong)}.lp-endpoints{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.lp-endpoint{display:flex;gap:13px;align-items:flex-start;border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:15px}.lp-method{font:9.2px var(--mono);padding:5px 7px;border:1px solid var(--line-strong);border-radius:6px;color:var(--text-soft)}.lp-endpoint code{font:11.5px var(--mono);overflow-wrap:anywhere}.lp-endpoint p{font-size:11.5px;color:var(--muted);margin:5px 0 0;line-height:1.7}.lp-note{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border:1px solid var(--line);background:var(--panel);border-radius:15px;margin-top:18px}.lp-note b{display:block;font-size:12.6px;margin-bottom:5px}.lp-note p{font-size:11.5px;line-height:1.8;color:var(--muted);margin:0}.lp-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding-top:25px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}.lp-footer a{color:var(--text-soft)}.lp-toast{position:fixed;left:50%;bottom:23px;z-index:100;transform:translate(-50%,12px);opacity:0;pointer-events:none;padding:10px 14px;border:1px solid var(--line-strong);background:var(--bg-soft);border-radius:10px;box-shadow:var(--shadow);font-size:11.5px;transition:opacity .2s,transform .2s}.lp-toast.visible{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){.lab-page .site-header{flex-wrap:wrap}.lab-page .desktop-nav{display:flex;order:3;flex-basis:100%;justify-content:space-between}.lab-page .desktop-nav a{font-size:10.3px;padding:8px 10px}.lab-page .header-cta{display:inline-flex;font-size:10.3px;padding:9px 10px;gap:7px}.lp-hero{grid-template-columns:1fr;gap:30px;padding-top:28px}.lp-art{max-width:650px;width:100%}.lp-architecture{grid-template-columns:repeat(2,minmax(0,1fr))}.lp-section-head{align-items:flex-start;flex-direction:column;gap:13px}.lp-stats{margin-bottom:50px}}
+    @media(max-width:560px){.lab-page .desktop-nav{justify-content:center;flex-wrap:wrap}.lab-page .desktop-nav a{padding:7px 8px;font-size:9.2px}.lab-page .header-cta{padding:8px 8px;font-size:9.2px}.lab-page-main{padding-top:36px}.lp-hero h1{font-size:clamp(44.3px,11vw,62.6px)}.lp-hero{padding-bottom:44px}.lp-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.lp-stat{padding:14px}.lp-stat strong{font-size:21.6px}.lp-architecture{grid-template-columns:1fr}.lp-endpoints{grid-template-columns:1fr}.lp-flow{grid-template-columns:1fr;gap:11px;margin:22px 0}.lp-arrow{transform:rotate(90deg)}.lp-flow-col{grid-template-columns:1fr 1fr}.lp-node{padding:9px;gap:7px}.lp-node-icon{width:25px;height:25px;flex-basis:25px}.lp-art{padding:16px;min-height:0}.lp-section{padding:42px 0}.lp-footer{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){.lp-toast{transition:none}}
+  
+/* Nunito consistency and readability pass for the platform observability case study. */
+    body,button,input,select,textarea{font-family:var(--font)}
+    pre,code,kbd,samp{font-family:ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',monospace!important;font-variant-ligatures:none}
+    .lp-lede{font-size:15.5px;line-height:1.9}
+    .lp-component p,.lp-endpoint p,.lp-note p{font-size:12px;line-height:1.8}
+    .lp-section-head p{font-size:12.5px}
+    @media(max-width:560px){.lp-lede{font-size:14.5px}.lp-component p,.lp-endpoint p,.lp-note p{font-size:11.5px}}
+  </style>
+</head>
+<body class="lab-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="labProgress"></span></div>
+  <header class="site-header" id="top">
+    <a class="brand" href="../../index.html#top" aria-label="MD Shohan portfolio home"><span class="brand-mark">S<span>.</span></span><span class="brand-copy"><strong>MD SHOHAN</strong><small>ENGINEERING PORTFOLIO</small></span></a>
+    <nav class="desktop-nav" aria-label="Project navigation"><a href="#architecture">Architecture</a><a href="#run">Run locally</a><a href="#endpoints">Endpoints</a></nav>
+    <div class="header-actions"><a class="header-cta" href="../../index.html#lab">Back to portfolio <span aria-hidden="true">↗</span></a></div>
+  </header>
+
+  <main id="main" class="section-shell lab-page-main">
+    <div class="lp-crumb"><a href="../../index.html">PORTFOLIO</a> / PROJECTS / OBSERVABILITY LAB</div>
+    <section class="lp-hero" aria-labelledby="lpTitle">
+      <div>
+        <div class="lp-eyebrow"><span class="status-dot"></span> PLATFORM / OBSERVABILITY / LOCAL-FIRST</div>
+        <h1 id="lpTitle">See the system.<span>Understand the signal.</span></h1>
+        <p class="lp-lede">A reproducible learning stack built around one small API: health and readiness checks, bounded-cardinality Prometheus metrics, a provisioned Grafana dashboard, and alert rules you can inspect and test.</p>
+        <div class="lp-buttons"><a class="button button-primary" href="#run">Run the lab <span aria-hidden="true">↘</span></a><a class="button button-ghost" href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/observability-lab/README.md" data-repository-path="blob/main/projects/observability-lab/README.md" target="_blank" rel="noopener noreferrer">Read the rendered guide <span aria-hidden="true">↗</span></a><a class="button button-ghost" href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/observability-lab" data-repository-path="tree/main/projects/observability-lab" target="_blank" rel="noopener noreferrer">Browse source <span aria-hidden="true">↗</span></a></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px"><span class="lp-state"><i></i> LOCAL REFERENCE IMPLEMENTATION</span><span class="lp-state"><i></i> PRODUCTION DEPLOYMENT NOT CLAIMED</span></div>
+      </div>
+      <div class="lp-art glass-card" role="img" aria-label="Conceptual flow from an HTTP API to Prometheus metrics and Grafana dashboards">
+        <div class="lp-art-top"><span>OBSERVABILITY PIPELINE</span><span>FIG. 02</span></div>
+        <div class="lp-flow"><div class="lp-flow-col"><div class="lp-node"><span class="lp-node-icon">API</span><span><b>Python service</b><small>Health · Requests · Latency</small></span></div><div class="lp-node"><span class="lp-node-icon">CLI</span><span><b>Traffic generator</b><small>Normal · Error · Slow</small></span></div></div><div class="lp-arrow" aria-hidden="true">→</div><div class="lp-flow-col"><div class="lp-node"><span class="lp-node-icon">P</span><span><b>Prometheus</b><small>Scrape · Record · Alert</small></span></div><div class="lp-node"><span class="lp-node-icon">G</span><span><b>Grafana</b><small>Query · Explore · Learn</small></span></div></div></div>
+        <div class="lp-art-foot"><span>LOCAL NETWORK ONLY</span><span>PYTHON + COMPOSE</span></div>
+      </div>
+    </section>
+
+    <div class="lp-stats" aria-label="Project summary">
+      <div class="lp-stat"><strong>11</strong><span>API TESTS INCLUDED</span></div><div class="lp-stat"><strong>3</strong><span>PROMETHEUS ALERT RULES</span></div><div class="lp-stat"><strong>6</strong><span>API ROUTES</span></div><div class="lp-stat"><strong>0</strong><span>PRODUCTION CLAIMS</span></div>
+    </div>
+
+    <section class="lp-section" id="architecture" aria-labelledby="architectureTitle">
+      <div class="lp-section-head"><div><span class="lp-kicker">01 — ARCHITECTURE</span><h2 id="architectureTitle">Small pieces.<br>Clear responsibilities.</h2></div><p>The stack is intentionally compact so you can follow one request from the API, through metrics collection, into a dashboard or alert. All host ports are bound to localhost.</p></div>
+      <div class="lp-architecture">
+        <article class="lp-component"><span class="lp-component-id">COMPONENT / 01</span><h3>Python API</h3><p>HTTP service with health/readiness probes, JSON responses, request counters, and duration histograms.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/observability-lab/api/app.py" data-repository-path="blob/main/projects/observability-lab/api/app.py" target="_blank" rel="noopener noreferrer">api/app.py</a></code></article>
+        <article class="lp-component"><span class="lp-component-id">COMPONENT / 02</span><h3>Prometheus</h3><p>Scrapes metrics every 10 seconds and evaluates service-down, elevated 5xx, and latency alert rules.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/observability-lab/prometheus" data-repository-path="tree/main/projects/observability-lab/prometheus" target="_blank" rel="noopener noreferrer">prometheus/*.yml</a></code></article>
+        <article class="lp-component"><span class="lp-component-id">COMPONENT / 03</span><h3>Grafana</h3><p>Reads a provisioned Prometheus datasource and loads the platform observability dashboard from version-controlled JSON.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/observability-lab/grafana/dashboards" data-repository-path="tree/main/projects/observability-lab/grafana/dashboards" target="_blank" rel="noopener noreferrer">grafana/dashboards/</a></code></article>
+        <article class="lp-component"><span class="lp-component-id">COMPONENT / 04</span><h3>Compose + CI</h3><p>Local orchestration, localhost-only port publishing, an isolated API container, automated unit checks, and end-to-end service smoke checks in CI.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/observability-lab/docker-compose.yml" data-repository-path="blob/main/projects/observability-lab/docker-compose.yml" target="_blank" rel="noopener noreferrer">docker-compose.yml</a></code></article>
+      </div>
+      <div class="lp-note"><span class="liquid-icon" aria-hidden="true">!</span><div><b>Scope and safety, intentionally explicit</b><p>This lab has no TLS termination, authentication proxy, Alertmanager notification route, durable application metrics, or production SLO policy. It is a local learning stack. The example error/slow endpoints exist to make signals visible and should not be exposed publicly.</p></div></div>
+    </section>
+
+    <section class="lp-section" id="run" aria-labelledby="runTitle">
+      <div class="lp-section-head"><div><span class="lp-kicker">02 — QUICK START</span><h2 id="runTitle">Bring the lab online.</h2></div><p>Run these commands from the <code>projects/observability-lab/</code> directory. You need Docker Engine and Compose v2. Create a local Grafana password first; the example file is a template, not a secret.</p></div>
+      <div class="lp-code-list">
+        <div class="lp-code"><div class="lp-code-head"><span>STEP 01 / CONFIGURE</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>cp .env.example .env
+# Replace the example password inside .env</code></pre></div>
+        <div class="lp-code"><div class="lp-code-head"><span>STEP 02 / START</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>docker compose up --build -d
+docker compose ps</code></pre></div>
+        <div class="lp-code"><div class="lp-code-head"><span>STEP 03 / GENERATE SAMPLE SIGNALS</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>curl http://127.0.0.1:8000/
+curl http://127.0.0.1:8000/healthz
+curl -i http://127.0.0.1:8000/demo/error
+curl "http://127.0.0.1:8000/demo/slow?seconds=1.5"</code></pre></div>
+      </div>
+      <div class="lp-architecture" style="margin-top:13px">
+        <article class="lp-component"><span class="lp-component-id">LOCAL URL / 01</span><h3>API</h3><p>Service status and demo routes.</p><code><a href="http://127.0.0.1:8000/">127.0.0.1:8000</a></code></article>
+        <article class="lp-component"><span class="lp-component-id">LOCAL URL / 02</span><h3>Prometheus</h3><p>Inspect the target health and metrics.</p><code><a href="http://127.0.0.1:9090/targets">127.0.0.1:9090/targets</a></code></article>
+        <article class="lp-component"><span class="lp-component-id">LOCAL URL / 03</span><h3>Grafana</h3><p>Login with the username admin and password from .env.</p><code><a href="http://127.0.0.1:3000/">127.0.0.1:3000</a></code></article>
+        <article class="lp-component"><span class="lp-component-id">LOCAL COMMAND / 04</span><h3>Stop + clean up</h3><p>Remove containers; optionally remove saved local data.</p><code>docker compose down --volumes</code></article>
+      </div>
+      <div class="lp-note"><span class="liquid-icon" aria-hidden="true">i</span><div><b>Windows PowerShell</b><p>For the first step, use <code>Copy-Item .env.example .env</code>. The rest of the Compose and curl commands can be run from a terminal with those tools installed.</p></div></div>
+    </section>
+
+    <section class="lp-section" id="endpoints" aria-labelledby="endpointsTitle">
+      <div class="lp-section-head"><div><span class="lp-kicker">03 — API CONTRACT</span><h2 id="endpointsTitle">Signals you can trigger.</h2></div><p>The HTTP route labels are deliberately bounded to prevent arbitrary path values from creating unbounded Prometheus time-series cardinality.</p></div>
+      <div class="lp-endpoints">
+        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/healthz</code><p>Liveness check. Returns a small successful JSON response.</p></div></article>
+        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/readyz</code><p>Returns HTTP 503 when `SERVICE_READY=false`; liveness stays independent.</p></div></article>
+        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/metrics</code><p>Prometheus exposition endpoint. Scrapes are intentionally excluded from request counters.</p></div></article>
+        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/demo/error</code><p>Intentional HTTP 503 response to exercise error-rate panels and alert queries.</p></div></article>
+        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/demo/slow?seconds=1.5</code><p>Bounded 0–3 second delay to generate latency samples.</p></div></article>
+        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/</code><p>JSON service overview, version, uptime, and endpoint list.</p></div></article>
+      </div>
+    </section>
+
+    <footer class="lp-footer"><span>MD SHOHAN · PLATFORM ENGINEERING</span><a href="../../index.html#lab">Return to portfolio ↑</a><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/observability-lab/README.md" data-repository-path="blob/main/projects/observability-lab/README.md" target="_blank" rel="noopener noreferrer">Full README ↗</a></footer>
+  </main>
+  <div class="lp-toast" id="lpToast" role="status" aria-live="polite"></div>
+  <script>
+    (() => {
+      const toast = document.getElementById('lpToast');
+      let toastTimer;
+      document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
+        const text = button.closest('.lp-code').querySelector('code').innerText;
+        try {
+          await navigator.clipboard.writeText(text);
+          toast.textContent = 'Commands copied.';
+        } catch (_) {
+          toast.textContent = 'Select the command text and copy it manually.';
+        }
+        toast.classList.add('visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('visible'), 2200);
+      }));
+      const progress = document.getElementById('labProgress');
+      const updateProgress = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = `${max > 0 ? Math.min(100, Math.max(0, window.scrollY / max * 100)) : 0}%`;
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    })();
+  </script>
+</body>
+</html>
