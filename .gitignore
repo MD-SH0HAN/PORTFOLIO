@@ -1,0 +1,28 @@
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python test/runtime artefacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Local logs and temporary outputs
+*.log
+*.tmp
+
+# Browser-test screenshots and diagnostics
+test-results/
+playwright-report/
+
+# Generated static-site artifact for GitHub Pages
+/dist/
