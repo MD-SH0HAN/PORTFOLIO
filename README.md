@@ -25,9 +25,6 @@
 
 > **Scope and integrity:** This portfolio deliberately separates runnable source code from conceptual models, browser-only simulations, and planned build briefs. The observability reference lab is the included local implementation. The IDP, service catalog, platform APIs, policy engine, and planned golden paths are **not** presented as completed production systems.
 
-**Repository:** [MD-SH0HAN/PORTFOLIO](https://github.com/MD-SH0HAN/PORTFOLIO)  
-**Portfolio URL:** [md-sh0han.github.io/PORTFOLIO](https://md-sh0han.github.io/PORTFOLIO/)
-
 ## On this page
 
 - [Overview](#overview)
