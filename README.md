@@ -1,16 +1,16 @@
 <h1 align="center">PLATFORM ENGINEERING PORTFOLIO</h1>
 
 <p align="center">
-  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml.yml">
-    <img alt="Portfolio quality workflow" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml/badge.svg" />
-  </a>
-</p>
-
-<p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
   <br />
   <br />
   A responsive, monochrome portfolio exploring how platform teams turn infrastructure capabilities into a useful internal product for application developers.
+</p>
+
+<p align="center">
+  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml.yml">
+    <img alt="Portfolio quality workflow" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml/badge.svg" />
+  </a>
 </p>
 
 <p align="center">
