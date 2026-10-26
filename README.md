@@ -16,7 +16,7 @@
   </a>
   </p>
   
-  <p
+  <p align="center">
   <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml.yml">
     <img alt="Portfolio quality workflow" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml/badge.svg" />
   </a>
