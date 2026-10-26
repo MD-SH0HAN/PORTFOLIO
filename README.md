@@ -1,4 +1,4 @@
-# 🛰️ MD SHOHAN — Platform Engineering Portfolio
+# MD SHOHAN — PLATFORM ENGINEERING PORTFOLIO
 
 <p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
