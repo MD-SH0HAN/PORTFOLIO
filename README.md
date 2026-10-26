@@ -34,10 +34,6 @@
   <img alt="Playwright" src="https://img.shields.io/badge/Playwright-2F3136?style=flat-square&logo=playwright&logoColor=white" />
 </p>
 
-> 🔎 **Scope & integrity** — This portfolio clearly separates runnable source code from conceptual models, browser-only simulations, and planned build briefs. The **observability reference lab** is the included local implementation. The IDP, service catalog, platform APIs, policy engine, and planned golden paths are **not** presented as completed production systems.
-
----
-
 ## 🧭 On this page
 
 - [Overview](#overview)
