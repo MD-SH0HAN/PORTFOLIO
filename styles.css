@@ -453,10 +453,34 @@ html{overflow-x:clip}
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --glass-line: rgba(255, 255, 255, .19);
   --glass-highlight: rgba(255, 255, 255, .11);
+  --liquid-edge: rgba(255, 255, 255, .15);
+  --liquid-edge-hot: rgba(255, 255, 255, .32);
+  --liquid-inset-highlight: rgba(255, 255, 255, .13);
+  --liquid-inset-shadow: rgba(255, 255, 255, .025);
+  --liquid-sheen: rgba(255, 255, 255, .075);
+  --liquid-underlight: rgba(255, 255, 255, .018);
+  --liquid-frost: rgba(14, 14, 14, .78);
+  --liquid-shadow: 0 16px 42px rgba(0, 0, 0, .17);
+  --liquid-shadow-raised: 0 24px 58px rgba(0, 0, 0, .27);
+  --liquid-ambient-opacity: .28;
+  --motion-fast: 160ms;
+  --motion-base: 280ms;
+  --motion-slow: 480ms;
+  --motion-ease: cubic-bezier(.2, .75, .25, 1);
 }
 html[data-theme="light"] {
   --glass-line: rgba(25, 25, 25, .14);
   --glass-highlight: rgba(255, 255, 255, .8);
+  --liquid-edge: rgba(20, 20, 20, .14);
+  --liquid-edge-hot: rgba(20, 20, 20, .28);
+  --liquid-inset-highlight: rgba(255, 255, 255, .94);
+  --liquid-inset-shadow: rgba(0, 0, 0, .035);
+  --liquid-sheen: rgba(255, 255, 255, .62);
+  --liquid-underlight: rgba(0, 0, 0, .018);
+  --liquid-frost: rgba(249, 249, 249, .86);
+  --liquid-shadow: 0 14px 34px rgba(0, 0, 0, .075);
+  --liquid-shadow-raised: 0 22px 48px rgba(0, 0, 0, .12);
+  --liquid-ambient-opacity: .16;
 }
 
 /* Scale transforms are cheaper to composite than recalculating the progress bar width. */
@@ -1885,5 +1909,587 @@ html[data-theme="light"] .footer-profile-link {
   .hero-visual > .hero-visual-orbit-label,
   .hero-visual > .portrait-index {
     display: none;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   LIQUID GLASS FINISHING SYSTEM
+   Surface-only refinement: typography and copy remain source-owned.
+   -------------------------------------------------------------------------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -16%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--liquid-ambient-opacity);
+  background:
+    radial-gradient(ellipse at 17% 13%, rgba(255,255,255,.075), transparent 34%),
+    radial-gradient(ellipse at 86% 30%, rgba(255,255,255,.042), transparent 32%),
+    radial-gradient(ellipse at 54% 100%, rgba(255,255,255,.026), transparent 43%);
+  transform: translateZ(0);
+}
+html[data-theme="light"] body::after {
+  background:
+    radial-gradient(ellipse at 17% 13%, rgba(255,255,255,.72), transparent 34%),
+    radial-gradient(ellipse at 86% 30%, rgba(0,0,0,.035), transparent 32%),
+    radial-gradient(ellipse at 54% 100%, rgba(0,0,0,.025), transparent 43%);
+}
+
+.site-header {
+  border-color: var(--liquid-edge);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--liquid-sheen) 45%, transparent), transparent 72%);
+  box-shadow:
+    inset 0 1px 0 var(--liquid-inset-highlight),
+    inset 0 -1px 0 var(--liquid-inset-shadow),
+    0 13px 36px rgba(0,0,0,.14);
+  transition: border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
+}
+html[data-theme="light"] .site-header {
+  box-shadow:
+    inset 0 1px 0 var(--liquid-inset-highlight),
+    inset 0 -1px 0 var(--liquid-inset-shadow),
+    0 13px 34px rgba(0,0,0,.075);
+}
+.desktop-nav a {
+  position: relative;
+  isolation: isolate;
+  transition: color var(--motion-fast) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--liquid-edge-hot), transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--motion-base) var(--motion-ease), opacity var(--motion-base) ease;
+  opacity: .7;
+}
+.desktop-nav a:hover::after,
+.desktop-nav a.active::after,
+.desktop-nav a:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+.mobile-nav {
+  border-color: var(--liquid-edge);
+  background-image: linear-gradient(145deg, color-mix(in srgb, var(--liquid-sheen) 24%, transparent), transparent 58%);
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), var(--liquid-shadow-raised);
+}
+.mobile-nav:not([hidden]) { animation: liquid-menu-enter 220ms var(--motion-ease) both; }
+@keyframes liquid-menu-enter {
+  from { opacity: 0; transform: translateY(-5px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.glass-card,
+.glass-panel,
+.about-statement,
+.principle-card,
+.focus-card,
+.project-card,
+.education-row,
+.stack-row,
+.architecture-detail,
+.pipeline-playground,
+.pod-playground,
+.investigation-view,
+.trace-detail,
+.history-event,
+.recovery-state,
+.slo-controls,
+.slo-results,
+.sre-control-room,
+.simulation-chart-wrap,
+.simulation-metric,
+.technology-constellation,
+.constellation-detail,
+.journey-detail,
+.contact-panel,
+.footer-profile-hub,
+.lab-page .lp-art,
+.lab-page .lp-stat,
+.lab-page .lp-component,
+.lab-page .lp-code,
+.lab-page .lp-endpoint,
+.lab-page .lp-note {
+  border-color: var(--liquid-edge);
+  box-shadow:
+    inset 0 1px 0 var(--liquid-inset-highlight),
+    inset 0 -1px 0 var(--liquid-inset-shadow),
+    var(--liquid-shadow);
+  transition: border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+.principle-card,
+.focus-card,
+.stack-row,
+.education-row,
+.architecture-node,
+.pipeline-run-stage,
+.pod-state-node,
+.trace-span,
+.tech-node,
+.journey-step,
+.lab-page .lp-component,
+.lab-page .lp-endpoint {
+  background-image: linear-gradient(142deg, var(--liquid-sheen), transparent 42%, var(--liquid-underlight));
+}
+.project-card {
+  border-color: var(--liquid-edge);
+  background-image: linear-gradient(142deg, rgba(255,255,255,.045), transparent 43%, rgba(255,255,255,.012));
+}
+html[data-theme="light"] .project-card {
+  background-image: linear-gradient(142deg, rgba(255,255,255,.72), transparent 46%, rgba(0,0,0,.018));
+}
+.project-dialog,
+.command-dialog {
+  border-color: var(--liquid-edge);
+  background-color: color-mix(in srgb, var(--bg-soft) 88%, transparent);
+  background-image: linear-gradient(145deg, var(--liquid-sheen), transparent 56%, var(--liquid-underlight));
+  -webkit-backdrop-filter: blur(16px) saturate(126%);
+  backdrop-filter: blur(16px) saturate(126%);
+  box-shadow:
+    inset 0 1px 0 var(--liquid-inset-highlight),
+    inset 0 -1px 0 var(--liquid-inset-shadow),
+    var(--liquid-shadow-raised);
+}
+.toast,
+.lab-page .lp-toast {
+  border-color: var(--liquid-edge-hot);
+  background-color: color-mix(in srgb, var(--bg-soft) 90%, transparent);
+  background-image: linear-gradient(145deg, var(--liquid-sheen), transparent 66%);
+  -webkit-backdrop-filter: blur(12px) saturate(122%);
+  backdrop-filter: blur(12px) saturate(122%);
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), 0 14px 38px rgba(0,0,0,.2);
+}
+.command-search {
+  border-color: var(--liquid-edge);
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight);
+  transition: border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
+}
+.command-search:focus-visible {
+  border-color: var(--liquid-edge-hot);
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), 0 0 0 3px color-mix(in srgb, var(--liquid-edge-hot) 22%, transparent);
+}
+.diagram-view-button {
+  transition: color var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
+}
+.mobile-nav a {
+  transition: color var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease);
+}
+.mobile-nav a:active { transform: scale(.99); }
+.glass-card,
+.glass-panel,
+.floating-chip,
+.portrait-caption,
+.architecture-node,
+.tech-node,
+.trace-detail,
+.history-event,
+.recovery-state,
+.slo-controls,
+.slo-results,
+.simulation-chart-wrap,
+.simulation-metric,
+.pipeline-run-stage,
+.pod-state-node,
+.investigation-view,
+.constellation-detail,
+.journey-detail,
+.footer-profile-hub,
+.lab-page .lp-art,
+.lab-page .lp-component,
+.lab-page .lp-code,
+.lab-page .lp-endpoint,
+.lab-page .lp-note {
+  -webkit-backdrop-filter: blur(14px) saturate(132%);
+  backdrop-filter: blur(14px) saturate(132%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .principle-card:hover,
+  .focus-card:hover,
+  .project-card:hover,
+  .stack-row:hover,
+  .education-row:hover,
+  .architecture-node:hover,
+  .pipeline-run-stage:hover,
+  .pod-state-node:hover,
+  .trace-span:hover,
+  .tech-node:hover,
+  .journey-inspect:hover,
+  .lab-page .lp-component:hover,
+  .lab-page .lp-endpoint:hover {
+    border-color: var(--liquid-edge-hot);
+    box-shadow:
+      inset 0 1px 0 var(--liquid-inset-highlight),
+      inset 0 -1px 0 var(--liquid-inset-shadow),
+      var(--liquid-shadow-raised);
+  }
+  .project-card:hover .project-visual {
+    filter: contrast(1.025);
+  }
+}
+
+.button-primary {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 28px rgba(255,255,255,.075);
+  transition: transform var(--motion-fast) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease);
+}
+.button-ghost,
+.icon-button,
+.filter-tab,
+.investigation-tab,
+.simulation-action,
+.command-trigger,
+.command-result,
+.journey-inspect,
+.lp-copy,
+.copy-email {
+  border-color: var(--liquid-edge);
+  transition: transform var(--motion-fast) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), color var(--motion-base) ease;
+}
+.button-ghost,
+.icon-button,
+.filter-tab,
+.investigation-tab,
+.simulation-action,
+.command-trigger,
+.command-result,
+.journey-inspect,
+.lp-copy,
+.copy-email {
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 0 -1px 0 var(--liquid-inset-shadow);
+}
+.button:active:not(:disabled),
+.icon-button:active:not(:disabled),
+.filter-tab:active:not(:disabled),
+.investigation-tab:active:not(:disabled),
+.simulation-action:active:not(:disabled),
+.command-trigger:active:not(:disabled),
+.command-result:active:not(:disabled),
+.journey-inspect:active:not(:disabled),
+.lp-copy:active:not(:disabled),
+.copy-email:active:not(:disabled),
+.text-link:active {
+  transform: translateY(1px) scale(.985);
+}
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: .52;
+  filter: grayscale(1);
+}
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline-color: var(--liquid-edge-hot);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--liquid-edge-hot) 36%, transparent);
+}
+.filter-tab.active,
+.investigation-tab.is-active,
+.command-result[aria-selected="true"],
+.trace-span.is-selected,
+.architecture-node.is-selected,
+.tech-node.is-selected,
+.journey-step.is-active {
+  border-color: var(--liquid-edge-hot);
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 2px 0 0 var(--text-soft), var(--liquid-shadow);
+}
+
+/* Existing chart data and SVG geometry remain authoritative; only their presentation animates. */
+.simulation-chart-wrap,
+.obs-dashboard-preview {
+  border-color: var(--liquid-edge);
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 0 -1px 0 var(--liquid-inset-shadow), var(--liquid-shadow);
+}
+.simulation-error-bar {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: liquid-chart-bar-enter 440ms var(--motion-ease) both;
+  animation-delay: calc(var(--bar-order, 0) * 9ms);
+}
+@keyframes liquid-chart-bar-enter {
+  from { opacity: .08; transform: scaleY(.08); }
+  to { opacity: var(--bar-final-opacity, .25); transform: scaleY(1); }
+}
+.simulation-error-bar.has-errors { --bar-final-opacity: .75; }
+.simulation-latency-path {
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--text) 16%, transparent));
+}
+.simulation-latency-dot { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--text) 22%, transparent)); }
+.arch-wire,
+.arch-wire-draw,
+.arch-wire-draw.is-active,
+.chart-grid-lines line,
+.slo-gauge-progress,
+.budget-gauge-progress {
+  transition: stroke var(--motion-base) var(--motion-ease), opacity var(--motion-base) ease, filter var(--motion-base) ease, stroke-dashoffset var(--motion-slow) var(--motion-ease);
+}
+.architecture-node.is-selected,
+.tech-node.is-selected {
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 2px 0 0 var(--text-soft), var(--liquid-shadow-raised);
+}
+
+/* Monochrome brand containers preserve each inline logo's genuine silhouette. */
+.footer-profile-hub {
+  background-image:
+    radial-gradient(ellipse at 6% 0%, rgba(255,255,255,.09), transparent 38%),
+    radial-gradient(ellipse at 100% 100%, rgba(255,255,255,.025), transparent 42%),
+    linear-gradient(145deg, color-mix(in srgb, var(--panel-strong) 82%, transparent), color-mix(in srgb, var(--bg) 88%, transparent));
+}
+html[data-theme="light"] .footer-profile-hub {
+  background-image:
+    radial-gradient(ellipse at 6% 0%, rgba(255,255,255,.86), transparent 38%),
+    radial-gradient(ellipse at 100% 100%, rgba(0,0,0,.025), transparent 42%),
+    linear-gradient(145deg, rgba(255,255,255,.74), rgba(255,255,255,.36));
+}
+.footer-profile-link[data-profile-key="facebook"],
+.footer-profile-link[data-profile-key="instagram"],
+.footer-profile-link[data-profile-key="threads"],
+.footer-profile-link[data-profile-key="twitch"],
+.footer-profile-link[data-profile-key="tumblr"],
+.footer-profile-link[data-profile-key="reddit"],
+.footer-profile-link[data-profile-key="discord"],
+.footer-profile-link[data-profile-key="github"],
+.footer-profile-link[data-profile-key="gitlab"],
+.footer-profile-link[data-profile-key="docker"],
+.footer-profile-link[data-profile-key="vercel"],
+.footer-profile-link[data-profile-key="portfolio"] {
+  --profile-accent: 178, 178, 186;
+  --profile-icon-color: var(--text);
+}
+.footer-profile-link {
+  border-color: color-mix(in srgb, var(--liquid-edge) 88%, transparent) !important;
+  background-image: linear-gradient(145deg, color-mix(in srgb, var(--liquid-sheen) 70%, transparent), transparent 58%, var(--liquid-underlight)) !important;
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 0 -1px 0 var(--liquid-inset-shadow), 0 7px 18px rgba(0,0,0,.1);
+}
+.footer-profile-link .profile-icon { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--text) 12%, transparent)); }
+.footer-profile-link:hover .profile-icon,
+.footer-profile-link:focus-visible .profile-icon { filter: drop-shadow(0 0 7px color-mix(in srgb, var(--text) 18%, transparent)); }
+html[data-theme="light"] .footer-profile-link {
+  background-image: linear-gradient(145deg, rgba(255,255,255,.94), rgba(255,255,255,.66) 48%, rgba(0,0,0,.018)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96), inset 0 -1px 0 rgba(0,0,0,.035), 0 7px 18px rgba(0,0,0,.055);
+}
+
+@media (hover: none) {
+  .principle-card:hover,
+  .focus-card:hover,
+  .project-card:hover,
+  .stack-row:hover,
+  .education-row:hover,
+  .architecture-node:hover,
+  .pipeline-run-stage:hover,
+  .pod-state-node:hover,
+  .trace-span:hover,
+  .tech-node:hover,
+  .lab-page .lp-component:hover,
+  .lab-page .lp-endpoint:hover {
+    transform: none;
+  }
+  .project-card:hover .project-visual { filter: none; }
+}
+@media (max-width: 820px) {
+  .site-header { box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), 0 8px 26px rgba(0,0,0,.12); }
+  .glass-card,
+  .glass-panel,
+  .site-header,
+  .floating-chip,
+  .architecture-node,
+  .simulation-chart-wrap,
+  .simulation-metric,
+  .lab-page .lp-art,
+  .lab-page .lp-component,
+  .lab-page .lp-code,
+  .lab-page .lp-endpoint {
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    backdrop-filter: blur(10px) saturate(120%);
+  }
+}
+@supports not (color: color-mix(in srgb, white, black)) {
+  .glass-card,
+  .glass-panel,
+  .principle-card,
+  .focus-card,
+  .project-card,
+  .stack-row,
+  .education-row,
+  .architecture-node,
+  .pipeline-run-stage,
+  .pod-state-node,
+  .trace-span,
+  .tech-node,
+  .lab-page .lp-component,
+  .lab-page .lp-endpoint {
+    border-color: var(--line-strong);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  body::after { display: none; }
+  .glass-card,
+  .glass-panel,
+  .site-header,
+  .mobile-nav,
+  .floating-chip,
+  .portrait-caption,
+  .architecture-node,
+  .trace-detail,
+  .history-event,
+  .recovery-state,
+  .slo-controls,
+  .slo-results,
+  .simulation-chart-wrap,
+  .simulation-metric,
+  .pipeline-run-stage,
+  .pod-state-node,
+  .investigation-view,
+  .constellation-detail,
+  .journey-detail,
+  .contact-panel,
+  .footer-profile-hub,
+  .lab-page .lp-art,
+  .lab-page .lp-component,
+  .lab-page .lp-code,
+  .lab-page .lp-endpoint,
+  .lab-page .lp-note {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--liquid-frost);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after,
+  .mobile-nav:not([hidden]),
+  .simulation-error-bar {
+    animation: none !important;
+  }
+  .principle-card:hover,
+  .focus-card:hover,
+  .project-card:hover,
+  .stack-row:hover,
+  .education-row:hover,
+  .architecture-node:hover,
+  .pipeline-run-stage:hover,
+  .pod-state-node:hover,
+  .trace-span:hover,
+  .tech-node:hover,
+  .button:hover,
+  .button:active,
+  .icon-button:hover,
+  .filter-tab:active,
+  .investigation-tab:active,
+  .command-result:active,
+  .journey-inspect:active,
+  .footer-profile-link:hover,
+  .footer-profile-link:focus-visible,
+  .lab-page .lp-component:hover,
+  .lab-page .lp-endpoint:hover {
+    transform: none !important;
+  }
+  .project-card:hover .project-visual { filter: none; }
+  .desktop-nav a::after { transition: none; }
+  .mobile-nav a:active,
+  .diagram-view-button:active { transform: none !important; }
+  .simulation-error-bar { transform: none; }
+}
+
+
+/* Platform-as-a-product cards: prevent body copy, tag pills, and outcome labels from overlapping. */
+.section-platform-model .platform-model-grid > .focus-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 292px;
+}
+
+.section-platform-model .platform-model-grid .focus-card-top,
+.section-platform-model .platform-model-grid .focus-label,
+.section-platform-model .platform-model-grid .focus-card h3,
+.section-platform-model .platform-model-grid .focus-card p,
+.section-platform-model .platform-model-grid .focus-card .tag-list {
+  min-width: 0;
+}
+
+.section-platform-model .platform-model-grid .focus-label {
+  max-width: 100%;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.section-platform-model .platform-model-grid .focus-card h3 {
+  line-height: 1.24;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.section-platform-model .platform-model-grid .focus-card p {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.section-platform-model .platform-model-grid .tag-list {
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 18px;
+  margin-bottom: 17px;
+}
+
+.section-platform-model .platform-model-grid .tag-list span {
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.section-platform-model .platform-model-grid .focus-bottom {
+  position: relative;
+  inset: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
+  line-height: 1.55;
+}
+
+.section-platform-model .platform-model-grid .focus-bottom > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.section-platform-model .platform-model-grid .focus-bottom > span:last-child {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+@media (max-width: 560px) {
+  .section-platform-model .platform-model-grid > .focus-card {
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .section-platform-model .platform-model-grid .tag-list {
+    margin-top: 17px;
+    margin-bottom: 16px;
+  }
+
+  .section-platform-model .platform-model-grid .tag-list span {
+    padding: 6px 9px;
+    font-size: 10.5px;
+  }
+
+  .section-platform-model .platform-model-grid .focus-bottom {
+    font-size: 9px;
   }
 }

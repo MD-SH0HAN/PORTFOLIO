@@ -656,6 +656,7 @@
       rect.setAttribute('height', String(height));
       rect.setAttribute('rx', '2');
       rect.setAttribute('class', sample.errors > 0 ? 'simulation-error-bar has-errors' : 'simulation-error-bar');
+      rect.style.setProperty('--bar-order', String(Math.min(index, 22)));
       simulationChartBars.appendChild(rect);
     });
     const points = samples.map((sample, index) => {
@@ -1230,7 +1231,7 @@
     { label: 'Replay infrastructure history', group: 'SIMULATION', keywords: 'timeline event replay rollback deployment history', run: () => { goTo('#investigation'); activateInvestigationTab(document.querySelector('[data-investigation-tab="history"]')); } },
     { label: 'Open the safe recovery drill', group: 'SIMULATION', keywords: 'failure recovery remediation readiness dependency memory troubleshooting runbook', run: () => { goTo('#investigation'); activateInvestigationTab(document.querySelector('[data-investigation-tab="recovery"]')); } },
     { label: 'Open the platform observability lab guide', group: 'DOCUMENTATION', keywords: 'platform observability documentation readme python prometheus grafana docker compose tests runbook', run: () => { window.location.href = 'projects/observability-lab/index.html'; } },
-    { label: 'Find education and background', group: 'PROFILE', keywords: 'education bachelor university hsc ssc gpa bangladesh', run: () => goTo('#about') },
+    { label: 'Find education and background', group: 'PROFILE', keywords: 'education bachelor university hsc ssc bangladesh', run: () => goTo('#about') },
     { label: 'Open platform reliability signals', group: 'SIMULATION', keywords: 'platform reliability incident error budget latency monitor', run: () => goTo('#sreControlRoom') },
     { label: 'Open Kubernetes readiness simulation', group: 'SIMULATION', keywords: 'kubernetes pod readiness probe service endpoint health', run: () => goTo('#podHealthPlayground') },
     { label: 'Simulate Kubernetes readiness failure', group: 'DEMO', keywords: 'kubernetes pod unhealthy probe error', run: () => { goTo('#podHealthPlayground'); window.setTimeout(() => byId('simulatePodFailure')?.click(), reducedMotion.matches ? 0 : 350); } },

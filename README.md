@@ -1,17 +1,10 @@
-<h1 align="center">PLATFORM ENGINEERING PORTFOLIO</h1>
+# 🛰️ MD SHOHAN — Platform Engineering Portfolio
 
 <p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
   <br />
-  <span style="font-family: 'Times New Roman', Times, serif;">
-    A responsive, monochrome portfolio showcasing how platform teams simplify infrastructure for developers.
-  </span>
-</p>
-
-<p align="center">
-  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml.yml">
-    <img alt="Portfolio quality workflow" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/deploy-pages.yml/badge.svg" />
-  </a>
+  <br />
+  A responsive, monochrome portfolio exploring how platform teams turn infrastructure capabilities into a useful internal product for application developers.
 </p>
 
 <p align="center">
@@ -21,7 +14,10 @@
   <a href="https://github.com/MD-SH0HAN/PORTFOLIO">
     <img alt="View source repository" src="https://img.shields.io/badge/Source-View%20repository-2F3136?style=for-the-badge&logo=github&logoColor=white" />
   </a>
-  </p>
+  <a href="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/portfolio-quality.yml">
+    <img alt="Portfolio quality workflow" src="https://github.com/MD-SH0HAN/PORTFOLIO/actions/workflows/portfolio-quality.yml/badge.svg" />
+  </a>
+</p>
 
 <p align="center">
   <img alt="HTML5" src="https://img.shields.io/badge/HTML5-2F3136?style=flat-square&logo=html5&logoColor=white" />
@@ -33,6 +29,10 @@
   <img alt="Grafana" src="https://img.shields.io/badge/Grafana-2F3136?style=flat-square&logo=grafana&logoColor=white" />
   <img alt="Playwright" src="https://img.shields.io/badge/Playwright-2F3136?style=flat-square&logo=playwright&logoColor=white" />
 </p>
+
+> 🔎 **Scope & integrity** — This portfolio clearly separates runnable source code from conceptual models, browser-only simulations, and planned build briefs. The **observability reference lab** is the included local implementation. The IDP, service catalog, platform APIs, policy engine, and planned golden paths are **not** presented as completed production systems.
+
+---
 
 ## 🧭 On this page
 
