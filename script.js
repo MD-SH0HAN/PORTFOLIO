@@ -7,6 +7,7 @@
   const menuToggle = document.getElementById('menuToggle');
   const mobileNav = document.getElementById('mobileNav');
   const progress = document.getElementById('scrollProgress');
+  const siteHeader = document.querySelector('.site-header');
   const profilePhoto = document.getElementById('profilePhoto');
   const toast = document.getElementById('toast');
   let toastTimer;
@@ -174,12 +175,48 @@
     if (themeColorMeta) themeColorMeta.setAttribute('content', light ? '#ececec' : '#090909');
   };
   const toggleTheme = () => {
-    withViewTransition(() => {
-      root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
-      try { localStorage.setItem('shohan-theme', root.dataset.theme); } catch (_) { /* Storage may be unavailable for local files. */ }
+    const nextTheme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    const canRevealTheme = !reducedMotion.matches &&
+      typeof document.startViewTransition === 'function';
+
+    // Keep the monochrome theme reveal anchored to the control that initiated it.
+    // The CSS transition is optional; the theme itself always changes immediately.
+    if (canRevealTheme && themeToggle) {
+      const bounds = themeToggle.getBoundingClientRect();
+      root.style.setProperty('--theme-origin-x', `${bounds.left + bounds.width / 2}px`);
+      root.style.setProperty('--theme-origin-y', `${bounds.top + bounds.height / 2}px`);
+    }
+
+    const applyTheme = () => {
+      root.dataset.theme = nextTheme;
+      try { localStorage.setItem('shohan-theme', nextTheme); } catch (_) { /* Storage may be unavailable for local files. */ }
       updateThemeControl();
-    });
-    showToast(`Switched to ${root.dataset.theme} theme.`);
+    };
+    const clearThemeOrigin = () => {
+      root.style.removeProperty('--theme-origin-x');
+      root.style.removeProperty('--theme-origin-y');
+    };
+
+    let transition = null;
+    if (canRevealTheme) {
+      try {
+        // Named transition types keep the radial reveal exclusive to theme changes;
+        // project, architecture, and journey transitions retain their own animations.
+        transition = document.startViewTransition({
+          update: applyTheme,
+          types: ['monochrome-theme']
+        });
+      } catch (_) {
+        clearThemeOrigin();
+        applyTheme();
+      }
+    } else {
+      applyTheme();
+    }
+
+    if (transition?.finished) transition.finished.then(clearThemeOrigin, clearThemeOrigin);
+    else clearThemeOrigin();
+    showToast(`Switched to ${nextTheme} theme.`);
   };
   updateThemeControl();
   themeToggle?.addEventListener('click', toggleTheme);
@@ -200,10 +237,16 @@
 
   // Scroll progress and active navigation.
   const updateScrollUI = () => {
-    if (!progress) return;
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const amount = scrollable > 0 ? Math.min(100, Math.max(0, window.scrollY / scrollable * 100)) : 0;
-    progress.style.transform = `scaleX(${amount / 100})`;
+    if (siteHeader) siteHeader.classList.toggle('is-scrolled', window.scrollY > 18);
+
+    if (progress) {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const amount = scrollable > 0 ? Math.min(100, Math.max(0, window.scrollY / scrollable * 100)) : 0;
+      progress.style.transform = `scaleX(${amount / 100})`;
+    }
+
+    // Scroll-linked components update independently; a missing progress bar must not
+    // disable the journey track or architecture wire drawing.
     const journeyTrack = document.querySelector('.journey-track');
     if (journeyTrack) {
       const rect = journeyTrack.getBoundingClientRect();
@@ -293,6 +336,7 @@
     let heroPointerFrame = 0;
     let latestHeroPointer = null;
     heroVisual.addEventListener('pointermove', event => {
+      if (reducedMotion.matches) return;
       latestHeroPointer = { clientX: event.clientX, clientY: event.clientY };
       if (heroPointerFrame) return;
       heroPointerFrame = window.requestAnimationFrame(() => {
@@ -329,11 +373,45 @@
     }, { passive: true });
   }
 
-  // Keep card interactions transform-only; per-card pointer tracking added unnecessary work
-  // and did not improve keyboard/touch use. Hover polish is handled entirely in CSS.
+  // Desktop-only liquid reflections: one shared rAF keeps the spotlight smooth without
+  // adding per-frame work to every card. The cards still use their CSS-only hover state.
   if (!reducedMotion.matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.querySelectorAll('.principle-card, .focus-card, .project-card, .stack-row').forEach(card => {
+    const motionCards = [...document.querySelectorAll('.principle-card, .focus-card, .project-card, .stack-row')];
+    let cardPointerFrame = 0;
+    let pendingCardPointer = null;
+
+    motionCards.forEach(card => {
       card.classList.add('motion-card');
+      if (!card.querySelector(':scope > .pointer-spotlight')) {
+        const spotlight = document.createElement('span');
+        spotlight.className = 'pointer-spotlight';
+        spotlight.setAttribute('aria-hidden', 'true');
+        card.insertBefore(spotlight, card.firstChild);
+      }
+
+      card.addEventListener('pointermove', event => {
+        if (reducedMotion.matches || event.pointerType === 'touch') return;
+        pendingCardPointer = { card, clientX: event.clientX, clientY: event.clientY };
+        if (cardPointerFrame) return;
+        cardPointerFrame = window.requestAnimationFrame(() => {
+          cardPointerFrame = 0;
+          const pointer = pendingCardPointer;
+          pendingCardPointer = null;
+          if (!pointer || reducedMotion.matches) return;
+          const bounds = pointer.card.getBoundingClientRect();
+          if (!bounds.width || !bounds.height) return;
+          const x = Math.max(0, Math.min(100, ((pointer.clientX - bounds.left) / bounds.width) * 100));
+          const y = Math.max(0, Math.min(100, ((pointer.clientY - bounds.top) / bounds.height) * 100));
+          pointer.card.style.setProperty('--spot-x', `${x}%`);
+          pointer.card.style.setProperty('--spot-y', `${y}%`);
+        });
+      }, { passive: true });
+
+      card.addEventListener('pointerleave', () => {
+        if (pendingCardPointer?.card === card) pendingCardPointer = null;
+        card.style.setProperty('--spot-x', '50%');
+        card.style.setProperty('--spot-y', '50%');
+      }, { passive: true });
     });
   }
 
@@ -793,15 +871,27 @@
   const architectureStage = byId('architectureStage');
   const architectureSvg = architectureStage?.querySelector('svg');
   if (architectureSvg && typeof architectureSvg.pauseAnimations === 'function') {
-    if (reducedMotion.matches) architectureSvg.pauseAnimations();
-    else if ('IntersectionObserver' in window) {
-      const architectureVisibilityObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (entry.isIntersecting && !reducedMotion.matches) architectureSvg.unpauseAnimations();
-        else architectureSvg.pauseAnimations();
-      }), { rootMargin: '120px 0px', threshold: 0.01 });
+    let architectureInView = !('IntersectionObserver' in window);
+    const syncArchitectureAnimation = () => {
+      if (reducedMotion.matches || !architectureInView) architectureSvg.pauseAnimations();
+      else architectureSvg.unpauseAnimations();
+    };
+
+    if ('IntersectionObserver' in window && architectureStage) {
+      const architectureVisibilityObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          architectureInView = entry.isIntersecting;
+          syncArchitectureAnimation();
+        });
+      }, { rootMargin: '120px 0px', threshold: 0.01 });
       architectureVisibilityObserver.observe(architectureStage);
     }
-    reducedMotion.addEventListener?.('change', event => { if (event.matches) architectureSvg.pauseAnimations(); });
+    if (typeof reducedMotion.addEventListener === 'function') {
+      reducedMotion.addEventListener('change', syncArchitectureAnimation);
+    } else {
+      reducedMotion.addListener?.(syncArchitectureAnimation);
+    }
+    syncArchitectureAnimation();
   }
   const architectureNodes = [...document.querySelectorAll('[data-arch-node]')];
   architectureNodes.forEach(node => node.addEventListener('click', () => {
