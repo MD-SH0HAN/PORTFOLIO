@@ -46,6 +46,187 @@
     .lp-component p,.lp-endpoint p,.lp-note p{font-size:12px;line-height:1.8}
     .lp-section-head p{font-size:12.5px}
     @media(max-width:560px){.lp-lede{font-size:14.5px}.lp-component p,.lp-endpoint p,.lp-note p{font-size:11.5px}}
+
+
+/* Laboratory visual parity: use the Portfolio's glass, reveal, and interaction language. */
+.lab-page .lp-hero { position: relative; isolation: isolate; }
+.lab-page .lp-hero::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  width: min(68vw, 660px); aspect-ratio: 1; right: 0; top: -16%; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--text) 7%, transparent), transparent 68%);
+  opacity: .78;
+}
+.lab-page .lp-hero-copy { position: relative; z-index: 1; }
+.lab-page .lp-hero h1 .title-glass {
+  color: transparent; background: linear-gradient(112deg, var(--text) 8%, var(--muted) 82%);
+  background-clip: text; -webkit-background-clip: text;
+}
+.lab-page .lp-eyebrow .status-dot { animation: lp-status-breathe 3.4s ease-in-out infinite; }
+@keyframes lp-status-breathe { 0%,100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--text) 6%, transparent), 0 0 12px color-mix(in srgb, var(--text) 15%, transparent); } 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--text) 3%, transparent), 0 0 17px color-mix(in srgb, var(--text) 22%, transparent); } }
+
+.lab-page .lp-art {
+  min-height: 0; padding: 20px 21px 16px; isolation: isolate; overflow: hidden;
+  border: 1px solid var(--liquid-edge); border-radius: 25px;
+  background:
+    radial-gradient(ellipse at 50% -4%, color-mix(in srgb, var(--text) 11%, transparent), transparent 66%),
+    linear-gradient(145deg, color-mix(in srgb, var(--panel-strong) 92%, transparent), color-mix(in srgb, var(--panel) 84%, transparent));
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 0 -1px 0 var(--liquid-inset-shadow), var(--liquid-shadow);
+  transition: transform var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+.lab-page .lp-art::before {
+  z-index: -1; background-size: 30px 30px; opacity: .22;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+}
+.lab-page .lp-art::after {
+  content: ""; position: absolute; z-index: -1; width: 250px; height: 250px; right: -88px; top: -116px;
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent); border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 0 23px color-mix(in srgb, var(--text) 2%, transparent), 0 0 0 48px color-mix(in srgb, var(--text) 1.5%, transparent);
+  animation: lp-orbit-drift 24s linear infinite;
+}
+@keyframes lp-orbit-drift { from { transform: rotate(0deg) translate3d(0,0,0); } to { transform: rotate(360deg) translate3d(0,0,0); } }
+.lab-page .lp-art-top, .lab-page .lp-art-foot { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font: 8px var(--mono); letter-spacing: .1em; line-height: 1.5; }
+.lab-page .lp-art-top { padding-bottom: 13px; border-bottom: 1px solid color-mix(in srgb, var(--line) 85%, transparent); }
+.lab-page .lp-art-top span:last-child { white-space: nowrap; }
+.lab-page .lp-art-foot { margin-top: 13px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--line) 85%, transparent); }
+.lab-page .lp-art-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(132px,.78fr) minmax(0,1.22fr); gap: 13px; align-items: stretch; padding: 13px 0 0; }
+.lab-page .lp-system-flow { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 2px 0; }
+.lab-page .lp-flow-step {
+  display: grid; grid-template-columns: 29px minmax(0,1fr) 5px; align-items: center; gap: 8px; min-width: 0;
+  padding: 9px 8px; border: 1px solid var(--liquid-edge); border-radius: 11px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--liquid-sheen) 55%, transparent), color-mix(in srgb, var(--bg) 67%, transparent));
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), 0 7px 18px rgba(0,0,0,.07);
+}
+.lab-page .lp-node-icon { width: 29px; height: 29px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 9px; color: var(--text-soft); background: color-mix(in srgb, var(--panel-strong) 70%, transparent); font: 9px var(--mono); }
+.lab-page .lp-flow-step b { display: block; min-width: 0; color: var(--text); font-size: 10px; line-height: 1.25; }
+.lab-page .lp-flow-step small { display: block; margin-top: 3px; color: var(--muted); font: 7.4px/1.4 var(--mono); overflow-wrap: anywhere; }
+.lab-page .lp-node-status { width: 5px; height: 5px; border-radius: 50%; background: var(--text-soft); box-shadow: 0 0 0 3px color-mix(in srgb, var(--text) 7%, transparent); }
+.lab-page .lp-flow-connector { position: relative; width: 1px; height: 11px; margin-left: 22px; background: linear-gradient(var(--line-strong), var(--text-soft), var(--line)); }
+.lab-page .lp-flow-connector::after { content: ""; position: absolute; width: 4px; height: 4px; left: -1.5px; top: 0; border-radius: 50%; background: var(--text); box-shadow: 0 0 7px color-mix(in srgb, var(--text) 38%, transparent); animation: lp-flow-pulse 2.6s ease-in-out infinite; }
+@keyframes lp-flow-pulse { 0%,100% { transform: translateY(0); opacity: .25; } 65% { transform: translateY(8px); opacity: 1; } }
+.lab-page .lp-flow-branch { display: flex; align-items: center; gap: 8px; margin: 9px 0 0 4px; padding: 8px 9px; border-left: 1px solid var(--liquid-edge-hot); background: linear-gradient(90deg, color-mix(in srgb, var(--liquid-sheen) 45%, transparent), transparent); }
+.lab-page .lp-branch-mark { width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 7px; color: var(--text-soft); font: 15px var(--mono); }
+.lab-page .lp-flow-branch b { display: block; color: var(--text-soft); font: 7.4px var(--mono); letter-spacing: .08em; }
+.lab-page .lp-flow-branch small { display: block; margin-top: 2px; color: var(--muted); font: 7px/1.4 var(--mono); }
+.lab-page .lp-dashboard {
+  position: relative; min-width: 0; min-height: 218px; overflow: hidden; border: 1px solid var(--liquid-edge);
+  border-radius: 14px; background-image: radial-gradient(ellipse at 50% 0, color-mix(in srgb, var(--text) 10%, transparent), transparent 68%), linear-gradient(145deg, color-mix(in srgb, var(--panel-strong) 72%, transparent), color-mix(in srgb, var(--bg) 50%, transparent));
+  box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), 0 11px 27px rgba(0,0,0,.12);
+}
+.lab-page .lp-dashboard::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 23px 23px; opacity: .18; mask-image: radial-gradient(ellipse, black, transparent 82%); }
+.lab-page .lp-dashboard .visual-top { top: 10px; left: 11px; right: 11px; z-index: 4; font-size: 7px; }
+.lab-page .lp-dashboard .visual-foot { bottom: 9px; left: 11px; right: 11px; z-index: 4; font-size: 6.4px; }
+.lab-page .lp-dashboard .obs-dashboard-preview { top: 35px; left: 10px; right: 10px; bottom: 27px; padding: 8px 9px; gap: 7px; border-radius: 9px; background: color-mix(in srgb, var(--bg) 65%, transparent); }
+.lab-page .lp-dashboard .obs-status-strip { font-size: 7px; gap: 5px; padding-bottom: 5px; }
+.lab-page .lp-dashboard .obs-preview-metrics { gap: 7px; }
+.lab-page .lp-dashboard .obs-preview-metrics small { font-size: 6.4px; }
+.lab-page .lp-dashboard .obs-preview-metrics strong { font-size: clamp(15px, 2vw, 19px); }
+.lab-page .lp-dashboard .obs-preview-metrics strong i { font-size: 7px; }
+.lab-page .lp-dashboard .obs-chart-label { font-size: 6px; }
+.lab-page .lp-dashboard .obs-bars { height: 32px; gap: 3px; }
+.lab-page .lp-dashboard .obs-bars i { min-width: 2px; }
+html[data-theme="light"] .lab-page .lp-dashboard .obs-bars i { background: linear-gradient(180deg, rgba(25,25,25,.72), rgba(25,25,25,.2)); }
+
+.lab-page .lp-stats { gap: 12px; }
+.lab-page .lp-stat {
+  position: relative; isolation: isolate; overflow: hidden; padding: 18px 19px 17px; border: 1px solid var(--liquid-edge); border-radius: 16px;
+  background-image: linear-gradient(142deg, var(--liquid-sheen), transparent 55%, var(--liquid-underlight));
+  transition: transform var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+.lab-page .lp-stat::after { content: ""; position: absolute; left: 17px; right: 17px; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--liquid-edge-hot), transparent); opacity: .72; }
+.lab-page .lp-stat strong { font-variant-numeric: tabular-nums; }
+.lab-page .lp-stat span { line-height: 1.5; }
+.lab-page .lp-component {
+  display: flex; flex-direction: column; min-height: 245px; isolation: isolate; overflow: hidden; padding: 20px 21px;
+  border: 1px solid var(--liquid-edge); border-radius: 17px; background-image: linear-gradient(145deg, var(--liquid-sheen), transparent 50%, var(--liquid-underlight));
+  transition: transform var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+.lab-page .lp-component-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.lab-page .lp-component-icon { flex: 0 0 40px; width: 40px; height: 40px; border-radius: 13px; }
+.lab-page .lp-component-icon .icon { width: 19px; height: 19px; }
+.lab-page .lp-component h3 { margin: 16px 0 8px; font-size: 16px; letter-spacing: -.035em; }
+.lab-page .lp-component p { flex: 1; margin-bottom: 16px; }
+.lab-page .lp-component code { display: block; padding-top: 11px; border-top: 1px solid var(--line); font-size: 9px; }
+.lab-page .lp-component code a { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--muted) 50%, transparent); text-underline-offset: 3px; }
+.lab-page .lp-component code a:hover { color: var(--text); text-decoration-color: var(--text); }
+.lab-page .lp-note { position: relative; overflow: hidden; background-image: linear-gradient(145deg, var(--liquid-sheen), transparent 56%, var(--liquid-underlight)); }
+.lab-page .lp-code { position: relative; isolation: isolate; overflow: hidden; border: 1px solid var(--liquid-edge); background-image: linear-gradient(145deg, var(--liquid-sheen), transparent 46%, var(--liquid-underlight)); }
+.lab-page .lp-code::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--liquid-edge-hot), transparent 75%); opacity: .68; }
+.lab-page .lp-code-head > span { display: inline-flex; align-items: center; gap: 8px; }
+.lab-page .lp-code-head > span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--text-soft); box-shadow: 0 0 0 3px color-mix(in srgb, var(--text) 7%, transparent); }
+.lab-page .lp-copy { position: relative; z-index: 1; }
+.lab-page .lp-endpoint { position: relative; isolation: isolate; overflow: hidden; border: 1px solid var(--liquid-edge); background-image: linear-gradient(142deg, var(--liquid-sheen), transparent 54%, var(--liquid-underlight)); transition: transform var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease); }
+.lab-page .lp-method { min-width: 42px; text-align: center; background: color-mix(in srgb, var(--panel-strong) 78%, transparent); box-shadow: inset 0 1px 0 var(--liquid-inset-highlight); }
+.lab-page .lp-endpoint code { color: var(--text); font-size: 11px; letter-spacing: -.02em; }
+.lab-page .lp-footer a { position: relative; transition: color var(--motion-base) var(--motion-ease); }
+.lab-page .lp-footer a:hover { color: var(--text); }
+.lab-page .lp-footer a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: var(--liquid-edge-hot); transform: scaleX(0); transform-origin: left; transition: transform var(--motion-base) var(--motion-ease); }
+.lab-page .lp-footer a:hover::after { transform: scaleX(1); }
+
+/* Pointer-following reflections mirror the homepage's restrained card treatment. */
+.lab-page .lp-art, .lab-page .lp-stat, .lab-page .lp-component, .lab-page .lp-code, .lab-page .lp-endpoint, .lab-page .lp-note {
+  --spot-x: 50%; --spot-y: 50%;
+}
+.lab-page .pointer-spotlight { z-index: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .lab-page .lp-art.motion-card:hover,
+  .lab-page .lp-stat.motion-card:hover,
+  .lab-page .lp-component.motion-card:hover,
+  .lab-page .lp-code.motion-card:hover,
+  .lab-page .lp-endpoint.motion-card:hover,
+  .lab-page .lp-note.motion-card:hover {
+    transform: translateY(calc(-1 * var(--motion-hover-lift)));
+    border-color: var(--liquid-edge-hot);
+    box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 0 -1px 0 var(--liquid-inset-shadow), var(--liquid-shadow-raised);
+  }
+  .lab-page .motion-card:hover > .pointer-spotlight { opacity: .78; }
+  .lab-page .lp-component:hover .lp-component-icon { transform: translateY(-2px); border-color: var(--liquid-edge-hot); }
+  .lab-page .lp-component:hover .lp-component-icon::after { animation: liquid-icon-sheen 720ms var(--motion-ease) both; }
+}
+.lab-page .lp-component-icon { position: relative; overflow: hidden; isolation: isolate; transition: transform var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease); }
+.lab-page .lp-component-icon::after { content: ""; position: absolute; z-index: 0; inset: -55% -115%; pointer-events: none; opacity: 0; background: linear-gradient(105deg, transparent 39%, rgba(255,255,255,.045) 45%, rgba(255,255,255,.28) 50%, rgba(255,255,255,.055) 55%, transparent 62%); transform: translateX(-54%) rotate(9deg); }
+.lab-page .lp-component-icon > * { position: relative; z-index: 1; }
+
+/* Scroll states: keep the shared header, active underline, and progress bar in sync. */
+.lab-page .site-header { transition: padding var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), backdrop-filter var(--motion-base) var(--motion-ease); }
+.lab-page .site-header.is-scrolled { padding-top: 6px; padding-bottom: 6px; border-color: var(--liquid-edge-hot); box-shadow: inset 0 1px 0 var(--liquid-inset-highlight), inset 0 -1px 0 var(--liquid-inset-shadow), 0 15px 40px rgba(0,0,0,.18); }
+.lab-page .scroll-progress span { width: 100%; transform: scaleX(0); transform-origin: left center; will-change: transform; }
+.lab-page .desktop-nav a.active { color: var(--text); background: var(--panel-strong); }
+.lab-page .lp-section { scroll-margin-top: 112px; }
+
+@media (max-width: 900px) {
+  .lab-page .lp-art-layout { grid-template-columns: minmax(150px,.78fr) minmax(0,1.22fr); }
+  .lab-page .lp-component { min-height: 230px; }
+}
+@media (max-width: 560px) {
+  .lab-page .lp-art { padding: 16px 15px 13px; }
+  .lab-page .lp-art-layout { grid-template-columns: 1fr; gap: 11px; }
+  .lab-page .lp-system-flow { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+  .lab-page .lp-flow-step { display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 8px 4px; min-width: 0; text-align: center; }
+  .lab-page .lp-node-icon { width: 25px; height: 25px; flex-basis: 25px; font-size: 8px; }
+  .lab-page .lp-flow-step b { font-size: 8.3px; overflow-wrap: anywhere; }
+  .lab-page .lp-flow-step small { font-size: 6.2px; }
+  .lab-page .lp-node-status, .lab-page .lp-flow-connector { display: none; }
+  .lab-page .lp-flow-branch { grid-column: 1 / -1; margin: 0; padding: 6px 8px; }
+  .lab-page .lp-flow-branch b { font-size: 7px; }
+  .lab-page .lp-flow-branch small { font-size: 6.4px; }
+  .lab-page .lp-dashboard { min-height: 208px; }
+  .lab-page .lp-dashboard .obs-dashboard-preview { left: 9px; right: 9px; }
+  .lab-page .lp-component { min-height: 0; padding: 18px; }
+  .lab-page .lp-component h3 { margin-top: 13px; }
+  .lab-page .lp-component p { margin-bottom: 13px; }
+  .lab-page .lp-code { padding: 15px; }
+  .lab-page .lp-endpoint { padding: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-page .lp-eyebrow .status-dot, .lab-page .lp-art::after, .lab-page .lp-flow-connector::after, .lab-page .lp-dashboard .obs-bars i, .lab-page .lp-component-icon::after { animation: none !important; }
+  .lab-page .lp-art, .lab-page .lp-stat, .lab-page .lp-component, .lab-page .lp-code, .lab-page .lp-endpoint, .lab-page .lp-note, .lab-page .lp-footer a { transition: none !important; }
+  .lab-page .lp-art.motion-card:hover, .lab-page .lp-stat.motion-card:hover, .lab-page .lp-component.motion-card:hover, .lab-page .lp-code.motion-card:hover, .lab-page .lp-endpoint.motion-card:hover, .lab-page .lp-note.motion-card:hover, .lab-page .lp-component:hover .lp-component-icon { transform: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .lab-page .lp-art, .lab-page .lp-stat, .lab-page .lp-flow-step, .lab-page .lp-dashboard, .lab-page .lp-component, .lab-page .lp-code, .lab-page .lp-endpoint, .lab-page .lp-note { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .lab-page .lp-art::after { display: none; }
+}
+
   </style>
 </head>
 <body class="lab-page">
@@ -64,45 +245,63 @@
   </header>
 
   <main id="main" class="section-shell lab-page-main">
-    <div class="lp-crumb"><a href="../../index.html">PORTFOLIO</a> / PROJECTS / Laboratory</div>
+    <div class="lp-crumb reveal"><a href="../../index.html">PORTFOLIO</a> / PROJECTS / Laboratory</div>
     <section class="lp-hero" aria-labelledby="lpTitle">
-      <div>
+      <div class="lp-hero-copy reveal">
         <div class="lp-eyebrow"><span class="status-dot"></span> PLATFORM / OBSERVABILITY / LOCAL-FIRST</div>
-        <h1 id="lpTitle">See the system.<span>Understand the signal.</span></h1>
+        <h1 id="lpTitle">See the system.<span class="title-glass">Understand the signal.</span></h1>
         <p class="lp-lede">A reproducible learning stack built around one small API: health and readiness checks, bounded-cardinality Prometheus metrics, a provisioned Grafana dashboard, and alert rules you can inspect and test.</p>
         <div class="lp-buttons"><a class="button button-primary" href="#run">Run the Laboratory <span aria-hidden="true">↘</span></a><a class="button button-ghost" href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/README.md" data-repository-path="blob/main/projects/laboratory/README.md" target="_blank" rel="noopener noreferrer">Read the rendered guide <span aria-hidden="true">↗</span></a><a class="button button-ghost" href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/laboratory" data-repository-path="tree/main/projects/laboratory" target="_blank" rel="noopener noreferrer">Browse source <span aria-hidden="true">↗</span></a></div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px"><span class="lp-state"><i></i> LOCAL REFERENCE IMPLEMENTATION</span><span class="lp-state"><i></i> PRODUCTION DEPLOYMENT NOT CLAIMED</span></div>
       </div>
-      <div class="lp-art glass-card" role="img" aria-label="Conceptual flow from an HTTP API to Prometheus metrics and Grafana dashboards">
-        <div class="lp-art-top"><span>OBSERVABILITY PIPELINE</span><span>FIG. 02</span></div>
-        <div class="lp-flow"><div class="lp-flow-col"><div class="lp-node"><span class="lp-node-icon">API</span><span><b>Python service</b><small>Health · Requests · Latency</small></span></div><div class="lp-node"><span class="lp-node-icon">CLI</span><span><b>Traffic generator</b><small>Normal · Error · Slow</small></span></div></div><div class="lp-arrow" aria-hidden="true">→</div><div class="lp-flow-col"><div class="lp-node"><span class="lp-node-icon">P</span><span><b>Prometheus</b><small>Scrape · Record · Alert</small></span></div><div class="lp-node"><span class="lp-node-icon">G</span><span><b>Grafana</b><small>Query · Explore · Learn</small></span></div></div></div>
-        <div class="lp-art-foot"><span>LOCAL NETWORK ONLY</span><span>PYTHON + COMPOSE</span></div>
+      <div class="lp-art glass-card reveal" role="group" aria-label="Observability architecture and an illustrative dashboard preview">
+        <div class="lp-art-top"><span>OBSERVABILITY PIPELINE</span><span>FIG. 02 / LOCAL LAB</span></div>
+        <div class="lp-art-layout">
+          <div class="lp-system-flow" role="img" aria-label="Python API exposes metrics, Prometheus scrapes and evaluates alert rules, and Grafana queries Prometheus">
+            <div class="lp-flow-step"><span class="lp-node-icon">API</span><span><b>Python API</b><small>/metrics · probes</small></span><i class="lp-node-status" aria-hidden="true"></i></div>
+            <span class="lp-flow-connector" aria-hidden="true"></span>
+            <div class="lp-flow-step"><span class="lp-node-icon">P</span><span><b>Prometheus</b><small>Scrape · evaluate</small></span><i class="lp-node-status" aria-hidden="true"></i></div>
+            <span class="lp-flow-connector" aria-hidden="true"></span>
+            <div class="lp-flow-step"><span class="lp-node-icon">G</span><span><b>Grafana</b><small>Query · visualize</small></span><i class="lp-node-status" aria-hidden="true"></i></div>
+            <div class="lp-flow-branch"><span class="lp-branch-mark" aria-hidden="true">⌁</span><span><b>ALERT RULES</b><small>Down · 5xx · p95 latency</small></span></div>
+          </div>
+          <div class="lp-dashboard observability-visual" role="img" aria-label="Illustrative Grafana-style dashboard with healthy API status, request rate, p95 latency, and a request-volume bar chart">
+            <div class="visual-top mono"><span>PLATFORM SIGNALS / 004</span><span class="visual-dotset" aria-hidden="true"><i></i><i></i><i></i></span></div>
+            <div class="obs-dashboard-preview" aria-hidden="true">
+              <div class="obs-status-strip"><span class="obs-ok-dot"></span><span>API / HEALTHY</span><span class="obs-preview-code">200 OK</span></div>
+              <div class="obs-preview-metrics"><div><small>REQUEST RATE</small><strong>18.4 <i>req/s</i></strong></div><div><small>P95 LATENCY</small><strong>82 <i>ms</i></strong></div></div>
+              <div class="obs-chart"><div class="obs-chart-label mono"><span>REQUEST VOLUME</span><span>ILLUSTRATIVE</span></div><div class="obs-bars"><i style="--bar:31%"></i><i style="--bar:44%"></i><i style="--bar:38%"></i><i style="--bar:62%"></i><i style="--bar:49%"></i><i style="--bar:75%"></i><i style="--bar:58%"></i><i style="--bar:83%"></i><i style="--bar:69%"></i><i style="--bar:91%"></i><i style="--bar:74%"></i><i style="--bar:80%"></i></div></div>
+            </div>
+            <div class="visual-foot mono"><span>ILLUSTRATIVE · NOT LIVE TELEMETRY</span><span>↗</span></div>
+          </div>
+        </div>
+        <div class="lp-art-foot"><span>LOCAL NETWORK ONLY</span><span>PYTHON + COMPOSE + OBSERVABILITY</span></div>
       </div>
     </section>
 
     <div class="lp-stats" aria-label="Project summary">
-      <div class="lp-stat"><strong>11</strong><span>API TESTS INCLUDED</span></div><div class="lp-stat"><strong>3</strong><span>PROMETHEUS ALERT RULES</span></div><div class="lp-stat"><strong>6</strong><span>API ROUTES</span></div><div class="lp-stat"><strong>0</strong><span>PRODUCTION CLAIMS</span></div>
+      <div class="lp-stat glass-card reveal"><strong>11</strong><span>API TESTS INCLUDED</span></div><div class="lp-stat glass-card reveal"><strong>3</strong><span>PROMETHEUS ALERT RULES</span></div><div class="lp-stat glass-card reveal"><strong>6</strong><span>API ROUTES</span></div><div class="lp-stat glass-card reveal"><strong>0</strong><span>PRODUCTION CLAIMS</span></div>
     </div>
 
     <section class="lp-section" id="architecture" aria-labelledby="architectureTitle">
-      <div class="lp-section-head"><div><span class="lp-kicker">01 — ARCHITECTURE</span><h2 id="architectureTitle">Small pieces.<br>Clear responsibilities.</h2></div><p>The stack is intentionally compact so you can follow one request from the API, through metrics collection, into a dashboard or alert. All host ports are bound to localhost.</p></div>
+      <div class="lp-section-head reveal"><div><span class="lp-kicker">01 — ARCHITECTURE</span><h2 id="architectureTitle">Small pieces.<br>Clear responsibilities.</h2></div><p>The stack is intentionally compact so you can follow one request from the API, through metrics collection, into a dashboard or alert. All host ports are bound to localhost.</p></div>
       <div class="lp-architecture">
-        <article class="lp-component"><span class="lp-component-id">COMPONENT / 01</span><h3>Python API</h3><p>HTTP service with health/readiness probes, JSON responses, request counters, and duration histograms.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/api/app.py" data-repository-path="blob/main/projects/laboratory/api/app.py" target="_blank" rel="noopener noreferrer">api/app.py</a></code></article>
-        <article class="lp-component"><span class="lp-component-id">COMPONENT / 02</span><h3>Prometheus</h3><p>Scrapes metrics every 10 seconds and evaluates service-down, elevated 5xx, and latency alert rules.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/laboratory/prometheus" data-repository-path="tree/main/projects/laboratory/prometheus" target="_blank" rel="noopener noreferrer">prometheus/*.yml</a></code></article>
-        <article class="lp-component"><span class="lp-component-id">COMPONENT / 03</span><h3>Grafana</h3><p>Reads a provisioned Prometheus datasource and loads the platform observability dashboard from version-controlled JSON.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/laboratory/grafana/dashboards" data-repository-path="tree/main/projects/laboratory/grafana/dashboards" target="_blank" rel="noopener noreferrer">grafana/dashboards/</a></code></article>
-        <article class="lp-component"><span class="lp-component-id">COMPONENT / 04</span><h3>Compose + CI</h3><p>Local orchestration, localhost-only port publishing, an isolated API container, automated unit checks, and end-to-end service smoke checks in CI.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/docker-compose.yml" data-repository-path="blob/main/projects/laboratory/docker-compose.yml" target="_blank" rel="noopener noreferrer">docker-compose.yml</a></code></article>
+        <article class="lp-component glass-card reveal"><div class="lp-component-top"><span class="lp-component-id">COMPONENT / 01</span><span class="lp-component-icon liquid-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01M12 7h5M12 17h5"/></svg></span></div><h3>Python API</h3><p>HTTP service with health/readiness probes, JSON responses, request counters, and duration histograms.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/api/app.py" data-repository-path="blob/main/projects/laboratory/api/app.py" target="_blank" rel="noopener noreferrer">api/app.py</a></code></article>
+        <article class="lp-component glass-card reveal"><div class="lp-component-top"><span class="lp-component-id">COMPONENT / 02</span><span class="lp-component-icon liquid-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M7 15l3-4 3 2 5-7"/><circle cx="18" cy="6" r="1.5"/></svg></span></div><h3>Prometheus</h3><p>Scrapes metrics every 10 seconds and evaluates service-down, elevated 5xx, and latency alert rules.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/laboratory/prometheus" data-repository-path="tree/main/projects/laboratory/prometheus" target="_blank" rel="noopener noreferrer">prometheus/*.yml</a></code></article>
+        <article class="lp-component glass-card reveal"><div class="lp-component-top"><span class="lp-component-id">COMPONENT / 03</span><span class="lp-component-icon liquid-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M3.5 9h17M8 13h3M8 16h8M15 12.5h2.5"/></svg></span></div><h3>Grafana</h3><p>Reads a provisioned Prometheus datasource and loads the platform observability dashboard from version-controlled JSON.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/laboratory/grafana/dashboards" data-repository-path="tree/main/projects/laboratory/grafana/dashboards" target="_blank" rel="noopener noreferrer">grafana/dashboards/</a></code></article>
+        <article class="lp-component glass-card reveal"><div class="lp-component-top"><span class="lp-component-id">COMPONENT / 04</span><span class="lp-component-icon liquid-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4 7.5 8 4.7 8-4.7M12 12.2V21M8 5.2l8 4.7"/></svg></span></div><h3>Compose + CI</h3><p>Local orchestration, localhost-only port publishing, an isolated API container, automated unit checks, and end-to-end service smoke checks in CI.</p><code><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/docker-compose.yml" data-repository-path="blob/main/projects/laboratory/docker-compose.yml" target="_blank" rel="noopener noreferrer">docker-compose.yml</a></code></article>
       </div>
-      <div class="lp-note"><span class="liquid-icon" aria-hidden="true">!</span><div><b>Scope and safety, intentionally explicit</b><p>This lab has no TLS termination, authentication proxy, Alertmanager notification route, durable application metrics, or production SLO policy. It is a local learning stack. The example error/slow endpoints exist to make signals visible and should not be exposed publicly.</p></div></div>
+      <div class="lp-note glass-card reveal"><span class="liquid-icon" aria-hidden="true">!</span><div><b>Scope and safety, intentionally explicit</b><p>This lab has no TLS termination, authentication proxy, Alertmanager notification route, durable application metrics, or production SLO policy. It is a local learning stack. The example error/slow endpoints exist to make signals visible and should not be exposed publicly.</p></div></div>
     </section>
 
     <section class="lp-section" id="run" aria-labelledby="runTitle">
-      <div class="lp-section-head"><div><span class="lp-kicker">02 — QUICK START</span><h2 id="runTitle">Bring the Laboratory online.</h2></div><p>Run these commands from the <code>projects/laboratory/</code> directory. You need Docker Engine and Compose v2. Create a local Grafana password first; the example file is a template, not a secret.</p></div>
+      <div class="lp-section-head reveal"><div><span class="lp-kicker">02 — QUICK START</span><h2 id="runTitle">Bring the Laboratory online.</h2></div><p>Run these commands from the <code>projects/laboratory/</code> directory. You need Docker Engine and Compose v2. Create a local Grafana password first; the example file is a template, not a secret.</p></div>
       <div class="lp-code-list">
-        <div class="lp-code"><div class="lp-code-head"><span>STEP 01 / CONFIGURE</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>cp .env.example .env
+        <div class="lp-code glass-card reveal"><div class="lp-code-head"><span>STEP 01 / CONFIGURE</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>cp .env.example .env
 # Replace the example password inside .env</code></pre></div>
-        <div class="lp-code"><div class="lp-code-head"><span>STEP 02 / START</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>docker compose up --build -d
+        <div class="lp-code glass-card reveal"><div class="lp-code-head"><span>STEP 02 / START</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>docker compose up --build -d
 docker compose ps</code></pre></div>
-        <div class="lp-code"><div class="lp-code-head"><span>STEP 03 / GENERATE SAMPLE SIGNALS</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>curl http://127.0.0.1:8000/
+        <div class="lp-code glass-card reveal"><div class="lp-code-head"><span>STEP 03 / GENERATE SAMPLE SIGNALS</span><button class="lp-copy" type="button" data-copy>Copy command</button></div><pre><code>curl http://127.0.0.1:8000/
 curl http://127.0.0.1:8000/healthz
 curl -i http://127.0.0.1:8000/demo/error
 curl "http://127.0.0.1:8000/demo/slow?seconds=1.5"</code></pre></div>
@@ -113,70 +312,208 @@ curl "http://127.0.0.1:8000/demo/slow?seconds=1.5"</code></pre></div>
         <article class="lp-component"><span class="lp-component-id">LOCAL URL / 03</span><h3>Grafana</h3><p>Login with the username admin and password from .env.</p><code><a href="http://127.0.0.1:3000/">127.0.0.1:3000</a></code></article>
         <article class="lp-component"><span class="lp-component-id">LOCAL COMMAND / 04</span><h3>Stop + clean up</h3><p>Remove containers; optionally remove saved local data.</p><code>docker compose down --volumes</code></article>
       </div>
-      <div class="lp-note"><span class="liquid-icon" aria-hidden="true">i</span><div><b>Windows PowerShell</b><p>For the first step, use <code>Copy-Item .env.example .env</code>. The rest of the Compose and curl commands can be run from a terminal with those tools installed.</p></div></div>
+      <div class="lp-note glass-card reveal"><span class="liquid-icon" aria-hidden="true">i</span><div><b>Windows PowerShell</b><p>For the first step, use <code>Copy-Item .env.example .env</code>. The rest of the Compose and curl commands can be run from a terminal with those tools installed.</p></div></div>
     </section>
 
     <section class="lp-section" id="endpoints" aria-labelledby="endpointsTitle">
-      <div class="lp-section-head"><div><span class="lp-kicker">03 — API CONTRACT</span><h2 id="endpointsTitle">Signals you can trigger.</h2></div><p>The HTTP route labels are deliberately bounded to prevent arbitrary path values from creating unbounded Prometheus time-series cardinality.</p></div>
+      <div class="lp-section-head reveal"><div><span class="lp-kicker">03 — API CONTRACT</span><h2 id="endpointsTitle">Signals you can trigger.</h2></div><p>The HTTP route labels are deliberately bounded to prevent arbitrary path values from creating unbounded Prometheus time-series cardinality.</p></div>
       <div class="lp-endpoints">
-        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/healthz</code><p>Liveness check. Returns a small successful JSON response.</p></div></article>
-        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/readyz</code><p>Returns HTTP 503 when `SERVICE_READY=false`; liveness stays independent.</p></div></article>
-        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/metrics</code><p>Prometheus exposition endpoint. Scrapes are intentionally excluded from request counters.</p></div></article>
-        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/demo/error</code><p>Intentional HTTP 503 response to exercise error-rate panels and alert queries.</p></div></article>
-        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/demo/slow?seconds=1.5</code><p>Bounded 0–3 second delay to generate latency samples.</p></div></article>
-        <article class="lp-endpoint"><span class="lp-method">GET</span><div><code>/</code><p>JSON service overview, version, uptime, and endpoint list.</p></div></article>
+        <article class="lp-endpoint glass-card reveal"><span class="lp-method">GET</span><div><code>/healthz</code><p>Liveness check. Returns a small successful JSON response.</p></div></article>
+        <article class="lp-endpoint glass-card reveal"><span class="lp-method">GET</span><div><code>/readyz</code><p>Returns HTTP 503 when `SERVICE_READY=false`; liveness stays independent.</p></div></article>
+        <article class="lp-endpoint glass-card reveal"><span class="lp-method">GET</span><div><code>/metrics</code><p>Prometheus exposition endpoint. Scrapes are intentionally excluded from request counters.</p></div></article>
+        <article class="lp-endpoint glass-card reveal"><span class="lp-method">GET</span><div><code>/demo/error</code><p>Intentional HTTP 503 response to exercise error-rate panels and alert queries.</p></div></article>
+        <article class="lp-endpoint glass-card reveal"><span class="lp-method">GET</span><div><code>/demo/slow?seconds=1.5</code><p>Bounded 0–3 second delay to generate latency samples.</p></div></article>
+        <article class="lp-endpoint glass-card reveal"><span class="lp-method">GET</span><div><code>/</code><p>JSON service overview, version, uptime, and endpoint list.</p></div></article>
       </div>
     </section>
 
-    <footer class="lp-footer"><span>MD SHOHAN · PLATFORM ENGINEERING</span><a href="../../index.html#top">Return to portfolio ↑</a><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/README.md" data-repository-path="blob/main/projects/laboratory/README.md" target="_blank" rel="noopener noreferrer">Full README ↗</a></footer>
+    <footer class="lp-footer reveal"><span>MD SHOHAN · PLATFORM ENGINEERING</span><a href="../../index.html#top">Return to portfolio ↑</a><a href="https://github.com/MD-SH0HAN/PORTFOLIO/blob/main/projects/laboratory/README.md" data-repository-path="blob/main/projects/laboratory/README.md" target="_blank" rel="noopener noreferrer">Full README ↗</a></footer>
   </main>
   <div class="lp-toast" id="lpToast" role="status" aria-live="polite"></div>
   <script>
     (() => {
-      const toast = document.getElementById('lpToast');
+      'use strict';
       const root = document.documentElement;
+      const body = document.body;
+      const toast = document.getElementById('lpToast');
       const themeToggle = document.getElementById('themeToggle');
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-      const applyTheme = theme => {
-        if (theme !== 'light' && theme !== 'dark') return;
-        root.dataset.theme = theme;
-        if (themeColorMeta) themeColorMeta.content = theme === 'light' ? '#ececec' : '#090909';
+      const progress = document.getElementById('labProgress');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+      let toastTimer = 0;
+
+      const updateThemeControl = () => {
+        const light = root.dataset.theme === 'light';
+        if (themeColorMeta) themeColorMeta.content = light ? '#ececec' : '#090909';
         if (themeToggle) {
-          const light = theme === 'light';
           themeToggle.setAttribute('aria-label', light ? 'Switch to dark monochrome theme' : 'Switch to light monochrome theme');
           themeToggle.title = light ? 'Switch to dark theme' : 'Switch to light theme';
         }
       };
-      applyTheme(root.dataset.theme);
-      themeToggle?.addEventListener('click', () => {
-        const next = root.dataset.theme === 'light' ? 'dark' : 'light';
-        applyTheme(next);
-        try { localStorage.setItem('shohan-theme', next); } catch (_) { /* Theme remains active for this page. */ }
-      });
-      // The portfolio and Laboratory share this origin and preference key.
+      const applyTheme = theme => {
+        if (theme !== 'light' && theme !== 'dark') return;
+        root.dataset.theme = theme;
+        updateThemeControl();
+      };
+      try {
+        const savedTheme = localStorage.getItem('shohan-theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') applyTheme(savedTheme);
+      } catch (_) { /* The declared/system theme remains usable without storage. */ }
+      updateThemeControl();
+
+      const showToast = message => {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('visible');
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove('visible'), 2200);
+      };
+      const toggleTheme = () => {
+        const nextTheme = root.dataset.theme === 'light' ? 'dark' : 'light';
+        const canReveal = !reducedMotion.matches && typeof document.startViewTransition === 'function';
+        if (canReveal && themeToggle) {
+          const bounds = themeToggle.getBoundingClientRect();
+          root.style.setProperty('--theme-origin-x', `${bounds.left + bounds.width / 2}px`);
+          root.style.setProperty('--theme-origin-y', `${bounds.top + bounds.height / 2}px`);
+        }
+        const update = () => {
+          applyTheme(nextTheme);
+          try { localStorage.setItem('shohan-theme', nextTheme); } catch (_) { /* Theme remains active for this page. */ }
+        };
+        let transition = null;
+        if (canReveal) {
+          try { transition = document.startViewTransition({ update, types: ['monochrome-theme'] }); }
+          catch (_) { update(); }
+        } else update();
+        const clearOrigin = () => {
+          root.style.removeProperty('--theme-origin-x');
+          root.style.removeProperty('--theme-origin-y');
+        };
+        if (transition?.finished) transition.finished.then(clearOrigin, clearOrigin);
+        else clearOrigin();
+        showToast(`Switched to ${nextTheme} theme.`);
+      };
+      themeToggle?.addEventListener('click', toggleTheme);
       window.addEventListener('storage', event => {
         if (event.key === 'shohan-theme') applyTheme(event.newValue);
       });
-      let toastTimer;
-      document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
-        const text = button.closest('.lp-code').querySelector('code').innerText;
-        try {
-          await navigator.clipboard.writeText(text);
-          toast.textContent = 'Commands copied.';
-        } catch (_) {
-          toast.textContent = 'Select the command text and copy it manually.';
-        }
-        toast.classList.add('visible');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove('visible'), 2200);
-      }));
-      const progress = document.getElementById('labProgress');
-      const updateProgress = () => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        progress.style.width = `${max > 0 ? Math.min(100, Math.max(0, window.scrollY / max * 100)) : 0}%`;
+
+      // Reveal content as it enters the viewport, with a graceful no-observer fallback.
+      const revealItems = [...document.querySelectorAll('.reveal')];
+      const revealGroups = ['.lp-stats', '.lp-architecture', '.lp-code-list', '.lp-endpoints'];
+      revealGroups.forEach(selector => {
+        document.querySelectorAll(selector).forEach(group => {
+          [...group.children].filter(item => item.classList.contains('reveal')).forEach((item, index) => {
+            item.style.setProperty('--reveal-order', String(Math.min(index, 5)));
+          });
+        });
+      });
+      if ('IntersectionObserver' in window && !reducedMotion.matches) {
+        const revealObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.09, rootMargin: '0px 0px -28px 0px' });
+        revealItems.forEach(item => revealObserver.observe(item));
+      } else revealItems.forEach(item => item.classList.add('is-visible'));
+
+      // Shared active-section treatment and the transform-based scroll indicator.
+      const header = document.querySelector('.site-header');
+      const navLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"]')];
+      const sections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+      const updateScrollUI = () => {
+        if (header) header.classList.toggle('is-scrolled', window.scrollY > 18);
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const amount = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+        if (progress) progress.style.transform = `scaleX(${amount})`;
       };
-      window.addEventListener('scroll', updateProgress, { passive: true });
-      updateProgress();
+      let scrollFrame = 0;
+      window.addEventListener('scroll', () => {
+        if (scrollFrame) return;
+        scrollFrame = window.requestAnimationFrame(() => {
+          scrollFrame = 0;
+          updateScrollUI();
+        });
+      }, { passive: true });
+      window.addEventListener('resize', updateScrollUI, { passive: true });
+      updateScrollUI();
+
+      if ('IntersectionObserver' in window && sections.length) {
+        const navObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            navLinks.forEach(link => {
+              const active = link.getAttribute('href') === `#${entry.target.id}`;
+              link.classList.toggle('active', active);
+              if (active) link.setAttribute('aria-current', 'location');
+              else link.removeAttribute('aria-current');
+            });
+          });
+        }, { rootMargin: '-25% 0px -62% 0px', threshold: 0 });
+        sections.forEach(section => navObserver.observe(section));
+      }
+
+      // Keep the orbit and expensive pointer work idle when the hero is off-screen.
+      const heroArt = document.querySelector('.lp-art');
+      if (heroArt && 'IntersectionObserver' in window) {
+        const heroObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => heroArt.classList.toggle('is-offscreen', !entry.isIntersecting));
+        }, { rootMargin: '100px 0px', threshold: 0.01 });
+        heroObserver.observe(heroArt);
+      }
+
+      // One requestAnimationFrame loop updates all card reflections without per-frame layout churn.
+      if (!reducedMotion.matches && finePointer.matches) {
+        const motionCards = [...document.querySelectorAll('.lp-art, .lp-stat, .lp-component, .lp-code, .lp-endpoint, .lp-note')];
+        let pointerFrame = 0;
+        let pendingPointer = null;
+        motionCards.forEach(card => {
+          card.classList.add('motion-card');
+          if (!card.querySelector(':scope > .pointer-spotlight')) {
+            const spotlight = document.createElement('span');
+            spotlight.className = 'pointer-spotlight';
+            spotlight.setAttribute('aria-hidden', 'true');
+            card.insertBefore(spotlight, card.firstChild);
+          }
+          card.addEventListener('pointermove', event => {
+            if (event.pointerType === 'touch' || reducedMotion.matches) return;
+            pendingPointer = { card, x: event.clientX, y: event.clientY };
+            if (pointerFrame) return;
+            pointerFrame = window.requestAnimationFrame(() => {
+              pointerFrame = 0;
+              const pointer = pendingPointer;
+              pendingPointer = null;
+              if (!pointer || reducedMotion.matches) return;
+              const bounds = pointer.card.getBoundingClientRect();
+              if (!bounds.width || !bounds.height) return;
+              const x = Math.min(100, Math.max(0, (pointer.x - bounds.left) / bounds.width * 100));
+              const y = Math.min(100, Math.max(0, (pointer.y - bounds.top) / bounds.height * 100));
+              pointer.card.style.setProperty('--spot-x', `${x}%`);
+              pointer.card.style.setProperty('--spot-y', `${y}%`);
+            });
+          }, { passive: true });
+          card.addEventListener('pointerleave', () => {
+            if (pendingPointer?.card === card) pendingPointer = null;
+            card.style.setProperty('--spot-x', '50%');
+            card.style.setProperty('--spot-y', '50%');
+          }, { passive: true });
+        });
+      }
+
+      // Preserve the existing copy behavior and keep feedback theme-aware.
+      document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
+        const code = button.closest('.lp-code')?.querySelector('code');
+        if (!code) return;
+        try {
+          await navigator.clipboard.writeText(code.innerText);
+          showToast('Commands copied.');
+        } catch (_) {
+          showToast('Select the command text and copy it manually.');
+        }
+      }));
     })();
   </script>
 </body>

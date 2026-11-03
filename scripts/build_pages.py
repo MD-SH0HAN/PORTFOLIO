@@ -16,6 +16,7 @@ DEFAULT_SITE_ROOT = "https://md-sh0han.github.io/PORTFOLIO"
 # and local infrastructure configuration remain in GitHub but out of the site artifact.
 FILES = (
     "index.html",
+    "404.html",
     "styles.css",
     "script.js",
     "Profile Photo.webp",
@@ -25,6 +26,7 @@ FILES = (
     ".nojekyll",
     "assets/favicon.svg",
     "assets/portrait-placeholder.svg",
+    "assets/social-preview.png",
     "projects/laboratory/index.html",
 )
 
@@ -60,7 +62,7 @@ def main() -> int:
     # Keep canonicals, social previews, crawler hints, and footer portfolio links
     # aligned with the actual Pages URL, including a custom domain configured later.
     if configured_root != DEFAULT_SITE_ROOT:
-        for relative in ("index.html", "script.js", "robots.txt", "sitemap.xml", "projects/laboratory/index.html"):
+        for relative in ("index.html", "404.html", "script.js", "robots.txt", "sitemap.xml", "projects/laboratory/index.html"):
             destination = OUTPUT / relative
             content = destination.read_text(encoding="utf-8")
             destination.write_text(content.replace(DEFAULT_SITE_ROOT, configured_root), encoding="utf-8")

@@ -1,64 +1,97 @@
-# Portfolio modification and validation report
+# Portfolio implementation and verification report
 
-**Project title:** MD SHOHAN - Platform Engineer  
-**Career focus:** Platform Engineering  
-**Target repository:** <https://github.com/MD-SH0HAN/PORTFOLIO>  
-**Default GitHub Pages root:** <https://md-sh0han.github.io/PORTFOLIO/>  
-**Modification and audit date:** 2026-10-26
+**Portfolio identity:** MD SHOHAN — Bangladesh University student learning DevOps, Platform Engineering, and SRE  
+**Design direction:** Liquid icons · monochrome glassmorphism · restrained glow · editorial typography  
+**Repository:** <https://github.com/MD-SH0HAN/PORTFOLIO>  
+**GitHub Pages root:** <https://md-sh0han.github.io/PORTFOLIO/>  
+**Last updated:** 2026-11-03
 
-## Executive summary
+## Scope and positioning
 
-The portfolio has been repositioned from a broad Cloud/DevOps identity into a single Platform Engineering portfolio. The exact browser title, social-preview titles, and primary identity now use **MD SHOHAN - Platform Engineer**. Content focuses on internal developer platforms (IDPs), self-service, golden paths, platform as a product, guardrails/policy as code, reusable infrastructure, platform reliability, and developer experience.
+This is a student learning portfolio. It describes MD SHOHAN as a Bangladesh University student who is actively developing DevOps, Platform Engineering, and Site Reliability Engineering skills. It does not claim professional mastery, employment, production platform ownership, or completed work that is not present in the repository.
 
-The changes were checked against the source site and the generated GitHub Pages artifact. The static checks, JavaScript/CSS checks, configuration validation, 12 Python API tests, and all 19 in-memory Chromium smoke checks pass. The HTTP-backed browser suite cannot navigate to its loopback test server in this environment (`ERR_BLOCKED_BY_ADMINISTRATOR`), and Docker is not installed, so the full Compose integration is **not verified here**. No remote commit or production deployment was made as part of this modification.
+No CV/resume section or additional real-world project has been added. The existing local observability reference lab is retained as repository-supplied source that can be run and checked locally. Planned build briefs, conceptual architecture, and browser-only simulations are labelled separately.
 
-## Changes made
+## Implemented upgrades
 
-- Set the page title and Open Graph/Twitter titles to the exact requested identity: `MD SHOHAN - Platform Engineer`.
-- Rewrote the homepage introduction, navigation, capability cards, platform model, conceptual architecture, project labels, learning roadmap, reliability descriptions, and contact copy to make Platform Engineering the single career focus.
-- Added/expanded platform-engineering concepts: internal developer platform, service catalog, developer portal, platform APIs, service templates, golden paths, guardrails by default, policy as code, platform as a product, developer experience, time-to-first-deploy, platform adoption, developer friction, feedback loops, GitOps, OpenTelemetry, and operational ownership.
-- Reorganized the project cards into one included local platform-observability reference lab and three explicitly planned platform build briefs: golden-path delivery, self-service infrastructure, and Kubernetes platform operations.
-- Retained interactive pipeline, readiness, trace, release-comparison, recovery, SLO, and reliability demonstrations, while clearly identifying them as illustrative browser simulations rather than live platform capabilities or production telemetry.
-- Reframed the included Python/Prometheus/Grafana project as a platform-observability reference lab; aligned its page title, guide copy, Grafana dashboard title/tags, provider folder, and test expectation.
-- Updated browser test expectations and smoke-test checks for the Platform Engineer identity, golden-path filter, platform reliability controls, and the Laboratory's new title. Stabilized browser smoke checks by moving the pointer away before keyboard-only assertions and waiting for responsive layout recalculation before measuring mobile hero order. The final in-memory browser suite passes all 19 checks.
-- Strengthened `check_portfolio.py` to enforce the exact page and social-preview titles and require IDP/golden-path framing.
-- Strengthened `check_release_config.py` to detect a second independent GitHub Pages deployment workflow that could bypass the quality-gated deployment.
-- Updated README and publishing guidance to explain the platform-engineering scope, honest implementation status, validation commands, safe local lab use, and the need to remove an older workflow from the live repository if it still exists. Uploading ZIP contents does not delete existing remote files.
-- Kept the default site-root and repository URL contracts aligned with the existing GitHub Pages repository.
+### Visual design and layout
 
-## Validation results
+- Preserved the existing monochrome liquid/glass identity, orbital portrait, glass panels, inline liquid icons, and glow treatment.
+- Added a current-learning snapshot with foundations, hands-on practice, and next explorations.
+- Reordered the primary navigation to follow the learning narrative and corrected the compact mobile command control.
+- Kept all navigation, action controls, and responsive cards inside the tested viewport widths.
+- Added a branded 404 page and a purpose-designed 1200 × 630 social preview image.
 
-| Check | Result | Evidence |
-|---|---|---|
-| JavaScript syntax | PASS | `node --check script.js` |
-| Source static checks | PASS | 2 HTML pages, 40 local references, 2 sitemap URLs; no duplicate IDs, broken local assets/fragments, missing image alt text, or sitemap/canonical mismatches |
-| Built-artifact static checks | PASS | Same 2-page/40-reference contract after the Pages build |
-| CSS parsing | PASS | 1,128 top-level nodes; no stylesheet/declaration parser errors |
-| Infrastructure configuration | PASS | 7 configuration files parsed; 3 Compose services, 3 Prometheus alerts, 6 Grafana panels; local-only port publishing and baseline container hardening verified |
-| Release-workflow contract | PASS | Three required jobs gate deployment; artifact from `dist/`; hidden files retained; `.nojekyll` present |
-| Duplicate Pages workflow protection | PASS | A disposable second deploy workflow was correctly rejected by the checker, then removed |
-| Observability API unit/HTTP tests | PASS | 12/12 tests passed, including readiness/liveness, metrics, bounded route labels, expected failures and response behavior |
-| GitHub Pages artifact build | PASS | 11 runtime files copied; test, CI, and local service files excluded |
-| In-memory Chromium smoke tests | PASS | 19/19 passed: image rendering, accessibility names/ARIA references, responsive layout, mobile hero sequence, reduced motion, theme, navigation, command palette/project filter, details dialog, SLO math, simulations, case-study responsive behavior and no uncaught browser exceptions |
-| Custom site-root build | PASS | Five runtime files correctly used a temporary HTTPS site root with no default-root leakage; then the default build was restored |
-| HTTP-backed Playwright suite | BLOCKED BY ENVIRONMENT | System Chromium launched, but every test navigation to the temporary local HTTP server returned `net::ERR_BLOCKED_BY_ADMINISTRATOR`; tests therefore did not reach their assertions |
-| Docker Compose integration | NOT RUN | Docker CLI is unavailable in this environment |
-| Live GitHub Pages deployment | NOT RUN | No commit was pushed, and no remote Actions/deployment run was triggered |
-| Lighthouse/Core Web Vitals | NOT MEASURED | No score or production performance result is claimed |
+### Animation and accessibility
 
-## Publishing notes
+- Kept automatic `prefers-reduced-motion` support and offscreen SVG animation pausing; removed the manual header pause/resume control at the portfolio owner’s request.
+- Added keyboard-operable inspection controls for the metrics charts.
+- Retained accessible labels, semantic landmarks, contrast tokens, and data-table alternatives for charts.
 
-1. Extract the ZIP and upload its **contents** to the repository root at <https://github.com/MD-SH0HAN/PORTFOLIO>. Do not upload an enclosing `Portfolio/` directory.
-2. Keep `.github/workflows/portfolio-quality.yml` and configure GitHub Pages to use **GitHub Actions**.
-3. Check the live repository for any older independent Pages workflow such as `.github/workflows/deploy.yml`. Remove it explicitly if present; uploading a ZIP does not delete extra existing remote files.
-4. Commit/push the changes and inspect GitHub Actions. Confirm the static/API job, HTTP-backed browser job, Docker integration job, and gated Pages deployment all pass before describing the remote deployment as verified.
-5. Open the deployed URL and test the homepage and observability guide at desktop and mobile sizes. The in-memory checks are useful, but they do not replace the real CI browser and Docker integration jobs.
-6. If the published root is different from `https://md-sh0han.github.io/PORTFOLIO/`, set repository variable `PORTFOLIO_SITE_URL` to the exact owned HTTPS site root and rebuild.
+### Logic and engineering evidence
 
-## Safety and scope boundaries
+- Reframed the hero, About, education, learning roadmap, and contact copy around an accurate student/learning position.
+- Added a distinction between the conceptual platform workflow and the source-based local observability lab architecture.
+- Added interactive, source-grounded API, Prometheus, and Grafana component explanations.
+- Kept one existing local lab, three planned build briefs, and browser simulations; did not create a new deployed-project claim or a CV.
 
-The observability stack is a local learning reference, not a production IDP component. It lacks production authentication, TLS termination, multi-user hardening, durable metric storage, notification routing, and a complete production SLO policy. All local service ports are intentionally bound to `127.0.0.1`; use a strong local Grafana password and never commit a real `.env`, credential, token, or private key.
+### Charts and graphs
 
-The IDP, service-catalog, golden-path, policy, and GitOps concepts are presented as the platform-engineering model and roadmap. The portfolio does not claim to include an implemented production portal, catalog, platform API, or policy engine. Three build briefs are planned and labelled as such; sample telemetry and simulations remain illustrative.
+- Added nine deterministic synthetic charts covering request rate, error ratio, P50/P95/P99 latency, error budget, CPU/memory utilization, HTTP 4xx/5xx rates, successful request ratio, deployment outcomes, and recovery-drill duration.
+- Added 1-hour, 6-hour, and 24-hour chart windows, synchronized crosshairs, pointer inspection, keyboard navigation, and a 15-column accessible tabular alternative.
+- Explicitly label the metrics gallery as synthetic and disconnected from live Prometheus/Grafana data.
+- Label the reliability simulation chart's left axis as P95 milliseconds and right axis as failed requests per sample.
+- Added technology-domain filters and directional relationship explanations to the technology graph.
 
-No remote repository modification, live deployment, production service, or real platform telemetry is claimed by this report.
+### Architecture and maintainability
+
+- Added a source-based local observability reference diagram grounded in the repository's Compose, Prometheus, and Grafana configuration.
+- Kept the high-level platform architecture separately labelled as conceptual.
+- Preserved the static HTML/CSS/vanilla JavaScript architecture; a framework migration was not required for these changes.
+- Expanded the in-memory Chromium smoke suite to cover the new student, architecture, charts, graph, motion, and responsive-header behavior.
+
+## Validation performed on 2026-11-03
+
+| Check | Result |
+|---|---:|
+| Static HTML/local-reference check | Passed |
+| CSS parser and declaration check | Passed |
+| Infrastructure configuration check | Passed |
+| GitHub Pages release configuration check | Passed |
+| JavaScript syntax (`node --check`) | Passed |
+| Local observability API/unit tests | 12 passed |
+| In-memory Chromium interaction/layout checks | 24 passed, 0 failed |
+| Homepage responsive widths | 9 widths |
+| Laboratory responsive widths | 5 widths |
+| Reduced-motion behavior and absence of manual pause control | Passed |
+| Browser JavaScript exceptions in smoke run | 0 |
+
+## Not represented as verified
+
+- A live GitHub Pages deployment was not performed or confirmed by this local edit.
+- Docker Compose end-to-end integration was not executed as part of this validation run.
+- The HTTP-backed Playwright suite and Lighthouse/Core Web Vitals were not run here. The in-memory Chromium checks do not replace them.
+- All nine synthetic chart families are design/learning data, not measured service telemetry, deployment frequency, or incident MTTR.
+- The additional project briefs remain planned and the conceptual IDP/platform flow remains conceptual.
+
+## Build and local preview
+
+```bash
+python scripts/build_pages.py
+python -m http.server 8080
+```
+
+Open `http://127.0.0.1:8080/`.
+
+## Run the local checks
+
+```bash
+python scripts/check_portfolio.py
+python scripts/check_stylesheet.py
+python scripts/check_infrastructure_config.py
+python scripts/check_release_config.py
+node --check script.js
+python -m unittest discover -s projects/laboratory/tests -v
+python scripts/build_pages.py
+python scripts/smoke_browser_in_memory.py --root dist
+```

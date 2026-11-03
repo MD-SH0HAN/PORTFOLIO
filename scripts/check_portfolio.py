@@ -30,6 +30,7 @@ class PageParser(HTMLParser):
         self.h1_count: int = 0
         self.title_count: int = 0
         self.meta_description = False
+        self.robots_noindex = False
         self.canonical_url = ""
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -43,6 +44,8 @@ class PageParser(HTMLParser):
             self.title_count += 1
         if tag == "meta" and values.get("name", "").lower() == "description" and values.get("content", "").strip():
             self.meta_description = True
+        if tag == "meta" and values.get("name", "").lower() == "robots" and "noindex" in values.get("content", "").lower():
+            self.robots_noindex = True
         if tag == "link" and "canonical" in values.get("rel", "").lower().split() and values.get("href"):
             self.canonical_url = values["href"].strip()
         if tag == "img" and "alt" not in values:
@@ -128,14 +131,17 @@ def main() -> int:
         if not parser.canonical_url:
             errors.append("index.html: missing canonical URL")
         html_text = home.read_text(encoding="utf-8")
-        if "<title>MD SHOHAN - Platform Engineer</title>" not in html_text:
-            errors.append("index.html: title must be exactly 'MD SHOHAN - Platform Engineer'")
-        if '<meta property="og:title" content="MD SHOHAN - Platform Engineer">' not in html_text:
-            errors.append("index.html: Open Graph title must match the Platform Engineer identity")
-        if '<meta name="twitter:title" content="MD SHOHAN - Platform Engineer">' not in html_text:
-            errors.append("index.html: Twitter title must match the Platform Engineer identity")
-        if "internal developer platforms" not in html_text.lower() or "golden paths" not in html_text.lower():
-            errors.append("index.html: platform engineering description must cover IDPs and golden paths")
+        if "MD SHOHAN" not in html_text or "Platform Engineering Learning Portfolio" not in html_text:
+            errors.append("index.html: title must use the student-focused Platform Engineering Learning Portfolio identity")
+        if '<meta property="og:title" content="MD SHOHAN - Platform Engineering Learner">' not in html_text:
+            errors.append("index.html: Open Graph title must use the learning-focused identity")
+        if '<meta name="twitter:title" content="MD SHOHAN - Platform Engineering Learner">' not in html_text:
+            errors.append("index.html: Twitter title must use the learning-focused identity")
+        for required_phrase in ("Bangladesh University", "DevOps", "Platform Engineering", "Site Reliability Engineering"):
+            if required_phrase.lower() not in html_text.lower():
+                errors.append(f"index.html: student profile description is missing {required_phrase!r}")
+        if 'href="https://bu.edu.bd/"' not in html_text:
+            errors.append("index.html: official Bangladesh University link is missing")
 
     for page_path, parser in pages.items():
         relative_page = page_path.relative_to(root)
@@ -143,7 +149,9 @@ def main() -> int:
             errors.append(f"{relative_page}: expected exactly one H1, found {parser.h1_count}")
         if not parser.title_count:
             errors.append(f"{relative_page}: missing title element")
-        if not parser.canonical_url:
+        # A noindex utility page (for example, a branded 404) should not
+        # canonicalize itself into the indexable page set or the sitemap.
+        if not parser.canonical_url and not parser.robots_noindex:
             errors.append(f"{relative_page}: missing canonical URL")
 
     sitemap_path = root / "sitemap.xml"

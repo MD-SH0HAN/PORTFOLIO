@@ -1,10 +1,10 @@
-# 🛰️ MD SHOHAN — Platform Engineering Portfolio
+# 🛰️ MD SHOHAN — Platform Engineering Learning Portfolio
 
 <p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
   <br />
   <br />
-  A responsive, monochrome portfolio exploring how platform teams turn infrastructure capabilities into a useful internal product for application developers.
+  A responsive, liquid-glass monochrome learning portfolio by a Bangladesh University student developing DevOps, Platform Engineering, and SRE skills through foundations, local labs, architecture explorations, and documented practice.
 </p>
 
 <p align="center">
@@ -30,7 +30,7 @@
   <img alt="Playwright" src="https://img.shields.io/badge/Playwright-2F3136?style=flat-square&logo=playwright&logoColor=white" />
 </p>
 
-> 🔎 **Scope & integrity** — This portfolio clearly separates runnable source code from conceptual models, browser-only simulations, and planned build briefs. The **observability reference lab** is the included local implementation. The IDP, service catalog, platform APIs, policy engine, and planned golden paths are **not** presented as completed production systems.
+> 🔎 **Scope & integrity** — This portfolio clearly separates runnable source code from conceptual models, browser-only simulations, and planned build briefs. The **observability reference lab** is the included local implementation. The IDP, service catalog, platform APIs, policy engine, and planned golden paths are **not** presented as completed production systems. The portfolio owner is a Bangladesh University student actively developing DevOps, Platform Engineering, and SRE skills. The profile is intentionally a learning portfolio rather than a claim of professional mastery.
 
 ---
 
@@ -63,12 +63,12 @@ This portfolio explores how a platform team can build and continuously improve a
 | **📈 Runtime and reliability** | Kubernetes workload conventions, health contracts, safe rollouts, observability, SLOs, runbooks, and recovery practices. |
 | **🔁 Platform as a product** | Using developer feedback, adoption, time-to-first-deploy, friction, reliability, and support signals to guide platform improvements. |
 
-The website also includes a technology map and a learning sequence organized around platform-engineering capabilities—not unrelated career tracks.
+The website is a learning portfolio, not a claim of professional mastery. It presents a student profile at Bangladesh University, a capability-oriented learning map, the local observability reference lab included in the repository, conceptual architecture, and browser-only teaching simulations.
 
 <a id="platform-engineering-model"></a>
 ## 🏗️ Platform-engineering model
 
-The diagram below describes the **intended conceptual workflow**. It does not imply that every component is already implemented as a working platform service.
+The upper diagram describes an **intended conceptual platform workflow**. The lower source-based diagram describes only the actual local observability lab. Neither diagram implies that a production internal developer platform exists.
 
 ```mermaid
 flowchart LR
@@ -87,6 +87,12 @@ flowchart LR
 
 - **🖥️ Responsive portfolio website** — accessible dark/light themes, reduced-motion handling, keyboard-friendly navigation, and a searchable command palette.
 - **🗺️ Platform capability map** — a conceptual workflow connecting developer intent, golden paths, reusable artifacts, runtime capabilities, and feedback.
+- **🎓 Student learning snapshot** — foundations, hands-on practice, and next learning areas, with no proficiency score or unsupported mastery claims.
+- **🏗️ Source-based lab architecture** — a separate view of the actual API, Prometheus, and Grafana services in the included Docker Compose reference lab.
+- **📈 Observability chart gallery** — nine coordinated synthetic charts for request rate, errors, latency percentiles, error budget, CPU/memory, HTTP error classes, request success, deployment outcomes, and recovery-drill duration. Includes 1h/6h/24h windows, synchronized crosshairs, pointer/keyboard inspection, and a 15-column tabular alternative.
+- **🕸️ Technology relationship explorer** — domain filters, directional relationship descriptions, and an explicit conceptual-connection disclaimer.
+- **♿ Motion accessibility** — operating-system reduced-motion preferences are respected, and selected offscreen SVG motion is paused automatically.
+- **🪟 Sharing and recovery polish** — a branded 404 page and a custom 1200 × 630 Open Graph/Twitter preview image.
 - **📦 Platform-as-product content** — IDPs, golden paths, guardrails, developer experience, and feedback loops.
 - **🧪 Four project cards** — one local observability reference implementation and three clearly labelled planned platform build briefs.
 - **🧭 Browser-only demonstrations** — golden-path workflow, Kubernetes readiness, example traces, release differences, change replay, recovery decisions, and SLO/error-budget modeling. These demonstrations do not contact live infrastructure.
@@ -95,7 +101,7 @@ flowchart LR
 <a id="project-status"></a>
 ## 🚦 Project status
 
-The status markers below distinguish what can be run from what is illustrative or planned.
+The status markers below distinguish what can be run from what is illustrative or planned. The portfolio intentionally does not include a CV or claim additional deployed projects; those can be added when the work is ready to publish.
 
 | Component | Status | What that means |
 | --- | --- | --- |
@@ -106,7 +112,7 @@ The status markers below distinguish what can be run from what is illustrative o
 | **Platform map and interactive demos** | 🖱️ `Browser simulation` | Illustrative interactions only; they do not control a cluster or contact live services. |
 | **IDP, service catalog, platform APIs, policy engine, and GitOps controller** | 💡 `Conceptual` | These are part of the model and are not claimed as implemented production components. |
 
-> 📊 **Sample data notice:** dashboard preview values are illustrative sample values—not live traffic, production telemetry, or measured performance results.
+> 📊 **Sample data notice:** all nine gallery charts use deterministic illustrative values. They are not live traffic, production telemetry, DORA metrics, measured MTTR, or performance results from a deployed project.
 
 <a id="repository-layout"></a>
 ## 📁 Repository layout
@@ -117,6 +123,10 @@ The status markers below distinguish what can be run from what is illustrative o
 ├── styles.css
 ├── script.js
 ├── assets/
+│   ├── favicon.svg
+│   ├── portrait-placeholder.svg
+│   └── social-preview.png
+├── 404.html
 ├── Profile Photo.webp
 ├── Orbit Photo.webp
 ├── projects/
@@ -128,6 +138,7 @@ The status markers below distinguish what can be run from what is illustrative o
 │   └── workflows/
 │       └── portfolio-quality.yml
 ├── IMPLEMENTATION_REPORT.md
+├── VISUAL_REDESIGN_REPORT.md
 ├── PUBLISHING_CHECKLIST.md
 ├── LICENSE
 ├── .nojekyll
@@ -138,7 +149,7 @@ The status markers below distinguish what can be run from what is illustrative o
 <a id="run-the-portfolio-locally"></a>
 ## 🚀 Run the portfolio locally
 
-The website uses **HTML, CSS, and vanilla JavaScript**. No npm build step is required to serve the source website.
+The website uses **HTML, CSS, and vanilla JavaScript**. No npm build step is required to serve the source website. A deployment-ready static artifact can be generated in `dist/` with the build command below.
 
 From the repository root, run:
 
@@ -178,7 +189,7 @@ python -m pip install -r requirements-browser.txt
 python -m playwright install chromium
 python -m unittest discover -s tests/browser -p 'test_*.py' -v
 python scripts/build_pages.py
-python scripts/smoke_browser_in_memory.py --root dist
+python scripts/smoke_browser_in_memory.py --root dist --screenshots
 ```
 
 > ⚠️ The in-memory Chromium smoke test complements rather than replaces the HTTP-backed Playwright suite. If browser or Docker prerequisites are unavailable, record the relevant checks as **not run**, not as passed. The quality workflow is configured to run browser regression and Docker Compose integration checks before deployment; review the workflow run to confirm the result for a particular commit.

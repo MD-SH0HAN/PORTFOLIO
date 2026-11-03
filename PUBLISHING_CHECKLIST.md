@@ -1,13 +1,13 @@
 # GitHub publication checklist — MD-SH0HAN/PORTFOLIO
 
-**Portfolio identity:** MD SHOHAN - Platform Engineer  
-**Career scope:** Platform Engineering only
+**Portfolio identity:** MD SHOHAN — Bangladesh University student developing DevOps, Platform Engineering, and SRE skills  
+**Learning focus:** DevOps foundations · Platform Engineering · Site Reliability Engineering
 
 ## Upload the package
 
 - [ ] Open the existing repository: <https://github.com/MD-SH0HAN/PORTFOLIO>.
 - [ ] Extract the ZIP and upload the **contents** to the repository root, not the enclosing `Portfolio/` folder.
-- [ ] Keep `.github/workflows/portfolio-quality.yml`, `.nojekyll`, `LICENSE`, both HTML pages, `assets/`, `projects/`, `scripts/`, `tests/`, and the requirements files.
+- [ ] Keep `.github/workflows/portfolio-quality.yml`, `.nojekyll`, `LICENSE`, the homepage, branded `404.html`, and Laboratory case-study page, `assets/`, `projects/`, `scripts/`, `tests/`, and the requirements files.
 - [ ] In the existing GitHub repository, delete any older independent Pages deployment workflow (for example `.github/workflows/deploy.yml`) so it cannot publish without the three platform portfolio quality gates. Uploading ZIP contents does not delete extra files already in GitHub.
 - [ ] Do not upload a real `.env` file, platform credentials, access tokens, private keys, local logs, or generated test results.
 - [ ] Keep all Laboratory ports bound to `127.0.0.1`; these are local learning services, not public production endpoints.
@@ -26,7 +26,7 @@
 
 - [ ] Check the homepage and `/projects/laboratory/` on desktop and mobile.
 - [ ] Exercise theme switching, mobile navigation, command palette (`Ctrl+K` / `⌘K`), project filters, project-details dialogs, and contact links.
-- [ ] Confirm the canonical URLs, Open Graph URLs, sitemap, robots directive, and source links point to this repository or the configured custom domain.
+- [ ] Confirm the canonical URLs, the `assets/social-preview.png` Open Graph/Twitter image, sitemap, robots directive, and source links point to this repository or the configured custom domain.
 - [ ] Respect `prefers-reduced-motion` and verify the site remains usable when third-party fonts are blocked.
 - [ ] Keep planned platform build briefs labelled as planned and browser-based golden-path, Kubernetes, trace, release, recovery, and reliability experiences labelled as simulations.
 - [ ] Run the local observability stack only with a strong local Grafana password and stop it with `docker compose down` when finished.

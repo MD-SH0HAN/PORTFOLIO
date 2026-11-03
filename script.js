@@ -220,6 +220,33 @@
   };
   updateThemeControl();
   themeToggle?.addEventListener('click', toggleTheme);
+
+  // Respect the visitor's operating-system reduced-motion preference and avoid
+  // running SVG motion in sections that are well outside the viewport.
+  const syncSvgMotion = () => {
+    const shouldPause = reducedMotion.matches;
+    document.querySelectorAll('[data-motion-section] svg').forEach(svg => {
+      if (typeof svg.pauseAnimations !== 'function') return;
+      if (shouldPause || svg.closest('.motion-offscreen')) svg.pauseAnimations();
+      else svg.unpauseAnimations();
+    });
+  };
+  if ('IntersectionObserver' in window) {
+    const motionVisibilityObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('motion-offscreen', !entry.isIntersecting);
+        entry.target.querySelectorAll('svg').forEach(svg => {
+          if (typeof svg.pauseAnimations !== 'function') return;
+          if (!entry.isIntersecting || reducedMotion.matches) svg.pauseAnimations();
+          else svg.unpauseAnimations();
+        });
+      });
+    }, { rootMargin: '100px 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-motion-section]').forEach(section => motionVisibilityObserver.observe(section));
+  }
+  if (typeof reducedMotion.addEventListener === 'function') reducedMotion.addEventListener('change', syncSvgMotion);
+  else reducedMotion.addListener?.(syncSvgMotion);
+  syncSvgMotion();
   // Keep the portfolio in sync when the shared preference changes in another tab.
   window.addEventListener('storage', event => {
     if (event.key !== 'shohan-theme' || (event.newValue !== 'light' && event.newValue !== 'dark')) return;
@@ -729,6 +756,10 @@
     const width = right - left;
     const step = width / Math.max(1, samples.length - 1);
     const maxErrors = Math.max(10, ...samples.map(sample => sample.errors)) * 1.08;
+    const errorAxisTop = byId('simulationErrorAxisTop');
+    const errorAxisMid = byId('simulationErrorAxisMid');
+    if (errorAxisTop) errorAxisTop.textContent = String(Math.ceil(maxErrors));
+    if (errorAxisMid) errorAxisMid.textContent = String(Math.round(maxErrors / 2));
     simulationChartBars.replaceChildren();
     samples.forEach((sample, index) => {
       const barWidth = Math.min(18, Math.max(5, step * 0.42));
@@ -866,6 +897,177 @@
     updateSlo();
   }
 
+  // Deterministic, clearly labelled synthetic service and delivery sample series.
+  // They are not fetched from the included API or Prometheus and must never be
+  // described as live telemetry or measured project outcomes.
+  const metricsRange = byId('metricsRange');
+  const metricSamples = Array.from({ length: 96 }, (_, index) => {
+    const wave = Math.sin(index * 0.31);
+    const fastWave = Math.sin(index * 0.91);
+    const incident = index >= 51 && index <= 59 ? (1 - Math.abs(55 - index) / 5) : 0;
+    const requestRate = Math.max(18, 42 + 7.4 * wave + 3.2 * fastWave + (index > 70 ? 4 : 0));
+    const errorRatio = Math.max(0.08, 0.28 + 0.12 * Math.abs(fastWave) + incident * 1.35);
+    const p50 = Math.round(48 + 8 * Math.abs(wave) + incident * 22);
+    const p95 = Math.round(136 + 34 * Math.abs(fastWave) + incident * 145);
+    const p99 = Math.round(218 + 52 * Math.abs(wave) + incident * 235);
+    const budgetRemaining = Math.max(0, 100 - index * 0.105 - incident * 0.44);
+    const cpuPct = Math.min(96, 29 + 13 * Math.abs(wave) + incident * 18 + 3 * Math.abs(fastWave));
+    const memoryPct = Math.min(92, 55 + 5 * Math.sin(index * 0.13) + incident * 4);
+    const http4xxRate = requestRate * (0.45 + 0.25 * Math.abs(wave)) / 100;
+    const http5xxRate = requestRate * errorRatio / 100;
+    const requestSuccessPct = 100 - errorRatio;
+    const deployments = [8, 27, 48, 70, 89].includes(index) ? 1 : 0;
+    const failedDeployments = [55, 80].includes(index) ? 1 : 0;
+    const recoveryMinutes = 7 + Math.round(4 * Math.abs(fastWave) + incident * 13);
+    return { index, requestRate, errorRatio, p50, p95, p99, budgetRemaining, cpuPct, memoryPct, http4xxRate, http5xxRate, requestSuccessPct, deployments, failedDeployments, recoveryMinutes };
+  });
+  const chartSvgNs = 'http://www.w3.org/2000/svg';
+  const svgNode = (name, attributes = {}, textContent = '') => {
+    const element = document.createElementNS(chartSvgNs, name);
+    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, String(value)));
+    if (textContent) element.textContent = textContent;
+    return element;
+  };
+  const drawMetricChart = (id, values, series, maxValue, labelFormat, minValue = 0) => {
+    const svg = byId(id);
+    if (!svg || !values.length) return;
+    const width = 640, height = 220, left = 49, right = 622, top = 14, bottom = 174;
+    const plotWidth = right - left, plotHeight = bottom - top;
+    svg.replaceChildren();
+    svg.append(svgNode('title', {}, svg.getAttribute('aria-label') || 'Illustrative metric chart'));
+    svg.append(svgNode('desc', {}, `Synthetic sample series with ${values.length} points; the horizontal axis is relative time and the vertical axis is ${labelFormat.unit}.`));
+    const grid = svgNode('g', { class: 'chart-grid' });
+    for (let tick = 0; tick <= 4; tick += 1) {
+      const value = maxValue - (maxValue - minValue) * tick / 4;
+      const y = top + plotHeight * tick / 4;
+      grid.append(svgNode('line', { x1: left, y1: y, x2: right, y2: y, class: 'chart-grid-line' }));
+      grid.append(svgNode('text', { x: left - 9, y: y + 3, 'text-anchor': 'end', class: 'chart-axis-label' }, labelFormat.tick(value)));
+    }
+    grid.append(svgNode('text', { x: left, y: 204, class: 'chart-axis-label' }, 'OLDER'));
+    grid.append(svgNode('text', { x: right, y: 204, 'text-anchor': 'end', class: 'chart-axis-label' }, 'LATEST'));
+    svg.append(grid);
+    const xAt = index => left + (values.length <= 1 ? 0 : index / (values.length - 1)) * plotWidth;
+    const yAt = value => bottom - ((Math.max(minValue, Math.min(maxValue, value)) - minValue) / (maxValue - minValue)) * plotHeight;
+    series.forEach(item => {
+      const d = values.map((row, index) => `${index ? 'L' : 'M'}${xAt(index).toFixed(2)} ${yAt(row[item.key]).toFixed(2)}`).join(' ');
+      if (item.area) {
+        const area = `${d} L${xAt(values.length - 1).toFixed(2)} ${bottom} L${left} ${bottom} Z`;
+        svg.append(svgNode('path', { d: area, class: 'chart-area' }));
+      }
+      svg.append(svgNode('path', { d, class: `chart-data-line ${item.className || ''}`.trim(), 'data-series': item.key }));
+      const step = Math.max(1, Math.ceil(values.length / 8));
+      values.forEach((row, index) => {
+        if (index % step !== 0 && index !== values.length - 1) return;
+        const point = svgNode('circle', { cx: xAt(index), cy: yAt(row[item.key]), r: index === values.length - 1 ? 3.2 : 2.2, class: 'chart-point' });
+        point.append(svgNode('title', {}, `${item.label}: ${labelFormat.value(row[item.key])}`));
+        svg.append(point);
+      });
+    });
+    const crosshair = svgNode('line', { x1: xAt(values.length - 1), y1: top, x2: xAt(values.length - 1), y2: bottom, class: 'chart-crosshair', 'data-chart-crosshair': id });
+    svg.append(crosshair);
+    const inspector = svgNode('rect', { x: left, y: top, width: plotWidth, height: plotHeight, fill: 'transparent', class: 'chart-inspector', tabindex: 0, role: 'slider', 'aria-label': `Inspect sample point in ${svg.getAttribute('aria-label') || 'metric chart'}`, 'aria-valuemin': 1, 'aria-valuemax': values.length, 'aria-valuenow': values.length });
+    inspector.setAttribute('aria-valuetext', `Sample ${values.length} of ${values.length}`);
+    svg.append(inspector);
+    const inspectIndex = index => {
+      const safeIndex = Math.max(0, Math.min(values.length - 1, index));
+      const x = xAt(safeIndex);
+      document.querySelectorAll('[data-chart-crosshair]').forEach(line => {
+        line.setAttribute('x1', x); line.setAttribute('x2', x);
+      });
+      const row = values[safeIndex];
+      const readout = byId('metricsChartReadout');
+      const detail = `Sample ${safeIndex + 1}/${values.length} · ${row.requestRate.toFixed(1)} req/s · ${row.errorRatio.toFixed(2)}% errors · P50 ${row.p50} ms · P95 ${row.p95} ms · P99 ${row.p99} ms · ${row.budgetRemaining.toFixed(1)}% budget left · CPU ${row.cpuPct.toFixed(1)}% · memory ${row.memoryPct.toFixed(1)}% · 4xx ${row.http4xxRate.toFixed(2)} req/s · 5xx ${row.http5xxRate.toFixed(2)} req/s · request success ${row.requestSuccessPct.toFixed(2)}% · deployments ${row.deployments} · failed deployments ${row.failedDeployments} · recovery drill ${row.recoveryMinutes} min`;
+      if (readout) readout.textContent = detail;
+      inspector.setAttribute('aria-valuenow', String(safeIndex + 1));
+      inspector.setAttribute('aria-valuetext', detail);
+    };
+    inspector.addEventListener('pointermove', event => {
+      const matrix = svg.getScreenCTM();
+      if (!matrix) return;
+      const point = svg.createSVGPoint(); point.x = event.clientX; point.y = event.clientY;
+      const local = point.matrixTransform(matrix.inverse());
+      inspectIndex(Math.round((local.x - left) / plotWidth * (values.length - 1)));
+    });
+    inspector.addEventListener('focus', () => inspectIndex(values.length - 1));
+    inspector.addEventListener('keydown', event => {
+      const current = Number(inspector.getAttribute('aria-valuenow')) - 1;
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') { event.preventDefault(); inspectIndex(current - 1); }
+      else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') { event.preventDefault(); inspectIndex(current + 1); }
+      else if (event.key === 'Home') { event.preventDefault(); inspectIndex(0); }
+      else if (event.key === 'End') { event.preventDefault(); inspectIndex(values.length - 1); }
+    });
+  };
+  const renderMetricsGallery = () => {
+    if (!metricsRange) return;
+    const hours = Number(metricsRange.value) || 6;
+    const count = hours === 1 ? 4 : hours === 6 ? 24 : 96;
+    const values = metricSamples.slice(-count);
+    const latest = values[values.length - 1];
+    const fmtMetric = (id, value, unit, digits = 1) => {
+      const element = byId(id);
+      if (element) element.innerHTML = `${Number(value).toFixed(digits)} <small>${unit}</small>`;
+    };
+    fmtMetric('metricRequestValue', latest.requestRate, 'req/s');
+    fmtMetric('metricErrorValue', latest.errorRatio, '%', 2);
+    fmtMetric('metricLatencyValue', latest.p95, 'ms', 0);
+    fmtMetric('metricBudgetValue', latest.budgetRemaining, '% left');
+    const label = byId('metricsWindowLabel');
+    if (label) label.textContent = `${values.length} sample points · ${hours}-hour view`;
+    drawMetricChart('chartRequestRate', values, [{ key: 'requestRate', label: 'Request rate', area: true }], 65, {
+      unit: 'requests per second', tick: value => String(Math.round(value)), value: value => `${value.toFixed(1)} req/s`
+    });
+    drawMetricChart('chartErrorRate', values, [{ key: 'errorRatio', label: 'Error ratio', area: true }], 2, {
+      unit: 'percent', tick: value => `${value.toFixed(1)}%`, value: value => `${value.toFixed(2)}%`
+    });
+    drawMetricChart('chartLatency', values, [
+      { key: 'p50', label: 'P50', className: 'line-p50' },
+      { key: 'p95', label: 'P95', className: 'line-p95' },
+      { key: 'p99', label: 'P99', className: 'line-p99' }
+    ], 700, {
+      unit: 'milliseconds', tick: value => `${Math.round(value)}ms`, value: value => `${Math.round(value)} ms`
+    });
+    drawMetricChart('chartBudget', values, [{ key: 'budgetRemaining', label: 'Error budget remaining', area: true }], 100, {
+      unit: 'percent remaining', tick: value => `${Math.round(value)}%`, value: value => `${value.toFixed(1)}% remaining`
+    });
+    drawMetricChart('chartCapacity', values, [
+      { key: 'cpuPct', label: 'CPU', className: 'line-p50' },
+      { key: 'memoryPct', label: 'Memory', className: 'line-p99' }
+    ], 100, {
+      unit: 'percent utilization', tick: value => `${Math.round(value)}%`, value: value => `${value.toFixed(1)}%`
+    });
+    drawMetricChart('chartHttpErrors', values, [
+      { key: 'http4xxRate', label: 'HTTP 4xx', className: 'line-p50' },
+      { key: 'http5xxRate', label: 'HTTP 5xx', className: 'line-p99' }
+    ], 2.5, {
+      unit: 'error responses per second', tick: value => value.toFixed(1), value: value => `${value.toFixed(2)} req/s`
+    });
+    drawMetricChart('chartRequestSuccess', values, [{ key: 'requestSuccessPct', label: 'Request success ratio', area: true }], 100, {
+      unit: 'successful eligible requests', tick: value => `${value.toFixed(1)}%`, value: value => `${value.toFixed(2)}%`
+    }, 98);
+    drawMetricChart('chartDeployments', values, [
+      { key: 'deployments', label: 'Deployments', className: 'line-p50' },
+      { key: 'failedDeployments', label: 'Failed deployments', className: 'line-p99' }
+    ], 1, {
+      unit: 'events per sample interval', tick: value => value === 0 || value === 1 ? String(Math.round(value)) : value.toFixed(2), value: value => `${value.toFixed(0)} event(s)`
+    });
+    drawMetricChart('chartRecovery', values, [{ key: 'recoveryMinutes', label: 'Recovery drill duration', area: true }], 30, {
+      unit: 'minutes in synthetic drill', tick: value => `${Math.round(value)}m`, value: value => `${value.toFixed(0)} min`
+    });
+    const body = byId('metricsDataTableBody');
+    if (body) {
+      const stride = Math.max(1, Math.floor(values.length / 12));
+      const rows = values.filter((_, index) => index % stride === 0 || index === values.length - 1);
+      body.replaceChildren(...rows.map((row, index) => {
+        const tr = document.createElement('tr');
+        const rowValues = [String(index + 1).padStart(2, '0'), row.requestRate.toFixed(1), `${row.errorRatio.toFixed(2)}%`, row.p50, row.p95, row.p99, `${row.budgetRemaining.toFixed(1)}%`, `${row.cpuPct.toFixed(1)}%`, `${row.memoryPct.toFixed(1)}%`, row.http4xxRate.toFixed(2), row.http5xxRate.toFixed(2), row.requestSuccessPct.toFixed(2), row.deployments, row.failedDeployments, row.recoveryMinutes];
+        rowValues.forEach(value => { const td = document.createElement('td'); td.textContent = String(value); tr.appendChild(td); });
+        return tr;
+      }));
+    }
+  };
+  metricsRange?.addEventListener('change', renderMetricsGallery);
+  renderMetricsGallery();
+
   // SVG architecture map: select a node to reveal grounded explanatory copy.
   const architectureCopy = {
     source: { index: 'PLATFORM STAGE / 01', title: 'Start with developer intent.', text: 'A platform begins with a repeatable developer need. Source control, a service catalog entry, and a well-defined request make the intent visible before automation runs.', state: 'DEVELOPER INPUT', wires: ['source-pipeline'] },
@@ -925,6 +1127,26 @@
       item.setAttribute('aria-pressed', String(active));
     });
     showToast(view === 'isometric' ? 'Spatial perspective enabled.' : 'Flow view enabled.');
+  }));
+
+  // The lower diagram is tied to the actual local Compose files, not a conceptual IDP.
+  const labArchitectureDetails = {
+    api: { kicker: 'COMPONENT / 01', title: 'Python API — instrumentation source', text: 'The service exposes separate /healthz and /readyz checks plus /metrics. It records HTTP request counters and latency histograms with bounded route labels. The API container is configured as non-root, read-only, with Linux capabilities dropped.' },
+    prometheus: { kicker: 'COMPONENT / 02', title: 'Prometheus — scrape, store, evaluate', text: 'Prometheus scrapes the API metrics endpoint, stores local time-series data with a seven-day retention setting, and evaluates the repository alert rules for scrape failure, 5xx ratio, and p95 latency. No Alertmanager notification path is included.' },
+    grafana: { kicker: 'COMPONENT / 03', title: 'Grafana — provisioned dashboards', text: 'Grafana is provisioned with a Prometheus datasource and a version-controlled service overview dashboard containing six panels. Dashboard data remains illustrative until you run the stack locally and generate traffic.' }
+  };
+  const labArchitectureButtons = [...document.querySelectorAll('[data-lab-architecture]')];
+  labArchitectureButtons.forEach(button => button.addEventListener('click', () => {
+    const detail = labArchitectureDetails[button.dataset.labArchitecture];
+    if (!detail) return;
+    labArchitectureButtons.forEach(item => {
+      const selected = item === button;
+      item.classList.toggle('is-selected', selected);
+      item.setAttribute('aria-pressed', String(selected));
+    });
+    byId('labArchitectureKicker').textContent = detail.kicker;
+    byId('labArchitectureDetailTitle').textContent = detail.title;
+    byId('labArchitectureDetailText').textContent = detail.text;
   }));
 
   // Animated delivery runner. Failure injection stops the run at test and never reaches deploy.
@@ -1083,6 +1305,34 @@
   };
   const technologyNodes = [...document.querySelectorAll('[data-tech]')];
   const technologySearch = byId('technologySearch');
+  const technologyRelationships = {
+    'Linux': [{ target: 'Docker', relation: 'provides host fundamentals for' }, { target: 'Terraform', relation: 'supports CLI-based workflows for' }],
+    'Terraform': [{ target: 'Linux', relation: 'provisions infrastructure that workloads rely on' }, { target: 'GitHub Actions', relation: 'can be validated through' }],
+    'Docker': [{ target: 'GitHub Actions', relation: 'images can be built by' }, { target: 'Kubernetes', relation: 'packages can be scheduled by' }],
+    'GitHub Actions': [{ target: 'Docker', relation: 'builds and tests' }, { target: 'Terraform', relation: 'can run plan and validation steps for' }],
+    'Kubernetes': [{ target: 'Docker', relation: 'runs container images from' }, { target: 'Prometheus', relation: 'workloads can be monitored by' }, { target: 'NGINX', relation: 'can receive routed traffic through' }],
+    'Prometheus': [{ target: 'Kubernetes', relation: 'collects metrics from instrumented workloads on' }, { target: 'Grafana', relation: 'provides queryable metrics to' }],
+    'Grafana': [{ target: 'Prometheus', relation: 'queries metrics from' }],
+    'NGINX': [{ target: 'Kubernetes', relation: 'can route traffic toward services on' }]
+  };
+  let activeTechnologyFilter = 'all';
+  const applyTechnologyFilters = () => {
+    const query = technologySearch?.value.trim().toLowerCase() || '';
+    technologyNodes.forEach(node => {
+      const queryMatch = !query || node.dataset.tech.toLowerCase().includes(query);
+      const domainMatch = activeTechnologyFilter === 'all' || node.dataset.techDomain === activeTechnologyFilter;
+      node.hidden = !(queryMatch && domainMatch);
+    });
+  };
+  document.querySelectorAll('[data-tech-filter]').forEach(button => button.addEventListener('click', () => {
+    activeTechnologyFilter = button.dataset.techFilter;
+    document.querySelectorAll('[data-tech-filter]').forEach(item => {
+      const active = item === button;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    applyTechnologyFilters();
+  }));
   const selectTechnology = name => {
     const detail = technologies[name];
     if (!detail) return;
@@ -1101,18 +1351,26 @@
       tagWrap.replaceChildren(...detail.tags.map(tag => {
         const span = document.createElement('span'); span.textContent = tag; return span;
       }));
+      const relationshipWrap = byId('techRelationshipList');
+      if (relationshipWrap) {
+        const relations = technologyRelationships[name] || [];
+        relationshipWrap.replaceChildren();
+        const heading = document.createElement('span'); heading.className = 'mono'; heading.textContent = 'DIRECTIONAL RELATIONSHIPS / CONCEPTUAL';
+        relationshipWrap.appendChild(heading);
+        relations.forEach(edge => {
+          const row = document.createElement('div'); row.className = 'tech-edge-item';
+          const source = document.createElement('strong'); source.textContent = name;
+          const relation = document.createElement('span'); relation.textContent = edge.relation;
+          const target = document.createElement('strong'); target.textContent = edge.target;
+          row.append(source, relation, target); relationshipWrap.appendChild(row);
+        });
+      }
       byId('techDetailAction').textContent = detail.target.startsWith('projects/') ? 'Open Laboratory ↗' : 'Explore related section ↗';
       byId('techDetailAction').dataset.target = detail.target;
     });
   };
   technologyNodes.forEach(node => node.addEventListener('click', () => selectTechnology(node.dataset.tech)));
-  technologySearch?.addEventListener('input', () => {
-    const query = technologySearch.value.trim().toLowerCase();
-    technologyNodes.forEach(node => {
-      const matches = !query || node.dataset.tech.toLowerCase().includes(query);
-      node.hidden = !matches;
-    });
-  });
+  technologySearch?.addEventListener('input', applyTechnologyFilters);
   byId('techDetailAction')?.addEventListener('click', () => {
     const target = byId('techDetailAction').dataset.target;
     if (!target) return;
@@ -1320,6 +1578,9 @@
     { label: 'Go to About', group: 'NAVIGATION', keywords: 'about mindset principles', run: () => goTo('#about') },
     { label: 'Explore platform capabilities', group: 'NAVIGATION', keywords: 'platform engineering internal developer platform capabilities', run: () => goTo('#focus') },
     { label: 'Open interactive platform map', group: 'DIAGRAMS', keywords: 'architecture internal developer platform golden paths graph map', run: () => goTo('#architecture') },
+    { label: 'Inspect the local reference-lab architecture', group: 'ARCHITECTURE', keywords: 'python api prometheus grafana docker compose architecture', run: () => goTo('.reference-architecture') },
+    { label: 'Open the sample observability dashboard', group: 'CHARTS', keywords: 'metrics request rate error ratio latency percentile error budget dashboard', run: () => goTo('#metricsGallery') },
+    { label: 'Explore current learning position', group: 'PROFILE', keywords: 'student bangladesh university learning foundations progress', run: () => goTo('#learning-snapshot') },
     { label: 'Explore platform-as-product model', group: 'NAVIGATION', keywords: 'IDP internal developer portal service catalog self service golden paths policy developer experience', run: () => goTo('#platform-model') },
     { label: 'Open engineering investigation desk', group: 'LAB', keywords: 'request trace tracing spans release diff comparison infrastructure history replay recovery incident logs metrics', run: () => goTo('#investigation') },
     { label: 'Inspect sample request trace', group: 'TRACE EXPLORER', keywords: 'trace latency spans gateway database catalog logs', run: () => { goTo('#investigation'); activateInvestigationTab(document.querySelector('[data-investigation-tab="trace"]')); } },

@@ -104,6 +104,7 @@ def check_dimensions(page: Page, widths: tuple[int, ...], *, case_study: bool = 
                    document: document.documentElement.scrollWidth,
                    header: box('.site-header'), brand: box('.site-header .brand'),
                    actions: box('.site-header .header-actions'), menu: box('#menuToggle'),
+                   command: box('#commandTrigger'), theme: box('#themeToggle'),
                    cta: box('.site-header .header-cta') };
         }""")
         assert metrics["document"] <= metrics["viewport"] + 1, f"document overflow at {width}px: {metrics}"
@@ -112,6 +113,9 @@ def check_dimensions(page: Page, widths: tuple[int, ...], *, case_study: bool = 
             assert metrics["menu"]["visible"], f"mobile menu hidden at {width}px: {metrics}"
             assert not metrics["cta"]["visible"], f"desktop CTA visible at {width}px: {metrics}"
             assert metrics["brand"]["right"] <= metrics["actions"]["left"] + 1, f"brand collides with controls at {width}px: {metrics}"
+            assert metrics["actions"]["right"] <= metrics["viewport"] + 1, f"header controls extend beyond viewport at {width}px: {metrics}"
+            assert all(metrics[key]["visible"] for key in ("menu", "command", "theme")), f"a mobile header control is missing at {width}px: {metrics}"
+            assert metrics["actions"]["right"] <= metrics["viewport"] + 1, f"header controls extend beyond viewport at {width}px: {metrics}"
 
 
 def check_contrast(page: Page) -> None:
@@ -240,6 +244,7 @@ def main() -> int:
         page = context.new_page()
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.set_content(homepage, wait_until="load", timeout=30000)
+        assert page.locator("#motionToggle").count() == 0, "manual animation pause button should be removed"
         page.evaluate("""async () => {
           const images = [...document.images];
           images.forEach(image => image.loading = 'eager');
@@ -297,7 +302,8 @@ def main() -> int:
                 lede: rect('.hero-lede'), actions: rect('.hero-actions')
               };
             }""")
-            assert "PLATFORM ENGINEER" in geometry["role"], f"hero does not state the target role: {geometry['role']}"
+            assert "BU STUDENT" in geometry["role"], f"hero does not state the accurate student status: {geometry['role']}"
+            assert "PLATFORM ENGINEERING" in page.locator(".hero-lede").inner_text().upper(), "hero should describe the learning focus rather than claim a job title"
             assert geometry["title"]["top"] < geometry["visual"]["top"], f"profile visual should follow the headline on mobile: {geometry}"
             assert geometry["visual"]["top"] < geometry["lede"]["top"], f"profile visual should precede supporting copy on mobile: {geometry}"
             assert geometry["lede"]["top"] < geometry["actions"]["top"], f"hero actions should follow the introduction copy: {geometry}"
@@ -457,6 +463,74 @@ def main() -> int:
             assert page.locator("#sloErrorBudget").inner_text().strip() == "6,000"
             assert "200,000 requests per day" in page.locator("#sloTakeaway").inner_text()
         checks.run("SLO calculator math responds to target and request changes", slo_calculator)
+
+        def learning_position() -> None:
+            snapshot = page.locator("#learning-snapshot")
+            assert snapshot.is_visible(), "learning snapshot is missing or hidden"
+            copy = snapshot.inner_text().lower()
+            assert "bangladesh university" in copy, "university context is missing"
+            assert "not a proficiency score" in copy or "not a mastery score" in copy, "learning-stage transparency note is missing"
+            assert snapshot.locator('a[href="https://bu.edu.bd/"]').count() == 1, "official university link is missing"
+        checks.run("student learning position is transparent and links to BU", learning_position)
+
+        def source_based_lab_architecture() -> None:
+            architecture = page.locator(".reference-architecture")
+            assert architecture.is_visible(), "source-based architecture panel is missing"
+            buttons = architecture.locator("[data-lab-architecture]")
+            assert buttons.count() == 3, f"expected API, Prometheus, and Grafana components; found {buttons.count()}"
+            prometheus = architecture.locator('[data-lab-architecture="prometheus"]')
+            prometheus.click()
+            assert prometheus.get_attribute("aria-pressed") == "true"
+            assert "Prometheus" in page.locator("#labArchitectureDetailTitle").inner_text()
+            assert "scrape" in page.locator("#labArchitectureDetailText").inner_text().lower()
+        checks.run("source-based observability architecture selects and explains components", source_based_lab_architecture)
+
+        def metrics_gallery() -> None:
+            gallery = page.locator("#metricsGallery")
+            assert gallery.is_visible(), "metrics gallery is missing"
+            assert gallery.locator(".metrics-chart-svg").count() == 9, "expected nine service, capacity, reliability, delivery, and recovery charts"
+            for chart in gallery.locator(".metrics-chart-svg").all():
+                assert chart.locator(".chart-data-line").count() >= 1, "a metrics chart has no data series"
+            range_select = page.locator("#metricsRange")
+            range_select.select_option("1")
+            one_hour_label = page.locator("#metricsWindowLabel").inner_text()
+            assert "1-hour view" in one_hour_label.lower() and "4 sample points" in one_hour_label.lower(), f"one-hour selection did not update: {one_hour_label}"
+            range_select.select_option("24")
+            twenty_four_hour_label = page.locator("#metricsWindowLabel").inner_text()
+            assert "24-hour view" in twenty_four_hour_label.lower() and "96 sample points" in twenty_four_hour_label.lower(), f"24-hour selection did not update: {twenty_four_hour_label}"
+            assert gallery.locator(".metrics-data-table").count() == 1, "accessible data table is missing"
+            assert gallery.locator(".metrics-data-table thead th").count() == 15, "accessible data table is missing the new capacity, HTTP, deployment, or recovery signals"
+            for chart_id in ("chartCapacity", "chartHttpErrors", "chartRequestSuccess", "chartDeployments", "chartRecovery"):
+                assert page.locator(f"#{chart_id} .chart-data-line").count() >= 1, f"new chart {chart_id} did not render a data series"
+            inspector = page.locator("#chartRequestRate .chart-inspector")
+            inspector.focus()
+            initial = int(inspector.get_attribute("aria-valuenow"))
+            page.keyboard.press("ArrowLeft")
+            assert int(inspector.get_attribute("aria-valuenow")) == initial - 1, "chart keyboard inspector did not move to the previous sample"
+            readout_text = page.locator("#metricsChartReadout").inner_text()
+            assert "Sample " in readout_text, "cross-chart readout did not update"
+            assert "request success" in readout_text and "recovery drill" in readout_text, "synchronized readout is missing the new quality or recovery signals"
+            deployment_ticks = page.locator("#chartDeployments .chart-axis-label").evaluate_all("nodes => nodes.map(node => node.textContent.trim())")
+            assert "0.25" in deployment_ticks and "0.75" in deployment_ticks, f"deployment event axis labels are not fractional: {deployment_ticks}"
+            crosshair_positions = page.locator("[data-chart-crosshair]").evaluate_all("items => items.map(item => item.getAttribute('x1'))")
+            assert len(set(crosshair_positions)) == 1, f"cross-chart crosshairs are not synchronized: {crosshair_positions}"
+        checks.run("synthetic SRE charts render data and respond to time-window selection", metrics_gallery)
+
+        def technology_relationship_explorer() -> None:
+            page.locator('[data-tech-filter="observability"]').click()
+            assert page.locator('[data-tech="Prometheus"]').is_visible(), "Prometheus missing from observability filter"
+            assert page.locator('[data-tech="Grafana"]').is_visible(), "Grafana missing from observability filter"
+            assert page.locator('[data-tech="Linux"]').evaluate("element => element.hidden"), "unrelated foundation node should be filtered"
+            page.locator('[data-tech="Prometheus"]').click()
+            relationship_text = page.locator("#techRelationshipList").inner_text()
+            assert "Grafana" in relationship_text and "provides queryable metrics to" in relationship_text, f"directional relationship missing: {relationship_text}"
+            page.locator('[data-tech-filter="all"]').click()
+        checks.run("technology graph filters domains and explains directional relationships", technology_relationship_explorer)
+
+        def manual_motion_control_removed() -> None:
+            assert page.locator("#motionToggle").count() == 0, "manual animation pause button is still present"
+            assert page.locator("html").get_attribute("data-motion") is None, "manual motion state should not be set"
+        checks.run("manual animation pause button and toggle behavior are removed", manual_motion_control_removed)
 
         def pipeline_failure_safety() -> None:
             page.locator("#failPipeline").click()
