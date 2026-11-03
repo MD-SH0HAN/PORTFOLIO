@@ -1,4 +1,4 @@
-# 🛰️ MD SHOHAN — Platform Engineering Learning Portfolio
+# 🛰️ MD SHOHAN — Aspiring Platform Engineer
 
 <p align="center">
   <strong>⚙️ Platform Engineering&nbsp; · &nbsp;☁️ Infrastructure&nbsp; · &nbsp;📈 Reliability&nbsp; · &nbsp;🧑‍💻 Developer Experience</strong>
@@ -130,8 +130,14 @@ The status markers below distinguish what can be run from what is illustrative o
 ├── Profile Photo.webp
 ├── Orbit Photo.webp
 ├── projects/
-│   └── laboratory/          # Local API + Prometheus + Grafana reference lab
-├── scripts/                        # Static, release, browser, and integration checks
+│   └── laboratory/
+│       ├── api/                     # Python HTTP service and Dockerfile
+│       ├── grafana/
+│       │   ├── dashboards/          # Provisioned dashboard JSON
+│       │   └── provisioning/        # Datasource and dashboard provider
+│       ├── prometheus/               # Scrape and alert configuration
+│       └── tests/                    # API and integration contract tests
+├── scripts/                         # Static, release, browser, and integration checks
 ├── tests/
 │   └── browser/                    # Playwright/Chromium regression tests
 ├── .github/

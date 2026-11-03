@@ -2,7 +2,7 @@
 
 **Current direction:** liquid icons · glassmorphism · monochrome palette · restrained glow  
 **Positioning:** Bangladesh University student developing DevOps, Platform Engineering, and SRE skills  
-**Updated:** 2026-11-03
+**Updated:** 2026-11-04
 
 ## Design principles
 

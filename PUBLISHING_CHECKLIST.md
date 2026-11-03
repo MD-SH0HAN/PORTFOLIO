@@ -1,6 +1,6 @@
 # GitHub publication checklist — MD-SH0HAN/PORTFOLIO
 
-**Portfolio identity:** MD SHOHAN — Bangladesh University student developing DevOps, Platform Engineering, and SRE skills  
+**Portfolio identity:** MD SHOHAN — Aspiring Platform Engineer  
 **Learning focus:** DevOps foundations · Platform Engineering · Site Reliability Engineering
 
 ## Upload the package

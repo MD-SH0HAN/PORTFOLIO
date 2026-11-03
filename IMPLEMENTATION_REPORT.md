@@ -1,10 +1,10 @@
 # Portfolio implementation and verification report
 
-**Portfolio identity:** MD SHOHAN — Bangladesh University student learning DevOps, Platform Engineering, and SRE  
+**Portfolio identity:** MD SHOHAN — Aspiring Platform Engineer  
 **Design direction:** Liquid icons · monochrome glassmorphism · restrained glow · editorial typography  
 **Repository:** <https://github.com/MD-SH0HAN/PORTFOLIO>  
 **GitHub Pages root:** <https://md-sh0han.github.io/PORTFOLIO/>  
-**Last updated:** 2026-11-03
+**Last updated:** 2026-11-04
 
 ## Scope and positioning
 
@@ -43,6 +43,14 @@ No CV/resume section or additional real-world project has been added. The existi
 - Label the reliability simulation chart's left axis as P95 milliseconds and right axis as failed requests per sample.
 - Added technology-domain filters and directional relationship explanations to the technology graph.
 
+### Identity, metadata, and maintainability
+
+- Standardized the document title, Open Graph title, Twitter title, and repository README on **MD SHOHAN | Aspiring Platform Engineer**.
+- Corrected the static validator to enforce that chosen identity rather than an obsolete, overly restrictive phrase. It parses metadata attributes and title text instead of matching brittle HTML strings.
+- Updated sitemap modification dates to match the November 4, 2026 portfolio revision.
+- Added ignore rules for generated `dist/`, local test output, Python bytecode, and local environments; the publishing workflow regenerates `dist/` from source.
+- Added the actual Grafana provisioning layout to the README repository tree.
+
 ### Architecture and maintainability
 
 - Added a source-based local observability reference diagram grounded in the repository's Compose, Prometheus, and Grafana configuration.
@@ -50,29 +58,27 @@ No CV/resume section or additional real-world project has been added. The existi
 - Preserved the static HTML/CSS/vanilla JavaScript architecture; a framework migration was not required for these changes.
 - Expanded the in-memory Chromium smoke suite to cover the new student, architecture, charts, graph, motion, and responsive-header behavior.
 
-## Validation performed on 2026-11-03
+## Validation performed on 2026-11-04
 
 | Check | Result |
 |---|---:|
-| Static HTML/local-reference check | Passed |
+| Portfolio HTML, local references, image alt text, canonical URLs, and sitemap consistency | Passed |
+| Aspiring Platform Engineer document, Open Graph, and Twitter title consistency | Passed |
+| Default and custom HTTPS site-root builds, with generated-site static validation | Passed |
 | CSS parser and declaration check | Passed |
-| Infrastructure configuration check | Passed |
-| GitHub Pages release configuration check | Passed |
+| Compose, Prometheus, and Grafana configuration check | Passed |
+| GitHub Pages release/deployment contract check | Passed |
 | JavaScript syntax (`node --check`) | Passed |
-| Local observability API/unit tests | 12 passed |
-| In-memory Chromium interaction/layout checks | 24 passed, 0 failed |
-| Homepage responsive widths | 9 widths |
-| Laboratory responsive widths | 5 widths |
-| Reduced-motion behavior and absence of manual pause control | Passed |
-| Browser JavaScript exceptions in smoke run | 0 |
+| Observability API unit and HTTP tests | 12 passed |
+| In-memory Chromium interaction/layout checks | 24 passed, 0 failed; local Playwright process did not exit cleanly after reporting results |
 
-## Not represented as verified
+### Not verified in this environment
 
 - A live GitHub Pages deployment was not performed or confirmed by this local edit.
-- Docker Compose end-to-end integration was not executed as part of this validation run.
-- The HTTP-backed Playwright suite and Lighthouse/Core Web Vitals were not run here. The in-memory Chromium checks do not replace them.
-- All nine synthetic chart families are design/learning data, not measured service telemetry, deployment frequency, or incident MTTR.
-- The additional project briefs remain planned and the conceptual IDP/platform flow remains conceptual.
+- The Docker Compose API → Prometheus → Grafana end-to-end integration was not run in this session because Docker is not installed in the execution environment.
+- The HTTP-backed Playwright suite was not run here. The in-memory Chromium suite exercises the DOM, layout, accessibility foundations, and interactions without local HTTP navigation.
+- Lighthouse/Core Web Vitals were not measured.
+- All nine synthetic chart families remain illustrative data, not production telemetry or measured service performance.
 
 ## Build and local preview
 

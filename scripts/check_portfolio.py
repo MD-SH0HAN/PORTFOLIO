@@ -30,6 +30,9 @@ class PageParser(HTMLParser):
         self.h1_count: int = 0
         self.title_count: int = 0
         self.meta_description = False
+        self.meta_titles: dict[str, str] = {}
+        self.title_parts: list[str] = []
+        self.in_title = False
         self.robots_noindex = False
         self.canonical_url = ""
 
@@ -42,8 +45,14 @@ class PageParser(HTMLParser):
             self.h1_count += 1
         if tag == "title":
             self.title_count += 1
-        if tag == "meta" and values.get("name", "").lower() == "description" and values.get("content", "").strip():
-            self.meta_description = True
+            self.in_title = True
+        if tag == "meta":
+            key = (values.get("property") or values.get("name") or "").strip().lower()
+            content = (values.get("content") or "").strip()
+            if key == "description" and content:
+                self.meta_description = True
+            if key in {"og:title", "twitter:title"} and content:
+                self.meta_titles[key] = content
         if tag == "meta" and values.get("name", "").lower() == "robots" and "noindex" in values.get("content", "").lower():
             self.robots_noindex = True
         if tag == "link" and "canonical" in values.get("rel", "").lower().split() and values.get("href"):
@@ -60,6 +69,18 @@ class PageParser(HTMLParser):
                 pieces = candidate.strip().split()
                 if pieces:
                     self.references.append(("srcset", pieces[0]))
+
+    def handle_data(self, data: str) -> None:
+        if self.in_title:
+            self.title_parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "title":
+            self.in_title = False
+
+    @property
+    def title_text(self) -> str:
+        return " ".join(" ".join(self.title_parts).split())
 
 
 def local_target(page: Path, value: str, root: Path) -> tuple[Path | None, str]:
@@ -131,12 +152,13 @@ def main() -> int:
         if not parser.canonical_url:
             errors.append("index.html: missing canonical URL")
         html_text = home.read_text(encoding="utf-8")
-        if "MD SHOHAN" not in html_text or "Platform Engineering Learning Portfolio" not in html_text:
-            errors.append("index.html: title must use the student-focused Platform Engineering Learning Portfolio identity")
-        if '<meta property="og:title" content="MD SHOHAN - Platform Engineering Learner">' not in html_text:
-            errors.append("index.html: Open Graph title must use the learning-focused identity")
-        if '<meta name="twitter:title" content="MD SHOHAN - Platform Engineering Learner">' not in html_text:
-            errors.append("index.html: Twitter title must use the learning-focused identity")
+        expected_title = "MD SHOHAN | Aspiring Platform Engineer"
+        if parser.title_text != expected_title:
+            errors.append(f"index.html: document title must be exactly {expected_title!r}; found {parser.title_text!r}")
+        for metadata_key, display_name in (("og:title", "Open Graph"), ("twitter:title", "Twitter")):
+            metadata_title = parser.meta_titles.get(metadata_key, "")
+            if metadata_title != expected_title:
+                errors.append(f"index.html: {display_name} title must match the document title {expected_title!r}")
         for required_phrase in ("Bangladesh University", "DevOps", "Platform Engineering", "Site Reliability Engineering"):
             if required_phrase.lower() not in html_text.lower():
                 errors.append(f"index.html: student profile description is missing {required_phrase!r}")
