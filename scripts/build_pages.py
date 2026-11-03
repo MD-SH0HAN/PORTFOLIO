@@ -25,7 +25,7 @@ FILES = (
     ".nojekyll",
     "assets/favicon.svg",
     "assets/portrait-placeholder.svg",
-    "projects/observability-lab/index.html",
+    "projects/laboratory/index.html",
 )
 
 
@@ -60,7 +60,7 @@ def main() -> int:
     # Keep canonicals, social previews, crawler hints, and footer portfolio links
     # aligned with the actual Pages URL, including a custom domain configured later.
     if configured_root != DEFAULT_SITE_ROOT:
-        for relative in ("index.html", "script.js", "robots.txt", "sitemap.xml", "projects/observability-lab/index.html"):
+        for relative in ("index.html", "script.js", "robots.txt", "sitemap.xml", "projects/laboratory/index.html"):
             destination = OUTPUT / relative
             content = destination.read_text(encoding="utf-8")
             destination.write_text(content.replace(DEFAULT_SITE_ROOT, configured_root), encoding="utf-8")

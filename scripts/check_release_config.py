@@ -51,7 +51,7 @@ def main() -> int:
         "scripts/build_pages.py": build_script,
         "index.html": ROOT / "index.html",
         "script.js": ROOT / "script.js",
-        "projects/observability-lab/index.html": ROOT / "projects" / "observability-lab" / "index.html",
+        "projects/laboratory/index.html": ROOT / "projects" / "laboratory" / "index.html",
         "robots.txt": ROOT / "robots.txt",
         "sitemap.xml": ROOT / "sitemap.xml",
         "README.md": ROOT / "README.md",
@@ -66,7 +66,7 @@ def main() -> int:
         actual = match.group(1) if match else "<missing>"
         return fail(f"build default site root must be {EXPECTED_SITE_ROOT!r}; found {actual!r}")
 
-    for name in ("index.html", "script.js", "projects/observability-lab/index.html", "robots.txt", "sitemap.xml", "README.md"):
+    for name in ("index.html", "script.js", "projects/laboratory/index.html", "robots.txt", "sitemap.xml", "README.md"):
         if EXPECTED_SITE_ROOT not in source_text[name]:
             return fail(f"{name} must reference the configured GitHub Pages root {EXPECTED_SITE_ROOT}")
         if FORMER_CASE_VARIANT in source_text[name]:
@@ -81,15 +81,15 @@ def main() -> int:
         return fail("index.html canonical URL does not match the configured site root")
     if f'<meta property="og:url" content="{EXPECTED_SITE_ROOT}/">' not in root_html:
         return fail("index.html Open Graph URL does not match the configured site root")
-    case_study = source_text["projects/observability-lab/index.html"]
-    if f'<link rel="canonical" href="{EXPECTED_SITE_ROOT}/projects/observability-lab/">' not in case_study:
+    case_study = source_text["projects/laboratory/index.html"]
+    if f'<link rel="canonical" href="{EXPECTED_SITE_ROOT}/projects/laboratory/">' not in case_study:
         return fail("observability case-study canonical URL does not match the configured site root")
     if f"href: '{EXPECTED_SITE_ROOT}/'" not in source_text["script.js"]:
         return fail("script.js portfolio profile destination does not match the configured site root")
     if f"Sitemap: {EXPECTED_SITE_ROOT}/sitemap.xml" not in source_text["robots.txt"]:
         return fail("robots.txt sitemap URL does not match the configured site root")
 
-    for name in ("index.html", "script.js", "projects/observability-lab/index.html"):
+    for name in ("index.html", "script.js", "projects/laboratory/index.html"):
         if EXPECTED_REPOSITORY_ROOT not in source_text[name]:
             return fail(f"{name} must link to the existing repository {EXPECTED_REPOSITORY_ROOT}")
         if "github.com/md-sh0han/shohan-portfolio" in source_text[name].lower():

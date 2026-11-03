@@ -220,6 +220,12 @@
   };
   updateThemeControl();
   themeToggle?.addEventListener('click', toggleTheme);
+  // Keep the portfolio in sync when the shared preference changes in another tab.
+  window.addEventListener('storage', event => {
+    if (event.key !== 'shohan-theme' || (event.newValue !== 'light' && event.newValue !== 'dark')) return;
+    root.dataset.theme = event.newValue;
+    updateThemeControl();
+  });
 
   // Mobile navigation.
   const setMenuOpen = open => {
@@ -505,7 +511,7 @@
       checklist: ['Run the API unit tests with Python 3.12 and the pinned Prometheus client.', 'Copy .env.example to .env and set a strong local Grafana password.', 'Start the stack with Docker Compose and verify the API health/readiness endpoints.', 'Generate sample traffic and one intentional 503, then inspect the Prometheus target and Grafana panels.', 'Review the alert rules, container restrictions, and teardown instructions.'],
       done: 'Unit tests pass, Compose configuration validates, Prometheus scrapes the API, the pre-provisioned dashboard shows generated sample traffic, and the user can stop the stack and remove its local data deliberately.',
       status: 'SOURCE INCLUDED / LOCAL STACK NOT RUN HERE',
-      resourceHref: 'projects/observability-lab/index.html',
+      resourceHref: 'projects/laboratory/index.html',
       resourceLabel: 'Open lab overview ↗',
       resourceExternal: false
     }
@@ -1072,7 +1078,7 @@
     'GitHub Actions': { type: 'GOLDEN PATH / AUTOMATION', title: 'Make the supported path repeatable.', text: 'Reusable workflows can validate, test, build, scan, and publish artifacts consistently. Clear feedback, least-privilege permissions, and safe failure behavior help a platform earn trust.', tags: ['Golden paths', 'Checks', 'Artifacts'], target: '#pipelinePlayground', related: ['Terraform', 'Docker'] },
     'Kubernetes': { type: 'PLATFORM / ORCHESTRATION', title: 'Declare the desired state.', text: 'Deployments, Services, readiness probes, resource requests, and rollouts provide a starting point for understanding platform behavior and recovery.', tags: ['Pods', 'Probes', 'Rollouts'], target: '#work', related: ['Docker', 'Prometheus', 'NGINX'] },
     'Prometheus': { type: 'PLATFORM RELIABILITY / METRICS', title: 'Make platform workloads observable.', text: 'Metrics, scrape targets, alert rules, and service-level indicators help teams detect regressions and improve the runtime contract offered by the platform.', tags: ['Metrics', 'Alerts', 'SLOs'], target: '#sreControlRoom', related: ['Kubernetes', 'Grafana'] },
-    'Grafana': { type: 'OBSERVABILITY / VISUALIZATION', title: 'Make the signal useful to humans.', text: 'Dashboards should make common questions fast to answer and put trends in context. An alert should lead to a clear action, not only a bright panel.', tags: ['Dashboards', 'Triage', 'Signals'], target: 'projects/observability-lab/index.html', related: ['Prometheus', 'Kubernetes'] },
+    'Grafana': { type: 'OBSERVABILITY / VISUALIZATION', title: 'Make the signal useful to humans.', text: 'Dashboards should make common questions fast to answer and put trends in context. An alert should lead to a clear action, not only a bright panel.', tags: ['Dashboards', 'Triage', 'Signals'], target: 'projects/laboratory/index.html', related: ['Prometheus', 'Kubernetes'] },
     'NGINX': { type: 'NETWORKING / TRAFFIC', title: 'Understand the path into a service.', text: 'Reverse proxying, routing, TLS termination, and upstream health are useful concepts for tracing a request from client to workload.', tags: ['Routing', 'TLS', 'Upstreams'], target: '#architecture', related: ['Kubernetes', 'Linux'] }
   };
   const technologyNodes = [...document.querySelectorAll('[data-tech]')];
@@ -1095,7 +1101,7 @@
       tagWrap.replaceChildren(...detail.tags.map(tag => {
         const span = document.createElement('span'); span.textContent = tag; return span;
       }));
-      byId('techDetailAction').textContent = detail.target.startsWith('projects/') ? 'Open observability lab ↗' : 'Explore related section ↗';
+      byId('techDetailAction').textContent = detail.target.startsWith('projects/') ? 'Open Laboratory ↗' : 'Explore related section ↗';
       byId('techDetailAction').dataset.target = detail.target;
     });
   };
@@ -1320,7 +1326,7 @@
     { label: 'Compare sample release configurations', group: 'RELEASE REVIEW', keywords: 'release staging production development terraform config diff version rollout', run: () => { goTo('#investigation'); activateInvestigationTab(document.querySelector('[data-investigation-tab="release"]')); } },
     { label: 'Replay infrastructure history', group: 'SIMULATION', keywords: 'timeline event replay rollback deployment history', run: () => { goTo('#investigation'); activateInvestigationTab(document.querySelector('[data-investigation-tab="history"]')); } },
     { label: 'Open the safe recovery drill', group: 'SIMULATION', keywords: 'failure recovery remediation readiness dependency memory troubleshooting runbook', run: () => { goTo('#investigation'); activateInvestigationTab(document.querySelector('[data-investigation-tab="recovery"]')); } },
-    { label: 'Open the platform observability lab guide', group: 'DOCUMENTATION', keywords: 'platform observability documentation readme python prometheus grafana docker compose tests runbook', run: () => { window.location.href = 'projects/observability-lab/index.html'; } },
+    { label: 'Open the Laboratory guide', group: 'DOCUMENTATION', keywords: 'platform observability documentation readme python prometheus grafana docker compose tests runbook', run: () => { window.location.href = 'projects/laboratory/index.html'; } },
     { label: 'Find education and background', group: 'PROFILE', keywords: 'education bachelor university hsc ssc bangladesh', run: () => goTo('#about') },
     { label: 'Open platform reliability signals', group: 'SIMULATION', keywords: 'platform reliability incident error budget latency monitor', run: () => goTo('#sreControlRoom') },
     { label: 'Open Kubernetes readiness simulation', group: 'SIMULATION', keywords: 'kubernetes pod readiness probe service endpoint health', run: () => goTo('#podHealthPlayground') },

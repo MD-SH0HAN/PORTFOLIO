@@ -120,7 +120,7 @@ The status markers below distinguish what can be run from what is illustrative o
 ├── Profile Photo.webp
 ├── Orbit Photo.webp
 ├── projects/
-│   └── observability-lab/          # Local API + Prometheus + Grafana reference lab
+│   └── laboratory/          # Local API + Prometheus + Grafana reference lab
 ├── scripts/                        # Static, release, browser, and integration checks
 ├── tests/
 │   └── browser/                    # Playwright/Chromium regression tests
@@ -167,8 +167,8 @@ node --check script.js
 ### 🧪 Observability API tests
 
 ```bash
-python -m pip install -r projects/observability-lab/api/requirements.txt
-python -m unittest discover -s projects/observability-lab/tests -v
+python -m pip install -r projects/laboratory/api/requirements.txt
+python -m unittest discover -s projects/laboratory/tests -v
 ```
 
 ### 🌐 Real-browser checks and Pages build
@@ -191,7 +191,7 @@ python scripts/smoke_browser_in_memory.py --root dist
 ### 1. 📂 Enter the lab directory
 
 ```bash
-cd projects/observability-lab
+cd projects/laboratory
 ```
 
 ### 2. 🔐 Configure local credentials
@@ -256,7 +256,7 @@ The intended canonical URL is **https://md-sh0han.github.io/PORTFOLIO/**. Confir
 - 🔑 Never commit `.env` files, credentials, access tokens, private keys, production telemetry, or generated test artifacts.
 - 🛡️ Keep local Grafana credentials in `.env`; use a strong password even for a local learning environment.
 - 🧪 Browser simulations and dashboard preview numbers are illustrative; do not interpret them as live infrastructure state or measured performance.
-- 🏗️ The observability lab is for local learning and does not provide the hardening expected of a production service.
+- 🏗️ The Laboratory is for local learning and does not provide the hardening expected of a production service.
 - ©️ The MIT license applies to code and configuration. Photographs, likeness, and visual branding assets are excluded from that license.
 
 <a id="references"></a>
@@ -275,7 +275,7 @@ These resources provide context for the portfolio's platform-engineering themes:
 | **Identity, platform model, projects, education, and metadata** | `index.html` |
 | **Visual system and responsive styles** | `styles.css` |
 | **Interactions, project briefs, technology descriptions, command palette, and profile destinations** | `script.js` |
-| **Included local implementation** | `projects/observability-lab/` |
+| **Included local implementation** | `projects/laboratory/` |
 
 ---
 

@@ -21,7 +21,7 @@ GRAFANA_USER = os.getenv("GRAFANA_ADMIN_USER", "admin")
 GRAFANA_PASSWORD = os.getenv(
     "GRAFANA_ADMIN_PASSWORD", "replace-with-a-long-random-local-password"
 )
-EXPECTED_DASHBOARD_UID = "shohan-observability-lab"
+EXPECTED_DASHBOARD_UID = "shohan-laboratory"
 EXPECTED_ALERTS = {"ApiScrapeMissing", "Elevated5xxRate", "HighP95Latency"}
 
 

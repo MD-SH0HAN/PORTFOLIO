@@ -143,11 +143,11 @@ class PortfolioBrowserTests(unittest.TestCase):
         self.assertTrue(self.page.locator("#heroTitle").is_visible())
 
         response = self.page.goto(
-            f"{self.base_url}/projects/observability-lab/index.html", wait_until="load"
+            f"{self.base_url}/projects/laboratory/index.html", wait_until="load"
         )
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
-        self.assertIn("Platform Observability Lab", self.page.title())
+        self.assertIn("Laboratory", self.page.title())
         self.assertTrue(self.page.get_by_role("heading", level=1).is_visible())
         self.assertTrue(self.page.get_by_role("link", name="Read the rendered guide").is_visible())
         self.assertTrue(self.page.locator("link[rel='stylesheet']").count() >= 1)
@@ -232,7 +232,7 @@ class PortfolioBrowserTests(unittest.TestCase):
                     )
 
     def test_observability_page_layout_and_primary_navigation_at_mobile_widths(self) -> None:
-        response = self.page.goto(f"{self.base_url}/projects/observability-lab/index.html", wait_until="load")
+        response = self.page.goto(f"{self.base_url}/projects/laboratory/index.html", wait_until="load")
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
         for width in (320, 390, 560, 768, 1024):
@@ -311,12 +311,12 @@ class PortfolioBrowserTests(unittest.TestCase):
         self.assertIsNone(search.get_attribute("aria-activedescendant"))
         self.assertTrue(self.page.locator("#commandEmpty").is_visible())
 
-        search.fill("Open the platform observability lab guide")
+        search.fill("Open the Laboratory guide")
         self.assertEqual(results.locator(".command-result").count(), 1)
         self.assertEqual(search.get_attribute("aria-expanded"), "true")
-        results.get_by_role("option", name="Open the platform observability lab guide").click()
-        self.page.wait_for_url("**/projects/observability-lab/index.html")
-        self.assertIn("Platform Observability Lab", self.page.title())
+        results.get_by_role("option", name="Open the Laboratory guide").click()
+        self.page.wait_for_url("**/projects/laboratory/index.html")
+        self.assertIn("Laboratory", self.page.title())
 
     def test_secondary_email_uses_an_explicit_key_mapping(self) -> None:
         secondary_email = self.page.locator('[data-email="secondary"]')
@@ -332,7 +332,7 @@ class PortfolioBrowserTests(unittest.TestCase):
         self.assertEqual(self.page.locator("#dialogTitle").inner_text(), "Platform observability reference lab")
         self.assertIn("SOURCE INCLUDED", self.page.locator("#dialogStatus").inner_text())
         self.assertTrue(self.page.locator("#dialogResourceLink").get_attribute("href").endswith(
-            "projects/observability-lab/index.html"
+            "projects/laboratory/index.html"
         ))
 
         self.page.keyboard.press("Escape")

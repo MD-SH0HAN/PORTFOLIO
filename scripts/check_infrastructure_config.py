@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Statically validate the observability lab's Compose, Prometheus and Grafana contract.
+"""Statically validate the Laboratory's Compose, Prometheus and Grafana contract.
 
 This catches malformed/mismatched configuration before a Docker daemon is
 available. It complements, but does not replace, the live Compose integration test.
@@ -14,7 +14,7 @@ from typing import Any
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-LAB = ROOT / "projects" / "observability-lab"
+LAB = ROOT / "projects" / "laboratory"
 EXPECTED_ALERTS = {"ApiScrapeMissing", "Elevated5xxRate", "HighP95Latency"}
 EXPECTED_SERVICES = {"api", "prometheus", "grafana"}
 
@@ -141,7 +141,7 @@ def main() -> int:
 
     panels = dashboard.get("panels", []) or []
     panel_ids = [panel.get("id") for panel in panels if isinstance(panel, dict)]
-    audit.require(dashboard.get("uid") == "shohan-observability-lab", "Grafana dashboard UID does not match integration test")
+    audit.require(dashboard.get("uid") == "shohan-laboratory", "Grafana dashboard UID does not match integration test")
     audit.require(len(panels) >= 6, f"Grafana dashboard should include at least 6 panels, found {len(panels)}")
     audit.require(len(panel_ids) == len(set(panel_ids)), "Grafana dashboard panel IDs must be unique")
     data_panels = [panel for panel in panels if isinstance(panel, dict) and panel.get("type") != "row"]

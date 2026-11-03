@@ -36,12 +36,12 @@
   <link rel="stylesheet" href="styles.css">
   <script defer src="script.js"></script>
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="noise" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
 
-  <header class="site-header" id="top">
+  <header class="site-header">
     <a class="brand" href="#top" aria-label="MD SHOHAN home">
       <span class="brand-mark">S<span>.</span></span>
       <span class="brand-copy"><strong>MD SHOHAN</strong><small>PLATFORM ENGINEERING</small></span>
@@ -79,11 +79,11 @@
       <div class="hero-copy reveal">
         <div class="eyebrow"><span class="status-dot"></span> ASPIRING PLATFORM ENGINEER <span class="eyebrow-line"></span></div>
         <h1 id="heroTitle">I build platforms<br>that make delivery <span class="title-glass">simpler.</span></h1>
-        <p class="hero-lede">I’m <strong>MD Shohan</strong> — a Computer Science & Engineering student focused on platform engineering: self-service developer workflows, golden paths, reusable infrastructure, and reliable platforms that make software delivery easier.</p>
+        <p class="hero-lede">I’m <strong>MD SHOHAN</strong> — a Computer Science & Engineering student focused on platform engineering: self-service developer workflows, golden paths, reusable infrastructure, and reliable platforms that make software delivery easier.</p>
         <p class="hero-subline">Make the safe path the easy path. Learn in public; verify everything.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#work">Explore projects <span aria-hidden="true">↘</span></a>
-          <a class="button button-ghost" href="projects/observability-lab/index.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/><path d="M3 20h18"/></svg> View featured lab <span aria-hidden="true">↗</span></a>
+          <a class="button button-primary" href="#work">Explore Projects <span aria-hidden="true">↘</span></a>
+          <a class="button button-ghost" href="projects/laboratory/index.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/><path d="M3 20h18"/></svg> Explore Laboratory <span aria-hidden="true">↗</span></a>
         </div>
         <div class="hero-footnote"><span class="mono">BASED IN</span><span>Dhaka, Bangladesh</span><span class="footnote-divider"></span><span class="mono">CURRENT CHAPTER</span><span>Learn → Build → Document</span></div>
       </div>
@@ -214,7 +214,7 @@
             </div>
             <div class="visual-foot mono"><span>PROMETHEUS + GRAFANA</span><span>↗</span></div>
           </div>
-          <div class="project-content"><div class="project-meta"><span class="project-type">PLATFORM / OBSERVABILITY</span><span class="project-state project-state-reference"><span></span> SOURCE INCLUDED</span></div><h3>Platform observability reference lab</h3><p>A local platform-observability reference stack with a Python service, health contracts, Prometheus metrics, a provisioned Grafana dashboard, alert rules, and unit tests.</p><div class="tag-list"><span>Docker Compose</span><span>Prometheus</span><span>Grafana</span><span>Python</span></div><div class="project-actions"><button class="text-link project-open" type="button" data-project="observability">View implementation details <span aria-hidden="true">↗</span></button><a class="text-link project-resource-link" href="projects/observability-lab/index.html">Open lab guide <span aria-hidden="true">↗</span></a><a class="text-link project-resource-link" href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/observability-lab" data-repository-path="tree/main/projects/observability-lab" target="_blank" rel="noopener noreferrer">Browse source <span aria-hidden="true">↗</span></a></div></div>
+          <div class="project-content"><div class="project-meta"><span class="project-type">PLATFORM / OBSERVABILITY</span><span class="project-state project-state-reference"><span></span> SOURCE INCLUDED</span></div><h3>Laboratory</h3><p>A local platform-observability reference stack with a Python service, health contracts, Prometheus metrics, a provisioned Grafana dashboard, alert rules, and unit tests.</p><div class="tag-list"><span>Docker Compose</span><span>Prometheus</span><span>Grafana</span><span>Python</span></div><div class="project-actions"><button class="text-link project-open" type="button" data-project="observability">View implementation details <span aria-hidden="true">↗</span></button><a class="text-link project-resource-link" href="projects/laboratory/index.html">Open Laboratory guide <span aria-hidden="true">↗</span></a><a class="text-link project-resource-link" href="https://github.com/MD-SH0HAN/PORTFOLIO/tree/main/projects/laboratory" data-repository-path="tree/main/projects/laboratory" target="_blank" rel="noopener noreferrer">Browse source <span aria-hidden="true">↗</span></a></div></div>
         </article>
 
         <article class="project-card glass-card reveal" data-category="golden-path"><div class="project-visual pipeline-visual"><div class="visual-top mono"><span>PIPELINE / 001</span><span class="visual-dotset"><i></i><i></i><i></i></span></div><div class="pipeline-flow"><div class="pipeline-node"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/></svg><small>CODE</small></div><span class="flow-link"></span><div class="pipeline-node"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="m9 12 2 2 4-4M12 3l8 4v5c0 4-3 7-8 9-5-2-8-5-8-9V7l8-4Z"/></svg><small>TEST</small></div><span class="flow-link"></span><div class="pipeline-node"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M4 8h16v12H4zM8 8V5h8v3M8 12h8M8 16h5"/></svg><small>BUILD</small></div></div><div class="visual-foot mono"><span>CONTINUOUS DELIVERY LAB</span><span>↗</span></div></div><div class="project-content"><div class="project-meta"><span class="project-type">GOLDEN PATH / DELIVERY</span><span class="project-state"><span></span> PLANNED</span></div><h3>Golden-path delivery workflow</h3><p>Define a reusable delivery path for a small service: validate changes, build an immutable artifact, apply workflow guardrails, and publish traceable releases.</p><div class="tag-list"><span>Service template</span><span>GitHub Actions</span><span>CI/CD</span></div><div class="project-actions"><button class="text-link project-open" type="button" data-project="pipeline">View build brief <span aria-hidden="true">↗</span></button></div></div></article>

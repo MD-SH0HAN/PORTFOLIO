@@ -4,11 +4,11 @@
 
 The portfolio now has a shared monochrome liquid-glass finishing layer across its existing static HTML/CSS/vanilla-JavaScript implementation. The changes refine surface materials, borders, inner highlights, elevation, navigation feedback, chart presentation, responsive compositing, overlays, and interaction states without rewriting the application or adding dependencies.
 
-**Typography and authored content were preserved.** `index.html` and `projects/observability-lab/index.html` are byte-for-byte unchanged. The main JavaScript change only assigns an ordering token to the existing synthetic error bars so their entrance can be staggered; calculations, data, labels, and state transitions remain unchanged.
+**Typography and authored content were preserved.** `index.html` and `projects/laboratory/index.html` are byte-for-byte unchanged. The main JavaScript change only assigns an ordering token to the existing synthetic error bars so their entrance can be staggered; calculations, data, labels, and state transitions remain unchanged.
 
 ## Inventory and component coverage
 
-The audit followed the existing homepage and its interactive implementations, plus the separate Observability Lab case-study page and the included service/configuration tests.
+The audit followed the existing homepage and its interactive implementations, plus the separate Laboratory case-study page and the included service/configuration tests.
 
 | Component family | Existing implementation reviewed | Refinement and preservation |
 |---|---|---|
@@ -22,7 +22,7 @@ The audit followed the existing homepage and its interactive implementations, pl
 | Technology constellation and learning journey | Technology nodes, search/selection details, journey stages and expandable detail | Subtle glass surfaces, readable selected states, coordinated hover/focus transitions and restrained elevation; underlying node relationships and content remain unchanged. |
 | Dialogs, command palette and feedback | Project details dialog, command dialog/search/results, copy feedback/toasts | Theme-aware frosted surfaces, inset highlights, refined shadows and control focus/selection treatment. Existing close/Escape behavior and actions are preserved. |
 | Identity and iconography | Inline SVG social marks, technology icons, icon containers and badges | Monochrome profile-link materials with original icon silhouettes retained; no replacement or re-drawing of brand marks. |
-| Observability Lab case-study page | Architecture component cards, quick-start/code surfaces, API endpoint cards, copy controls and toasts | Applied the same surface tokens and restrained transitions, including a lower-cost mobile blur treatment; code samples, API meanings, and copy behavior remain unchanged. |
+| Laboratory case-study page | Architecture component cards, quick-start/code surfaces, API endpoint cards, copy controls and toasts | Applied the same surface tokens and restrained transitions, including a lower-cost mobile blur treatment; code samples, API meanings, and copy behavior remain unchanged. |
 | Responsive and accessibility behavior | Existing responsive rules, touch-specific states, keyboard-operable controls and reduced-motion behavior | Lower blur on smaller screens, no hover-only dependency for key actions, visible focus treatment, reduced-motion overrides, and a reduced-transparency fallback. |
 
 ## Visual and motion architecture
@@ -39,7 +39,7 @@ The implementation is centralized in `styles.css` rather than introducing a new 
 
 ## Typography and data integrity verification
 
-- The original homepage and Observability Lab HTML files compare byte-for-byte with the supplied archive.
+- The original homepage and Laboratory HTML files compare byte-for-byte with the supplied archive.
 - The added liquid-glass CSS block contains no typography declarations for font family, size, weight, style, line height, letter spacing, text transformation, or text decoration.
 - A Chromium comparison checked the eight computed typography properties above on **1,737 matching DOM elements**. **0 properties differed** between baseline and modified pages.
 - The only JavaScript change assigns `--bar-order` to the existing SVG error bars. The math/coordinate logic, data values, labels, SLO calculation, topology, route handlers, and existing state logic were not changed.
@@ -55,7 +55,7 @@ The implementation is centralized in `styles.css` rather than introducing a new 
 | Release configuration check | Passed: all 3 Pages quality gates and expected publishing-artifact settings verified. |
 | JavaScript syntax | Passed: `node --check script.js`. |
 | In-memory Chromium interaction smoke on the built `dist/` site | **19 passed, 0 failed.** Covered rendering/images, accessible control names and ARIA references, link safety, 9 viewport widths, mobile navigation, theme toggle, command palette, dialog/Escape dismissal, SLO math, pipeline failure, pod readiness, reliability chart/event stream, case-study rendering/responsiveness/copy action, and uncaught JavaScript exceptions. |
-| Observability Lab tests | **12 passed, 0 failed**, including service-route, health/readiness, metrics, and local HTTP smoke tests. |
+| Laboratory tests | **12 passed, 0 failed**, including service-route, health/readiness, metrics, and local HTTP smoke tests. |
 | Typography comparison | **1,737 shared DOM paths; 0 computed typography differences.** |
 | Spatial/responsive audit — homepage | **22 combinations** (11 widths: 320, 360, 390, 430, 560, 640, 768, 900, 1024, 1280, and 1440 px × dark/light themes); 0 detected document overflows, architecture-node overlaps, technology-node overlaps, or synthetic SVG chart labels outside their chart bounds. |
 | Spatial/responsive audit — case-study page | **22 additional combinations** across the same 11 widths and both themes; 0 detected document overflows or collisions among `.lp-node`, architecture `.lp-component`, `.lp-endpoint`, `.lp-stat`, or `.lp-code` surfaces. No uncaught JavaScript errors were recorded during this layout pass. |
@@ -63,7 +63,7 @@ The implementation is centralized in `styles.css` rather than introducing a new 
 
 ### Verification limitation
 
-The repository's standard HTTP-backed Playwright browser suite could not navigate Chromium to the local test server in this execution environment; navigation returned `net::ERR_BLOCKED_BY_ADMINISTRATOR`. To avoid treating that environment restriction as an application pass, the browser result above comes from the project's in-memory Chromium smoke test, which loads the actual built CSS, JavaScript, and bundled images without localhost navigation. The separate Observability Lab HTTP unit/smoke tests did pass. Not every viewport/theme/interaction combination was manually inspected by a person; the viewport sweep is an automated geometry check, not a full WCAG certification or exhaustive visual regression suite.
+The repository's standard HTTP-backed Playwright browser suite could not navigate Chromium to the local test server in this execution environment; navigation returned `net::ERR_BLOCKED_BY_ADMINISTRATOR`. To avoid treating that environment restriction as an application pass, the browser result above comes from the project's in-memory Chromium smoke test, which loads the actual built CSS, JavaScript, and bundled images without localhost navigation. The separate Laboratory HTTP unit/smoke tests did pass. Not every viewport/theme/interaction combination was manually inspected by a person; the viewport sweep is an automated geometry check, not a full WCAG certification or exhaustive visual regression suite.
 
 ## Run and preview
 

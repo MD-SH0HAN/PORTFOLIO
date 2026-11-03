@@ -10,7 +10,7 @@
 - [ ] Keep `.github/workflows/portfolio-quality.yml`, `.nojekyll`, `LICENSE`, both HTML pages, `assets/`, `projects/`, `scripts/`, `tests/`, and the requirements files.
 - [ ] In the existing GitHub repository, delete any older independent Pages deployment workflow (for example `.github/workflows/deploy.yml`) so it cannot publish without the three platform portfolio quality gates. Uploading ZIP contents does not delete extra files already in GitHub.
 - [ ] Do not upload a real `.env` file, platform credentials, access tokens, private keys, local logs, or generated test results.
-- [ ] Keep all observability lab ports bound to `127.0.0.1`; these are local learning services, not public production endpoints.
+- [ ] Keep all Laboratory ports bound to `127.0.0.1`; these are local learning services, not public production endpoints.
 
 ## GitHub Pages settings
 
@@ -24,7 +24,7 @@
 
 ## Validate the published website
 
-- [ ] Check the homepage and `/projects/observability-lab/` on desktop and mobile.
+- [ ] Check the homepage and `/projects/laboratory/` on desktop and mobile.
 - [ ] Exercise theme switching, mobile navigation, command palette (`Ctrl+K` / `⌘K`), project filters, project-details dialogs, and contact links.
 - [ ] Confirm the canonical URLs, Open Graph URLs, sitemap, robots directive, and source links point to this repository or the configured custom domain.
 - [ ] Respect `prefers-reduced-motion` and verify the site remains usable when third-party fonts are blocked.

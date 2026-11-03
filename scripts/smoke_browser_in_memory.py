@@ -77,7 +77,7 @@ def prepare_homepage(root: Path, css: str, js: str) -> str:
 
 
 def prepare_case_study(root: Path, css: str) -> str:
-    page = root / "projects" / "observability-lab" / "index.html"
+    page = root / "projects" / "laboratory" / "index.html"
     html = page.read_text(encoding="utf-8")
     html = html.replace('<link rel="stylesheet" href="../../styles.css">', f"<style>\n{css}\n</style>")
     html = re.sub(r'<link\b[^>]*href="https://fonts\.(?:googleapis|gstatic)\.com[^>]*>', "", html)
@@ -253,7 +253,7 @@ def main() -> int:
             assert page.locator("#heroTitle").is_visible()
             missing_images = page.evaluate("""() => [...document.images].filter(image => !image.complete || image.naturalWidth === 0).map(image => image.alt)""")
             assert not missing_images, f"image(s) not decoded: {missing_images}"
-            assert page.locator('a[href="projects/observability-lab/index.html"]').count() >= 1, "featured lab CTA is missing"
+            assert page.locator('a[href="projects/laboratory/index.html"]').count() >= 1, "featured lab CTA is missing"
         checks.run("homepage renders and bundled images decode", home_basics)
         checks.run("accessible control names, ARIA references, and link safety", lambda: check_accessibility_foundations(page))
 
@@ -343,12 +343,29 @@ def main() -> int:
 
         def theme_toggle() -> None:
             page.evaluate("document.documentElement.dataset.theme = 'dark'")
+
+            def assert_portrait_surfaces_follow_page_background(theme: str) -> None:
+                assert page.locator("html").get_attribute("data-theme") == theme
+                matches = page.evaluate("""() => {
+                  const pageBackground = getComputedStyle(document.body).backgroundColor;
+                  return ['.portrait-inner', '.contact-orbit-core'].map(selector => ({
+                    selector,
+                    background: getComputedStyle(document.querySelector(selector)).backgroundColor,
+                    pageBackground
+                  }));
+                }""")
+                assert all(item["background"] == item["pageBackground"] for item in matches), (
+                    f"profile photo surface does not match page background in {theme} theme: {matches}"
+                )
+
+            assert_portrait_surfaces_follow_page_background("dark")
             page.locator("#themeToggle").click()
             assert page.locator("html").get_attribute("data-theme") == "light"
             assert page.locator("#themeToggle").get_attribute("aria-label") == "Switch to dark monochrome theme"
+            assert_portrait_surfaces_follow_page_background("light")
             page.locator("#themeToggle").click()
-            assert page.locator("html").get_attribute("data-theme") == "dark"
-        checks.run("theme toggle updates theme and accessible name", theme_toggle)
+            assert_portrait_surfaces_follow_page_background("dark")
+        checks.run("theme toggle updates accessible name and profile photo backgrounds", theme_toggle)
 
         def mobile_navigation() -> None:
             page.set_viewport_size({"width": 390, "height": 844})
@@ -425,7 +442,7 @@ def main() -> int:
             assert dialog.evaluate("element => element.open")
             assert page.locator("#dialogTitle").inner_text() == "Platform observability reference lab"
             assert "SOURCE INCLUDED" in page.locator("#dialogStatus").inner_text()
-            assert page.locator("#dialogResourceLink").get_attribute("href").endswith("projects/observability-lab/index.html")
+            assert page.locator("#dialogResourceLink").get_attribute("href").endswith("projects/laboratory/index.html")
             page.keyboard.press("Escape")
             assert not dialog.evaluate("element => element.open")
         checks.run("project details dialog content and Escape dismissal", project_dialog)
@@ -474,7 +491,7 @@ def main() -> int:
         page_errors.clear()
         checks.run("observability case study renders its key content", lambda: (
             (_ for _ in ()).throw(AssertionError("wrong case-study title"))
-            if "Platform Observability Lab" not in page.title() or page.locator("h1").count() != 1 or not page.get_by_role("link", name="Read the rendered guide").count()
+            if "Laboratory" not in page.title() or page.locator("h1").count() != 1 or not page.get_by_role("link", name="Read the rendered guide").count()
             else None
         ))
         checks.run("case study responsive layout at 5 widths", lambda: check_dimensions(page, (320, 390, 560, 768, 1024), case_study=True))
