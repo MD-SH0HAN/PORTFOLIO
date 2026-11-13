@@ -1,0 +1,193 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MD Shohan - Cloud &amp; DevOps Engineering Technical Portfolio</title><meta name="description" content="A learning-stage technical knowledge map across cloud infrastructure, DevOps, platform engineering, observability, reliability and security."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--ink:#13202c;--ink2:#243746;--muted:#5c6b76;--soft:#f3f6f8;--line:#dce4e9;--accent:#276b83;--accent2:#dceef2;--white:#fff;--font:"Nunito",sans-serif}
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#e9eef1;color:var(--ink);font-family:var(--font)}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+body{font-size:9.1pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet{width:210mm;height:297mm;background:#fff;margin:8mm auto;position:relative;padding:14mm 15mm 16mm;overflow:hidden;page-break-after:always;box-shadow:0 3mm 12mm rgba(20,40,55,.10)}
+.sheet:last-child{page-break-after:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8mm;border-bottom:1px solid var(--line);padding-bottom:3.5mm;color:var(--muted);font-size:7pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.top .brand{color:var(--ink);letter-spacing:.15em}
+.footer{position:absolute;left:15mm;right:15mm;bottom:7.5mm;border-top:1px solid var(--line);padding-top:2.8mm;display:flex;justify-content:space-between;color:#71808a;font-size:6.6pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.eyebrow{margin:0 0 2.5mm;color:var(--accent);font-size:7pt;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:31pt;line-height:1.04;letter-spacing:-.055em;font-weight:900;margin:0 0 5mm}
+h2{font-size:21pt;line-height:1.12;letter-spacing:-.045em;font-weight:900;margin:0 0 3mm}
+h3{font-size:10.4pt;line-height:1.25;letter-spacing:-.02em;font-weight:900;margin:0 0 1.5mm}
+p{margin:0 0 2.5mm;color:var(--muted)}
+.lead{font-size:11pt;line-height:1.62;color:#364955;max-width:164mm}
+.small{font-size:7.5pt;line-height:1.48}
+.micro{font-size:6.6pt;line-height:1.4;color:var(--muted)}
+.rule{height:1px;background:var(--line);margin:4mm 0}
+.grid{display:grid;gap:3mm}
+.two{grid-template-columns:1fr 1fr}
+.three{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--line);border-radius:2.4mm;padding:3.6mm;background:#fff;break-inside:avoid;min-width:0}
+.card.soft{background:var(--soft)}
+.card.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.card.dark p,.card.dark .small{color:#d1dbe0}
+.kicker{display:block;font-size:6.4pt;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4mm}
+.card p{font-size:7.5pt;line-height:1.47;margin-bottom:0}
+.card h3{margin-bottom:1.5mm}
+.card .tools{font-size:6.2pt;color:var(--accent);font-weight:900;letter-spacing:.06em;margin-top:2mm}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm;margin:5mm 0}
+.stat{padding:3.2mm;border:1px solid var(--line);border-radius:2mm;background:var(--soft)}
+.stat strong{display:block;font-size:13pt;font-weight:900;letter-spacing:-.04em;color:var(--ink)}
+.stat span{font-size:6.3pt;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:var(--muted)}
+.pillrow{display:flex;flex-wrap:wrap;gap:1.5mm;margin-top:2mm}
+.pill{display:inline-block;padding:1.1mm 2.2mm;border:1px solid #d5e1e6;border-radius:99px;background:#f7fafb;color:#315363;font-size:6.5pt;font-weight:800}
+.callout{border-left:2.5mm solid var(--accent);padding:3mm 4mm;background:var(--accent2);border-radius:0 2mm 2mm 0;color:#264553;font-size:7.6pt;line-height:1.48}
+.callout strong{color:#173645}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:1.4mm;margin:3mm 0 4mm}
+.step{border:1px solid var(--line);background:var(--soft);border-radius:1.8mm;padding:2.4mm 1.5mm;text-align:center;min-height:17mm}
+.step b{display:block;font-size:7.1pt;font-weight:900}
+.step span{display:block;color:var(--muted);font-size:5.8pt;line-height:1.3;margin-top:.8mm}
+.number{display:inline-grid;place-items:center;width:5.6mm;height:5.6mm;border-radius:1.6mm;background:var(--accent2);color:var(--accent);font-size:6.3pt;font-weight:900;margin-bottom:1.3mm}
+.list{margin:1.2mm 0 0;padding-left:4mm;color:var(--muted);font-size:7.2pt;line-height:1.45}
+.list li{margin:.7mm 0}
+.page-title{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;margin:8mm 0 4mm}
+.page-title .index{font-size:25pt;font-weight:900;letter-spacing:-.06em;color:#d2e0e5;line-height:1}
+.cover{padding:0}
+.cover-top{height:106mm;background:var(--ink);color:#fff;padding:14mm 15mm 13mm;position:relative;overflow:hidden}
+.cover-top:before,.cover-top:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;width:112mm;height:112mm;right:-25mm;top:-39mm}
+.cover-top:after{width:78mm;height:78mm;right:-8mm;top:-22mm}
+.cover-top .top{border-color:rgba(255,255,255,.18);color:#bbc9d0;position:relative;z-index:1}
+.cover-top .brand{color:#fff}
+.cover-top .eyebrow{color:#86c8d7;margin-top:14mm;position:relative;z-index:1}
+.cover-top h1{font-size:35pt;color:#fff;max-width:160mm;position:relative;z-index:1;margin-bottom:5mm}
+.cover-top .lead{color:#d5e0e5;max-width:154mm;position:relative;z-index:1}
+.cover-body{padding:9mm 15mm 15mm}
+.profile-line{display:flex;justify-content:space-between;align-items:center;gap:6mm;padding:4mm 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:7.4pt}
+.profile-line strong{color:var(--ink);font-weight:900}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin-top:3mm}
+.contact-item{border:1px solid var(--line);border-radius:2mm;padding:3mm}
+.contact-item span{display:block;color:var(--muted);font-size:6pt;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin-bottom:1mm}
+.contact-item strong{display:block;font-size:8pt;overflow-wrap:anywhere}
+.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:2mm;margin-top:3mm}
+.toc-item{display:flex;align-items:center;gap:3mm;border-bottom:1px solid var(--line);padding:2mm 0}
+.toc-item b{font-size:8.5pt;color:var(--accent);font-weight:900}
+.toc-item span{font-size:7.4pt;font-weight:800;color:var(--ink)}
+.profile-onepage .cover-top{height:99mm}
+.profile-onepage .cover-top .eyebrow{margin-top:9mm}
+.profile-onepage .cover-top h1{font-size:30pt}
+.profile-onepage .cover-body{padding-top:7mm}
+.profile-onepage .card p{font-size:7.2pt}
+@media print{html,body{background:#fff}.sheet{margin:0;box-shadow:none}.sheet:last-child{page-break-after:auto}}
+</style></head><body><section class="sheet cover" id="cover">
+  <div class="cover-top">
+    <div class="top"><span class="brand">MD SHOHAN / CLOUD &amp; DEVOPS ENGINEERING</span><span>TECHNICAL PORTFOLIO · 2026</span></div>
+    <p class="eyebrow">CSE UNDERGRADUATE · BANGLADESH UNIVERSITY</p>
+    <h1>Automate delivery.<br>Operate with clarity.<br>Build reliable systems.</h1>
+    <p class="lead">I’m MD Shohan, a Computer Science and Engineering undergraduate building foundations in DevOps and Site Reliability Engineering across cloud infrastructure, software delivery, automation, observability, and security.</p>
+  </div>
+  <div class="cover-body">
+    <div class="stat-row">
+      <div class="stat"><strong>01</strong><span>Engineering focus</span></div>
+      <div class="stat"><strong>06</strong><span>Core focus areas</span></div>
+      <div class="stat"><strong>05</strong><span>Document sections</span></div>
+    </div>
+    <div class="grid two">
+      <article class="card soft"><span class="kicker">PORTFOLIO POSITION</span><h3>Learning-stage engineering portfolio</h3><p>This document is a technical knowledge map. It explains systems, workflows, architecture patterns, and operational trade-offs being studied. It is not a claim of professional DevOps employment, production ownership, certification, or mastery across every tool.</p></article>
+      <article class="card soft"><span class="kicker">ENGINEERING DEFAULTS</span><h3>Traceable · Repeatable · Resilient</h3><p>Prefer reviewed changes, tested automation, least privilege, observable service contracts, documented recovery paths, and evidence-led improvement.</p></article>
+    </div>
+    <div class="rule"></div>
+    <span class="kicker">IN THIS DOCUMENT</span>
+    <div class="toc">
+      <a class="toc-item" href="#foundations"><b>01</b><span>Engineering foundations</span></a><a class="toc-item" href="#platform"><b>02</b><span>Delivery & infrastructure</span></a>
+      <a class="toc-item" href="#platform"><b>03</b><span>Platform & cloud engineering</span></a><a class="toc-item" href="#reliability"><b>04</b><span>Observability, reliability & security</span></a>
+      <a class="toc-item" href="#references"><b>05</b><span>Reference patterns & evidence</span></a><a class="toc-item" href="#references"><b>↗</b><span>Contact & next steps</span></a>
+    </div>
+    <div class="callout" style="margin-top:5mm"><strong>Scope note.</strong> No project gallery is published yet. The architecture examples in this document are learning references, not proof of live deployments or production operations.</div>
+  </div>
+  <div class="footer"><span>MD SHOHAN · AUTOMATE CHANGE / SEE CLEARLY / RECOVER DELIBERATELY</span><span>01 / 05</span></div>
+</section><section class="sheet" id="foundations">
+  <div class="top"><span class="brand">MD SHOHAN / ENGINEERING FOUNDATIONS</span><span>TECHNICAL PORTFOLIO · 02 / 05</span></div>
+  <div class="page-title"><div><p class="eyebrow">01 / CORE ENGINEERING FOUNDATIONS</p><h2>Understand the substrate first.</h2><p class="small">Reliable delivery depends on understanding the operating system, network, runtime, application contract, and the way change is reviewed.</p></div><span class="index">01</span></div>
+  <div class="grid two">
+    <article class="card"><span class="kicker">SYSTEMS</span><h3>Linux & operating systems</h3><p>Processes, signals, users, permissions, filesystems, packages, systemd, journald, SSH, namespaces, cgroups, and host-level troubleshooting.</p><div class="tools">PROCESS · SERVICE · FILESYSTEM · RESOURCE</div></article>
+    <article class="card"><span class="kicker">NETWORKING</span><h3>Network fundamentals</h3><p>IP addressing and CIDR, subnetting, routing, TCP/UDP, ports, DNS, HTTP, TLS, firewalls, NAT, and network namespaces.</p><div class="tools">TCP/IP · DNS · HTTP(S) · CIDR · TLS</div></article>
+    <article class="card"><span class="kicker">ARCHITECTURE</span><h3>Computer systems</h3><p>CPU scheduling, memory, storage I/O, caching, concurrency, virtualization, hypervisors, and resource bottlenecks.</p><div class="tools">CPU · MEMORY · STORAGE · VIRTUALIZATION</div></article>
+    <article class="card"><span class="kicker">AUTOMATION</span><h3>Shell & programming</h3><p>Bash for operating-system automation; Python for APIs, tests, structured workflows, and data transformation. Validate inputs and fail clearly.</p><div class="tools">BASH · PYTHON · JSON · YAML</div></article>
+    <article class="card"><span class="kicker">CHANGE CONTROL</span><h3>Git & software lifecycle</h3><p>Commits, branches, pull requests, reviews, tags, release notes, CI checks, and the feedback loop from requirements through operations.</p><div class="tools">GIT · REVIEW · CI · RELEASE</div></article>
+    <article class="card"><span class="kicker">APPLICATIONS</span><h3>Software & APIs</h3><p>HTTP methods and status codes, REST contracts, authentication, configuration, dependencies, timeouts, retries, idempotency, and health endpoints.</p><div class="tools">HTTP · REST · OPENAPI · HEALTH CONTRACTS</div></article>
+  </div>
+  <div class="rule"></div>
+  <p class="eyebrow">THE DELIVERY PATH</p><h2 style="font-size:16pt">From reviewed change to a running service.</h2>
+  <div class="flow">
+    <div class="step"><b>01 · SOURCE</b><span>Git / review</span></div><div class="step"><b>02 · VALIDATE</b><span>tests / lint</span></div><div class="step"><b>03 · BUILD</b><span>image / package</span></div><div class="step"><b>04 · SECURE</b><span>scan / SBOM</span></div><div class="step"><b>05 · PUBLISH</b><span>immutable digest</span></div><div class="step"><b>06 · DEPLOY</b><span>IaC / GitOps</span></div>
+  </div>
+  <div class="grid two">
+    <article class="card soft"><h3>Engineering habits</h3><ul class="list"><li>Keep change small, reviewable, and traceable.</li><li>Automate repeatable work and test failure paths.</li><li>Keep configuration and secrets out of source control.</li><li>Make service health observable and actionable.</li></ul></article>
+    <article class="card soft"><h3>Infrastructure lifecycle</h3><ul class="list"><li>Declare configuration and initialize providers/backends.</li><li>Plan, review policy and cost, then approve.</li><li>Apply, verify outputs, inspect drift, and preserve state.</li><li>Use encrypted remote state, locking, and short-lived identity.</li></ul></article>
+  </div>
+  <div class="footer"><span>MD SHOHAN · SYSTEMS / NETWORKING / AUTOMATION</span><span>02 / 05</span></div>
+</section><section class="sheet" id="platform">
+  <div class="top"><span class="brand">MD SHOHAN / DELIVERY & PLATFORM</span><span>TECHNICAL PORTFOLIO · 03 / 05</span></div>
+  <div class="page-title"><div><p class="eyebrow">02 / CLOUD &amp; DEVOPS ENGINEERING ECOSYSTEM</p><h2>Build repeatable paths to runtime.</h2><p class="small">The platform layer connects container packaging, orchestration, infrastructure provisioning, CI/CD, artifact management, and cloud services.</p></div><span class="index">02</span></div>
+  <div class="grid two">
+    <article class="card"><span class="kicker">CONTAINERS</span><h3>Docker & OCI</h3><p>Layered, content-addressed images; namespaces/cgroups isolation; networks and volumes; multi-stage builds, minimal base images, non-root runtime, and Compose.</p><div class="pillrow"><span class="pill">Buildx</span><span class="pill">OCI</span><span class="pill">Compose</span><span class="pill">Registries</span></div></article>
+    <article class="card"><span class="kicker">ORCHESTRATION</span><h3>Kubernetes fundamentals</h3><p>Deployments, Pods, Services, ConfigMaps, Secrets, probes, requests/limits, namespaces, Ingress/Gateway, and declarative reconciliation.</p><div class="pillrow"><span class="pill">Workloads</span><span class="pill">Services</span><span class="pill">Probes</span><span class="pill">Resources</span></div></article>
+    <article class="card"><span class="kicker">INFRASTRUCTURE</span><h3>Terraform & Ansible</h3><p>Terraform declares cloud resources and tracks state. Ansible converges hosts through inventories, playbooks, roles, and idempotent modules.</p><div class="pillrow"><span class="pill">IaC</span><span class="pill">State</span><span class="pill">Plans</span><span class="pill">Idempotency</span></div></article>
+    <article class="card"><span class="kicker">DELIVERY</span><h3>CI/CD platforms</h3><p>Jenkins, GitHub Actions, and GitLab CI runners, jobs, artifacts, reusable workflows, deployment environments, and scoped permissions.</p><div class="pillrow"><span class="pill">Pipelines</span><span class="pill">Artifacts</span><span class="pill">Environments</span></div></article>
+    <article class="card"><span class="kicker">CLOUD</span><h3>Cloud computing</h3><p>AWS, Azure, and GCP compute, network, identity, storage, registries, managed Kubernetes, and observability under shared responsibility.</p><div class="pillrow"><span class="pill">Compute</span><span class="pill">IAM</span><span class="pill">Network</span><span class="pill">Storage</span></div></article>
+    <article class="card"><span class="kicker">RELEASES</span><h3>Artifact & release management</h3><p>OCI/package registries, immutable digests, SBOMs, provenance, retention, rolling, blue/green, canary, and rollback practices.</p><div class="pillrow"><span class="pill">SBOM</span><span class="pill">Provenance</span><span class="pill">Rollback</span></div></article>
+  </div>
+  <div class="rule"></div>
+  <p class="eyebrow">03 / ADVANCED PLATFORM ENGINEERING</p><h2 style="font-size:16pt">Operate through declarative control loops.</h2>
+  <div class="grid two">
+    <article class="card soft"><h3>Kubernetes architecture & operations</h3><p>API server, etcd, scheduler, controllers, kubelet, container runtime, CNI, CSI, affinity, taints/tolerations, topology spread, HPA, PDB, admission policy, RBAC, and cluster upgrades.</p></article>
+    <article class="card soft"><h3>Helm, Kustomize & GitOps</h3><p>Render reusable charts and overlays. Argo CD and Flux compare Git-defined desired state with cluster state and reconcile drift. Validate generated manifests before apply.</p></article>
+    <article class="card soft"><h3>Platform engineering</h3><p>Internal developer platforms combine catalogs, templates, golden paths, documentation, ownership, and policy guardrails. Backstage can provide catalog and Scaffolder capabilities when integrated with an operating portal.</p></article>
+    <article class="card soft"><h3>Cloud-native architecture</h3><p>Microservices, service mesh, serverless, hybrid cloud, workload identity, scaling, failure domains, redundancy, RTO/RPO, backups, restore drills, and failover design.</p></article>
+  </div>
+  <div class="callout" style="margin-top:3mm"><strong>Verification boundary.</strong> A manifest is not proof of runtime enforcement. Verify the target CNI for NetworkPolicy, Metrics API for autoscaling, identity bindings, storage classes, admission controls, and real rollout/recovery behaviour.</div>
+  <div class="footer"><span>MD SHOHAN · CONTAINERS / CLOUD / GITOPS</span><span>03 / 05</span></div>
+</section><section class="sheet" id="reliability">
+  <div class="top"><span class="brand">MD SHOHAN / RELIABILITY & SECURITY</span><span>TECHNICAL PORTFOLIO · 04 / 05</span></div>
+  <div class="page-title"><div><p class="eyebrow">04 / OBSERVABILITY, RELIABILITY & SECURITY</p><h2>Make service behaviour visible.</h2><p class="small">Operational quality depends on trustworthy signals, explicit objectives, disciplined response, secure delivery, and recovery that has been tested.</p></div><span class="index">03</span></div>
+  <div class="flow">
+    <div class="step"><b>WORKLOAD</b><span>instrument</span></div><div class="step"><b>METRICS</b><span>Prometheus</span></div><div class="step"><b>LOGS</b><span>structured events</span></div><div class="step"><b>TRACES</b><span>OpenTelemetry</span></div><div class="step"><b>EXPLORE</b><span>Grafana / backend</span></div><div class="step"><b>RESPOND</b><span>alert / runbook</span></div>
+  </div>
+  <div class="grid two">
+    <article class="card"><span class="kicker">METRICS</span><h3>Prometheus & monitoring</h3><p>Scrape time series, query PromQL, and evaluate recording/alert rules. Use counters, gauges, histograms, bounded labels, and actionable alert thresholds.</p></article>
+    <article class="card"><span class="kicker">DASHBOARDS & LOGS</span><h3>Grafana & structured logging</h3><p>Build question-driven dashboards with deployment markers and links to logs/traces. Centralized logs need structured fields, correlation IDs, access control, and retention.</p></article>
+    <article class="card"><span class="kicker">TRACING</span><h3>OpenTelemetry</h3><p>APIs, SDKs, semantic conventions, and Collector pipelines generate and export telemetry. Context propagation connects work across service boundaries.</p></article>
+    <article class="card"><span class="kicker">SRE</span><h3>SLIs, SLOs & SLAs</h3><p>Define eligible good events, indicators, target windows, and external commitments. Error budgets help balance delivery risk with reliability investment.</p></article>
+    <article class="card"><span class="kicker">INCIDENTS</span><h3>Incident management & learning</h3><p>Detect, declare, assign roles, mitigate, communicate, recover, and learn. Maintain runbooks, timelines, escalation paths, blameless reviews, and owned corrective actions.</p></article>
+    <article class="card"><span class="kicker">SECURE DELIVERY</span><h3>DevSecOps & supply chain</h3><p>SAST, SCA, secret scanning, IaC/container scanning, SBOMs, signing, provenance, policy checks, and patch response across the delivery lifecycle.</p></article>
+    <article class="card"><span class="kicker">IDENTITY</span><h3>IAM & secrets</h3><p>Least privilege, scoped RBAC/IAM, OIDC federation, short-lived workload credentials, secret rotation, audit logs, and secure key management.</p></article>
+    <article class="card"><span class="kicker">GOVERNANCE</span><h3>Network security & policy</h3><p>Segmentation, TLS, private endpoints, encryption, policy-as-code, asset inventory, audit evidence, and appropriate control baselines.</p></article>
+    <article class="card"><span class="kicker">RECOVERY</span><h3>Backup & disaster recovery</h3><p>Define RPO/RTO, encrypt and isolate backups, test restoration, rehearse failover, and monitor the recovery process. Backup-job success does not prove recoverability.</p></article>
+    <article class="card"><span class="kicker">SUPPORTING DISCIPLINES</span><h3>Data, traffic & collaboration</h3><p>OpenAPI, databases, transactions, caches, NGINX/HAProxy/Envoy, storage, messaging, ADRs, runbooks, ownership, onboarding, and FinOps.</p></article>
+  </div>
+  <div class="rule"></div>
+  <div class="callout"><strong>Operational views.</strong> Combine RED (rate, errors, duration), USE (utilization, saturation, errors), and Golden Signals (latency, traffic, errors, saturation). Alert on sustained user impact with a clear owner, severity, threshold, and runbook.</div>
+  <div class="footer"><span>MD SHOHAN · OBSERVE / DIAGNOSE / RECOVER</span><span>04 / 05</span></div>
+</section><section class="sheet" id="references">
+  <div class="top"><span class="brand">MD SHOHAN / REFERENCE PATTERNS & SCOPE</span><span>TECHNICAL PORTFOLIO · 05 / 05</span></div>
+  <div class="page-title"><div><p class="eyebrow">05 / INTEGRATED ENGINEERING REFERENCES</p><h2>Connected patterns. Explicit boundaries.</h2><p class="small">These examples connect the domains above. They are design and learning references, not claims of live deployment or production operation.</p></div><span class="index">04</span></div>
+  <div class="grid two">
+    <article class="card"><span class="kicker">REF 01 / OBSERVABILITY</span><h3>Local service signals</h3><p>A Python HTTP API can expose liveness, readiness, and Prometheus metrics. Docker Compose can run the API with Prometheus and provisioned Grafana dashboards. Production adds secure ingress, authentication, durable storage, alert routing, retention, and SLO policy.</p></article>
+    <article class="card"><span class="kicker">REF 02 / CLOUD NETWORK</span><h3>Two-zone AWS topology</h3><p>A VPC with public/private subnets across two Availability Zones, Internet Gateway routes, optional NAT egress, ECR, and optional EKS illustrates network separation. Costly resources should be opt-in; one NAT is not zone-resilient.</p></article>
+    <article class="card"><span class="kicker">REF 03 / KUBERNETES</span><h3>Hardened workload contract</h3><p>Deployment, Service, startup/liveness/readiness probes, resource requests/limits, HPA, PDB, service account, seccomp, non-root execution, read-only root filesystem, and NetworkPolicy form a baseline. Metrics API and CNI support must be verified.</p></article>
+    <article class="card"><span class="kicker">REF 04 / SUPPLY CHAIN</span><h3>Secure build and GitOps</h3><p>A CI pipeline can test, build with Buildx, generate a CycloneDX SBOM, scan with Trivy, publish an immutable GHCR digest, and hand declarative Helm configuration to Argo CD for reconciliation.</p></article>
+    <article class="card"><span class="kicker">REF 05 / PLATFORM</span><h3>Backstage service catalog</h3><p>Catalog entities and Scaffolder templates model service ownership and generate a consistent repository skeleton. Template source alone is not a running developer portal; integrations, permissions, and publication actions are required.</p></article>
+    <article class="card"><span class="kicker">REF 06 / OPERATIONS</span><h3>Measure, diagnose, recover</h3><p>Combine RED/USE signals, traces, log context, release markers, runbooks, incident roles, and tested recovery procedures to connect system behaviour with user impact.</p></article>
+  </div>
+  <div class="rule"></div>
+  <div class="grid two">
+    <article class="card soft"><span class="kicker">EVIDENCE & SCOPE</span><h3>A knowledge portfolio, ready to grow.</h3><p>This portfolio is intentionally project-free for now. The projects directory is empty. No fictional projects, repository links, deployments, credentials, certifications, or professional achievements are presented. Tools listed are topics for study and practice, not proficiency scores.</p></article>
+    <article class="card soft"><span class="kicker">PRACTICE STANDARD</span><h3>Learn → model → implement → verify.</h3><p>When work is ready to publish, include source, reproducible setup, architecture decisions, validation output, security posture, operational boundaries, and known limitations. Publish only what can be demonstrated.</p></article>
+  </div>
+  <div class="rule"></div>
+  <p class="eyebrow">CONTACT & PROFESSIONAL PROFILE</p>
+  <div class="contact-grid">
+    <div class="contact-item"><span>Email</span><a href="mailto:mohammad.and.shohan@gmail.com"><strong>mohammad.and.shohan@gmail.com</strong></a></div>
+    <div class="contact-item"><span>Location</span><strong>Dhaka, Bangladesh</strong></div>
+    <div class="contact-item"><span>GitHub</span><a href="https://github.com/MD-SH0HAN"><strong>github.com/MD-SH0HAN</strong></a></div>
+    <div class="contact-item"><span>Portfolio</span><a href="https://md-sh0han.github.io/PORTFOLIO/"><strong>md-sh0han.github.io/PORTFOLIO/</strong></a></div>
+  </div>
+  <div class="footer"><span>MD SHOHAN · AUTOMATE CHANGE / SEE CLEARLY / RECOVER DELIBERATELY</span><span>END / 05</span></div>
+</section></body></html>
