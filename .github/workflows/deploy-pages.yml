@@ -1,11 +1,12 @@
+
 name: Deploy portfolio to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
-# No workflow-wide token permissions. Each job receives only what it needs.
 permissions: {}
 
 concurrency:
@@ -14,27 +15,33 @@ concurrency:
 
 jobs:
   build:
+    name: Validate and build portfolio
     runs-on: ubuntu-latest
     timeout-minutes: 25
+
     permissions:
       contents: read
+
     steps:
-      - name: Check out source (pinned)
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
 
-      - name: Set up Python (pinned)
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: '3.12'
 
-      - name: Set up Node.js (pinned)
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '24'
 
-      - name: Validate source before packaging
+      - name: Prepare projects directory
+        run: mkdir -p projects
+
+      - name: Validate portfolio
         run: |
           python scripts/check_portfolio.py
           node --check script.js
@@ -42,40 +49,46 @@ jobs:
           node --check advanced-animations.js
           node --check final-interactions.js
 
-      - name: Install optional browser test tooling
-        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
+      - name: Install browser test requirements
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements-dev.txt
 
-      - name: Install Chromium for deployment gate
+      - name: Install Chromium
         run: python -m playwright install --with-deps chromium
 
-      - name: Run browser smoke tests before deployment
+      - name: Run browser smoke tests
         run: |
           python scripts/browser_smoke.py
           python scripts/advanced_animation_smoke.py
           python scripts/final_interactions_smoke.py
 
-      - name: Assemble public site artifact
+      - name: Assemble website
         run: |
           mkdir -p dist
           cp index.html styles.css animations.css advanced-animations.css final-interactions.css script.js animations.js advanced-animations.js final-interactions.js 404.html robots.txt sitemap.xml .nojekyll "Profile Photo.webp" dist/
           cp -R assets documents dist/
 
-      - name: Upload static site artifact (pinned)
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
           path: dist
 
   deploy:
+    name: Publish to GitHub Pages
     needs: build
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
     permissions:
       pages: write
       id-token: write
+
     steps:
-      - name: Deploy GitHub Pages artifact (pinned)
+      - name: Deploy website
         id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
