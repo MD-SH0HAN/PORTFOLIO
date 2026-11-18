@@ -1,0 +1,2 @@
+# Optional browser-only test tooling; the deployed portfolio has no Python or Node runtime dependency.
+playwright==1.65.2

@@ -1,0 +1,190 @@
+/* Final interaction layer: modal pattern inspection,
+   learning-stage navigation, command palette enhancements, and mobile ergonomics. */
+/* 01 — Architecture pattern expansion dialog. */
+.architecture-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-top: 11px;
+}
+.architecture-expand-button,
+.architecture-detail-control,
+.roadmap-stage-select,
+.roadmap-focus-button {
+  min-height: 36px;
+  padding: 8px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font: 700 9px var(--font);
+  cursor: pointer;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.architecture-expand-button { width: 100%; justify-content: center; }
+.architecture-expand-button:hover,
+.architecture-detail-control:hover:not(:disabled),
+.roadmap-stage-select:hover,
+.roadmap-focus-button:hover { border-color: var(--text); background: var(--panel-strong); }
+.architecture-expand-button:active,
+.architecture-detail-control:active:not(:disabled),
+.roadmap-stage-select:active,
+.roadmap-focus-button:active { transform: translateY(1px); }
+.architecture-detail-control:disabled { opacity: .42; cursor: not-allowed; }
+.architecture-detail-dialog {
+  width: min(1040px, calc(100% - 36px));
+  max-width: none;
+  max-height: min(88vh, 900px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 22px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 28px 100px rgba(0,0,0,.46);
+}
+.architecture-detail-dialog::backdrop { background: rgba(0,0,0,.66); backdrop-filter: blur(7px); }
+.architecture-detail-dialog[open] { animation: command-dialog-in .2s var(--ease) both; }
+.architecture-detail-shell { display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; max-height: min(88vh,900px); }
+.architecture-detail-heading {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  padding: 23px 26px 16px; border-bottom: 1px solid var(--line);
+}
+.architecture-detail-heading h2 { margin: 6px 0 0; font-size: clamp(22px,3vw,32px); letter-spacing: -.055em; line-height: 1.12; }
+.architecture-detail-heading p { max-width: 760px; margin: 9px 0 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.architecture-detail-kicker { color: var(--muted); font: 700 8px var(--font); letter-spacing: .14em; }
+.architecture-detail-close { flex: 0 0 auto; }
+.architecture-detail-content {
+  display: grid; grid-template-columns: minmax(0,1.45fr) minmax(240px,.8fr); gap: 18px;
+  min-height: 0; padding: 18px 26px 22px; overflow: auto; overscroll-behavior: contain;
+}
+.architecture-detail-visual-panel,
+.architecture-detail-sequence-panel { min-width: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.architecture-detail-visual-panel { display: grid; grid-template-rows: auto minmax(210px,1fr); gap: 10px; padding: 13px; }
+.architecture-detail-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.architecture-detail-toolbar-label { color: var(--muted); font: 700 8px var(--font); letter-spacing: .1em; }
+.architecture-detail-zoom { display: flex; align-items: center; gap: 5px; }
+.architecture-detail-zoom output { min-width: 43px; color: var(--muted); text-align: center; font: 8px var(--font); font-variant-numeric: tabular-nums; }
+.architecture-detail-stage {
+  display: flex; align-items: center; min-width: 0; min-height: 210px; max-height: min(52vh,540px); overflow: auto;
+  padding: 12px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card-surface-inset); overscroll-behavior: contain; touch-action: pan-x pan-y;
+  scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+}
+.architecture-detail-stage:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.architecture-detail-visual { width: 100%; min-width: 430px; flex: 0 0 auto; transform-origin: top left; transition: transform .2s ease; }
+.architecture-detail-visual .arch-visual { min-height: 230px; margin: 0; padding: 18px; gap: 14px; }
+.architecture-detail-visual .arch-flow { gap: 10px; }
+.architecture-detail-visual .arch-flow > span { min-height: 48px; padding: 11px 9px; font-size: 10px; }
+.architecture-detail-visual .arch-flow > i { font-size: 17px; }
+.architecture-detail-visual .arch-down { font-size: 22px; }
+.architecture-detail-visual .arch-zone-pair { gap: 12px; }
+.architecture-detail-visual .arch-zone-pair > div { padding: 13px; gap: 9px; }
+.architecture-detail-visual .arch-zone-pair b { font-size: 10px; }
+.architecture-detail-visual .arch-zone-pair span { padding: 9px 6px; font-size: 9px; }
+.architecture-detail-status { min-height: 18px; margin: 2px 0 0; color: var(--muted); font-size: 8px; line-height: 1.5; }
+.architecture-detail-sequence-panel { padding: 17px; }
+.architecture-detail-sequence-panel h3 { margin: 0 0 5px; font-size: 15px; letter-spacing: -.035em; }
+.architecture-detail-sequence-panel > p { margin: 0 0 13px; color: var(--muted); font-size: 9px; line-height: 1.6; }
+.architecture-detail-steps { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: architecture-step; }
+.architecture-detail-steps li { position: relative; display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 9px; padding: 10px 0; border-top: 1px solid var(--line); counter-increment: architecture-step; }
+.architecture-detail-steps li::before { content: counter(architecture-step,decimal-leading-zero); display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid var(--line-strong); border-radius: 7px; color: var(--muted); font: 8px var(--font); }
+.architecture-detail-steps strong { display: block; font-size: 9px; line-height: 1.45; }
+.architecture-detail-steps span { display: block; margin-top: 3px; color: var(--muted); font-size: 8px; line-height: 1.55; }
+.architecture-detail-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 12px 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: 8px; }
+.architecture-detail-footer .architecture-detail-control { min-height: 34px; }
+.architecture-detail-dialog.is-flow-drawing .architecture-detail-visual .arch-visual span { animation: ea-gallery-node .45s both; }
+.architecture-detail-dialog.is-flow-drawing .architecture-detail-visual .arch-visual i,
+.architecture-detail-dialog.is-flow-drawing .architecture-detail-visual .arch-visual .arch-down { animation: ea-gallery-arrow .35s both; }
+
+/* 03 — A navigable learning path. The selected stage is explicitly not a completion claim. */
+.roadmap-stage-explorer {
+  display: grid; gap: 11px; margin: 19px 0 13px; padding: 15px 16px;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--panel);
+}
+.roadmap-stage-explorer-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.roadmap-stage-explorer-head strong { display: block; font: 700 8px var(--font); letter-spacing: .12em; }
+.roadmap-stage-explorer-head p { max-width: 470px; margin: 4px 0 0; color: var(--muted); font-size: 8px; line-height: 1.55; }
+.roadmap-stage-track { position: relative; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 9px; }
+.roadmap-stage-track::before,
+.roadmap-stage-track-fill { content: ""; position: absolute; top: 15px; left: 8%; right: 8%; height: 1px; background: var(--line-strong); pointer-events: none; }
+.roadmap-stage-track-fill { right: auto; width: calc(var(--roadmap-progress,0) * 84%); background: var(--text); transform-origin: left; transition: width .28s ease; }
+.roadmap-stage-select { position: relative; z-index: 1; display: grid; justify-items: center; gap: 7px; min-width: 0; min-height: 54px; padding: 0 4px; border: 0; background: transparent; color: var(--muted); }
+.roadmap-stage-select:hover { background: transparent; color: var(--text); }
+.roadmap-stage-select .roadmap-stage-dot { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--panel); color: var(--muted); font: 8px var(--font); transition: background .2s,border-color .2s,color .2s,transform .2s; }
+.roadmap-stage-select[aria-pressed=true] .roadmap-stage-dot { border-color: var(--text); background: var(--text); color: var(--bg); transform: scale(1.07); }
+.roadmap-stage-select .roadmap-stage-name { max-width: 100%; overflow-wrap: anywhere; text-align: center; font-size: 8px; line-height: 1.35; }
+.roadmap-stage-status { margin: 0; padding-top: 8px; border-top: 1px solid var(--line); color: var(--muted); font-size: 8px; line-height: 1.5; }
+.eng-roadmap > li { transition: border-color .2s, background .2s, box-shadow .2s; }
+.eng-roadmap > li.is-stage-focused { border-color: var(--text-soft); background: var(--panel-strong); box-shadow: 0 0 0 1px color-mix(in srgb,var(--text) 8%,transparent); }
+.roadmap-focus-button { align-self: flex-start; margin-top: 2px; min-height: 33px; font-size: 8px; }
+
+/* 04 — Command palette refinement. */
+.command-filter-row { display: flex; gap: 6px; margin: 12px 0 8px; padding: 2px 0 5px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.command-filter-button { flex: 0 0 auto; min-height: 31px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 99px; background: transparent; color: var(--muted); font: 700 8px var(--font); cursor: pointer; }
+.command-filter-button[aria-pressed=true] { border-color: var(--text); background: var(--text); color: var(--bg); }
+.command-filter-button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.command-result-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 6px 2px 0; color: var(--muted); font: 8px var(--font); }
+.command-result-meta [data-command-count] { font-variant-numeric: tabular-nums; }
+.command-result-recent { margin-left: 6px; padding: 3px 5px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); font: 7px var(--font); }
+.command-result[aria-selected=true] { outline: none; }
+.command-result:focus-visible { outline: 2px solid var(--text); outline-offset: -2px; }
+.command-empty { line-height: 1.6; }
+
+/* 05 — Consistent interaction feedback and focus states. */
+#toast[data-feedback=success] { border-color: var(--line-strong); }
+#toast[data-feedback=error] { border-style: dashed; border-color: var(--text); }
+#toast[data-feedback=info] { border-color: var(--line-strong); }
+.architecture-expand-button:focus-visible,
+.architecture-detail-control:focus-visible,
+.roadmap-stage-select:focus-visible,
+.roadmap-focus-button:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+.architecture-detail-dialog button:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+.architecture-detail-dialog button:disabled { cursor: not-allowed; opacity: .45; }
+
+/* 06 — Mobile/touch ergonomics for diagrams, controls, and learning navigation. */
+@media (max-width: 760px) {
+  .architecture-detail-dialog { width: calc(100% - 18px); max-height: 92dvh; border-radius: 16px; }
+  .architecture-detail-shell { max-height: 92dvh; }
+  .architecture-detail-heading { padding: 17px 16px 13px; }
+  .architecture-detail-heading h2 { font-size: 22px; }
+  .architecture-detail-heading p { font-size: 10px; }
+  .architecture-detail-content { grid-template-columns: minmax(0,1fr); gap: 11px; padding: 12px 14px 16px; }
+  .architecture-detail-visual-panel { grid-template-rows: auto minmax(190px,1fr); padding: 10px; }
+  .architecture-detail-stage { min-height: 190px; max-height: 38dvh; padding: 9px; align-items: flex-start; }
+  .architecture-detail-visual { min-width: 480px; }
+  .architecture-detail-footer { padding: 10px 14px; flex-wrap: wrap; }
+  .architecture-detail-footer .architecture-detail-control { flex: 1 1 auto; }
+  .roadmap-stage-explorer { padding: 12px; }
+  .roadmap-stage-explorer-head { display: block; }
+  .roadmap-stage-explorer-head p { margin-top: 5px; }
+  .roadmap-stage-track { gap: 3px; }
+  .roadmap-stage-select { min-height: 58px; }
+  .roadmap-stage-select .roadmap-stage-name { font-size: 7px; }
+  .ea-controls button { min-height: 40px; }
+  .ea-graph-wrap { max-width: 100%; overflow-x: auto; touch-action: pan-x pan-y; }
+  .ea-graph-svg { min-width: 500px; }
+  .constellation-canvas { overflow: auto; overscroll-behavior: contain; touch-action: pan-x pan-y; }
+  .command-dialog { width: calc(100% - 16px); max-height: 88dvh; }
+  .command-dialog-shell { padding: 14px; }
+  .command-filter-row { margin-inline: -2px; padding-inline: 2px; }
+  .command-filter-button { min-height: 36px; }
+  .command-result-meta { font-size: 7px; }
+}
+@media (max-width: 420px) {
+  .roadmap-stage-track { grid-template-columns: repeat(5,minmax(48px,1fr)); overflow-x: auto; padding-bottom: 4px; }
+  .roadmap-stage-track::before,
+  .roadmap-stage-track-fill { left: 29px; right: 29px; }
+  .roadmap-stage-select { min-width: 48px; }
+  .roadmap-stage-select .roadmap-stage-name { font-size: 6.5px; }
+  .architecture-detail-zoom { gap: 3px; }
+  .architecture-detail-control { min-width: 36px; }
+  .command-result { grid-template-columns: minmax(0,1fr) 18px; }
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .eng-roadmap > li,
+  .architecture-card,
+  .architecture-detail-visual,
+  .roadmap-stage-track-fill { transition: none !important; }
+}
