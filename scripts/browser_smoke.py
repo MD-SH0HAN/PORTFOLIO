@@ -82,6 +82,32 @@ def main() -> int:
             else:
                 failures.append("document title is empty")
 
+            # The portfolio overview is a static, non-interactive display within the intro hero.
+            overview = page.locator(".hero-overview-mini")
+            if overview.count() == 1 and overview.locator(".hero-overview-mini-item[role='listitem']").count() == 5:
+                passed.append("intro contains five compact icon-led static portfolio areas")
+            else:
+                failures.append("compact intro overview or its five static areas are missing")
+            interactive_overview_items = overview.locator("a, button, input, [tabindex]").count()
+            if interactive_overview_items == 0:
+                passed.append("portfolio area boxes are display-only and cannot be clicked or focused")
+            else:
+                failures.append(f"portfolio area boxes unexpectedly contain {interactive_overview_items} interactive descendants")
+            focus_copy = overview.locator(".hero-overview-focus").inner_text().replace("\n", " ")
+            if "ENGINEERING FOCUS" in focus_copy and "Cloud-native delivery" in focus_copy and "GitOps" in focus_copy:
+                passed.append("refined cloud-native engineering focus appears above the five area boxes")
+            else:
+                failures.append("engineering focus heading or description is missing from above the area boxes")
+            if overview.locator(".hero-overview-mini-metrics > span").count() == 4 and page.locator("#portfolio-overview").count() == 0:
+                passed.append("compact content counts render in the intro; no separate overview section remains")
+            else:
+                failures.append("intro overview counts are incomplete or an oversized standalone overview remains")
+            hero_copy = page.locator("#heroTitle").inner_text().replace("\n", " ").strip()
+            if hero_copy == "Engineering cloud infrastructure. Automating delivery. Building reliable systems." and page.locator("#profilePhoto").count() == 1:
+                passed.append("existing profile headline and portrait remain unchanged")
+            else:
+                failures.append("existing profile hero content changed unexpectedly")
+
             accessibility = page.evaluate(r"""() => {
               const text = element => (element.innerText || element.textContent || '').replace(/\s+/g, ' ').trim();
               const named = element => Boolean(element.getAttribute('aria-label') || element.getAttribute('aria-labelledby') || element.getAttribute('title') || text(element));

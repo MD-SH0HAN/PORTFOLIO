@@ -1,13 +1,3 @@
-# GitHub Pages deployment (MD-SH0HAN)
-
-The ready-to-publish project repository is **`MD-SH0HAN/PORTFOLIO`** and the target URL is **https://md-sh0han.github.io/PORTFOLIO/**.
-
-Your existing `MD-SH0HAN/MD-SH0HAN` repository is your profile repository; keep it separate. Create a new public repository named `PORTFOLIO`, then upload the contents of this folder to its root. Enable **Settings → Pages → Source → GitHub Actions**. The included `.github/workflows/deploy-pages.yml` validates and deploys the site on pushes to `main`.
-
-See [`GITHUB-DEPLOYMENT.md`](GITHUB-DEPLOYMENT.md) for exact GitHub website and GitHub Desktop instructions.
-
----
-
 # MD SHOHAN — Cloud & DevOps Engineering Portfolio
 
 A single-page, dependency-free HTML/CSS/JavaScript portfolio and technical knowledge map. The design remains monochrome and engineering-focused while the information architecture now covers cloud infrastructure, delivery automation, infrastructure as code, containers, platform engineering, observability, SRE, DevSecOps, FinOps, and reference architectures.
@@ -295,3 +285,10 @@ The implementation is provided by `final-interactions.css` and `final-interactio
 ## Solid-background refinement (v11)
 
 The cursor-following engineering grid, SVG pointer connection overlay, card spotlight, and pointer-driven 3D card tilt have been removed. The site canvas and selected diagram canvases now use solid theme surfaces without decorative page/diagram grid textures. Existing card surfaces, hover affordances, architecture diagrams, and diagram-specific visualizations remain intact. The first/about and final/contact sections retain their original content and structure.
+
+
+## Compact portfolio overview in the intro (v13)
+
+The separate long overview section was intentionally removed. A compact, icon-led five-area index now sits inside the existing intro hero, with short topic labels and a four-number content snapshot (14 learning domains, 12 architecture patterns, 26 browser-local labs, and 10 playbook guides). It uses the site's existing line-based visual language: no large filled cards, no extra section, no icon CDN, and no external runtime dependency. The original profile copy, portrait, education details, and existing engineering identity remain intact. The five links point to the existing Foundations, Cloud, Delivery, Observability, and Architecture Gallery sections.
+
+

@@ -162,6 +162,14 @@ def main() -> int:
         fail("architecture gallery must contain exactly 12 conceptual patterns")
     if html.count('<article><b>') != 14:
         fail("technical domain map must contain 14 categorized areas")
+    if len(re.findall(r'class="hero-overview-mini-item(?:\s|")', html)) != 5:
+        fail("intro overview must contain five compact, icon-led static portfolio areas")
+    if re.search(r'<a[^>]*class="[^"]*hero-overview-mini-item', html):
+        fail("intro portfolio area boxes must be non-interactive display-only items")
+    if html.count('class="hero-overview-mini-metrics"') != 1 or html.count('<strong>14</strong>') < 1 or html.count('<strong>26</strong>') < 1:
+        fail("intro overview must show the verified content inventory")
+    if 'id="portfolio-overview"' in html or 'class="overview-pillar-card' in html:
+        fail("the oversized standalone overview must not return")
     mounts = set(re.findall(r'data-anim-mount=["\']([^"\']+)["\']', html))
     missing_mounts = sorted(ANIMATION_MOUNTS - mounts)
     if missing_mounts:
@@ -179,6 +187,9 @@ def main() -> int:
     animations_css = (ROOT / "animations.css").read_text(encoding="utf-8")
     if animations_css.count("{") != animations_css.count("}"):
         fail("animation stylesheet brace counts do not balance")
+    intro_css = (ROOT / "styles.css").read_text(encoding="utf-8")
+    if ".hero-overview-mini" not in intro_css or "@media (max-width: 420px)" not in intro_css:
+        fail("compact intro overview styles or narrow-screen refinements are missing")
     if 'href="animations.css"' not in html or 'src="animations.js"' not in html or 'href="advanced-animations.css"' not in html or 'src="advanced-animations.js"' not in html or 'href="final-interactions.css"' not in html or 'src="final-interactions.js"' not in html:
         fail("animation assets are not mounted by the main document")
 
@@ -357,7 +368,7 @@ def main() -> int:
     if 'final-interactions.js' not in deploy_text or 'final-interactions.css' not in deploy_text:
         fail("Pages artifact must include final interaction assets")
 
-    print("PASS: required engineering sections, controls, 12 architecture patterns, and 14 knowledge domains")
+    print("PASS: required engineering sections, compact five-area intro overview, controls, 12 architecture patterns, and 14 knowledge domains")
     print(f"PASS: {len(ANIMATION_MOUNTS)} original animation mount points, 26 advanced labs, 12 gallery draw controls, and seven delivery stages")
     print("PASS: 26 concept-specific visual renderers, algorithmic graph ordering, vertical / structural layouts, and project-evidence boundaries")
     print("PASS: solid page canvas with no cursor-following effects, 12 expanded architecture flows, five-stage navigator, enhanced command palette, feedback, and mobile diagram controls")
