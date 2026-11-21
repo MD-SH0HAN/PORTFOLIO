@@ -1,3 +1,9 @@
+/*
+ * Final interaction and refinement stylesheet; loaded after styles.css and
+ * animations.css. It owns dialogs, navigation refinements, content-aware grids,
+ * and the final solid monochrome surface contract. Later rules are intentional
+ * cascade overrides, not separate themes. Primary content cards use #111111.
+ */
 /* Final interaction layer: modal pattern inspection,
    learning-stage navigation, command palette enhancements, and mobile ergonomics. */
 /* 01 — Architecture pattern expansion dialog. */
@@ -188,3 +194,941 @@
   .architecture-detail-visual,
   .roadmap-stage-track-fill { transition: none !important; }
 }
+
+/* 07 — Evidence-first portfolio layer. Scoped to internal engineering sections;
+   the protected introduction/hero and final contact page are intentionally untouched. */
+.portfolio-evidence-guide {
+  display: grid;
+  gap: 17px;
+  margin-top: 17px;
+  padding: clamp(19px, 3vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(145deg, var(--panel-strong), var(--panel) 58%, transparent);
+  box-shadow: var(--shadow);
+}
+.portfolio-evidence-guide-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+.portfolio-evidence-guide-heading .mono,
+.portfolio-artifact-proof .mono,
+.portfolio-claim-boundary .mono {
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+.portfolio-evidence-guide-heading h3 {
+  margin: 7px 0 0;
+  font-size: clamp(20px, 2.5vw, 29px);
+  line-height: 1.18;
+  letter-spacing: -.05em;
+}
+.portfolio-evidence-guide-heading > p {
+  max-width: 440px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.8;
+}
+.portfolio-evidence-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.portfolio-evidence-guide-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--card-surface-inset);
+}
+.portfolio-evidence-number {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  margin-bottom: 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--muted);
+  font: 9px var(--font);
+  font-variant-numeric: tabular-nums;
+}
+.portfolio-evidence-label {
+  color: var(--muted);
+  font: 700 7px/1.5 var(--font);
+  letter-spacing: .08em;
+  overflow-wrap: anywhere;
+}
+.portfolio-evidence-guide-card h4 {
+  margin: 7px 0 7px;
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: -.025em;
+}
+.portfolio-evidence-guide-card p {
+  margin: 0 0 13px;
+  color: var(--muted);
+  font-size: 9.5px;
+  line-height: 1.75;
+}
+.portfolio-evidence-guide-card .text-link {
+  margin-top: auto;
+  font-size: 9px;
+}
+.portfolio-evidence-guide-note {
+  margin: 0;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 9.5px;
+  line-height: 1.75;
+}
+.portfolio-evidence-guide-note strong { color: var(--text); }
+
+.portfolio-artifact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin-top: 20px;
+}
+.portfolio-artifact {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 285px;
+  padding: clamp(19px, 2.6vw, 25px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(145deg, var(--panel-strong), var(--panel) 62%, transparent);
+  box-shadow: var(--shadow);
+  transition: border-color .22s ease, transform .22s ease, background .22s ease;
+}
+.portfolio-artifact:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+.portfolio-artifact-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.portfolio-artifact-index {
+  color: var(--muted);
+  font: 8px var(--font);
+  letter-spacing: .09em;
+}
+.portfolio-artifact-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 99px;
+  color: var(--text-soft);
+  font: 700 7px/1.35 var(--font);
+  letter-spacing: .045em;
+  text-align: center;
+}
+.portfolio-artifact h3 {
+  margin: 19px 0 9px;
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.25;
+  letter-spacing: -.04em;
+}
+.portfolio-artifact > p {
+  max-width: 610px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.8;
+}
+.portfolio-artifact-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 17px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.portfolio-artifact-proof .mono {
+  flex: 0 0 100%;
+  margin-bottom: 2px;
+}
+.portfolio-artifact-proof code {
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card-surface-inset);
+  color: var(--text-soft);
+  font: 8px/1.4 var(--font);
+  overflow-wrap: anywhere;
+}
+.portfolio-artifact-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+  margin-top: auto;
+  padding-top: 17px;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.portfolio-artifact-link span { color: var(--muted); transition: transform .2s ease; }
+.portfolio-artifact-link:hover span { transform: translate(2px, -2px); }
+.portfolio-artifact-link:focus-visible,
+.portfolio-evidence-guide-card .text-link:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+.portfolio-claim-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 14px;
+  padding: clamp(18px, 2.5vw, 24px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+}
+.portfolio-claim-boundary h3 {
+  margin: 7px 0 6px;
+  font-size: 17px;
+  line-height: 1.28;
+  letter-spacing: -.035em;
+}
+.portfolio-claim-boundary p {
+  max-width: 850px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.8;
+}
+.portfolio-claim-state {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 6px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 99px;
+  color: var(--text-soft);
+  font: 700 7px var(--font);
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+.portfolio-claim-state i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-soft);
+}
+
+@media (max-width: 820px) {
+  .portfolio-evidence-guide-heading { display: block; }
+  .portfolio-evidence-guide-heading > p { margin-top: 10px; }
+  .portfolio-evidence-guide-grid { grid-template-columns: 1fr; }
+  .portfolio-evidence-guide-card { min-height: 0; }
+  .portfolio-artifact-grid { grid-template-columns: 1fr 1fr; }
+  .portfolio-claim-boundary { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 560px) {
+  .portfolio-evidence-guide { padding: 17px; border-radius: 16px; }
+  .portfolio-evidence-guide-grid { gap: 8px; }
+  .portfolio-evidence-guide-card { padding: 14px; }
+  .portfolio-artifact-grid { grid-template-columns: 1fr; gap: 10px; }
+  .portfolio-artifact { min-height: 0; padding: 18px; }
+  .portfolio-artifact h3 { margin-top: 15px; }
+  .portfolio-claim-boundary { padding: 17px; }
+  .portfolio-claim-state { white-space: normal; }
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .portfolio-artifact,
+  .portfolio-artifact-link span { transition: none !important; }
+  .portfolio-artifact:hover { transform: none; }
+  .portfolio-artifact-link:hover span { transform: none; }
+}
+
+
+/* Final readability and navigation fit for the evidence-first middle sections. */
+.portfolio-evidence-guide-heading > p { font-size: 11.5px; }
+.portfolio-evidence-guide-card p { font-size: 11px; line-height: 1.78; }
+.portfolio-evidence-guide-note { font-size: 10.5px; }
+.portfolio-artifact > p { font-size: 11.5px; line-height: 1.78; }
+.portfolio-artifact-link { font-size: 11px; }
+.portfolio-claim-boundary p { font-size: 10.8px; }
+.eng-section#projects .section-heading h2 { max-width: 650px; font-size: clamp(31px, 4vw, 48px); }
+@media (min-width: 1101px) {
+  .section-nav { gap: 3px; }
+  .section-nav a { padding-inline: 11px; font-size: 11px; }
+}
+
+/* --------------------------------------------------------------------------
+   Content-aware responsive grid system
+   The page has collections with different purposes and item counts. Do not
+   force them all into one fixed number of columns: use balanced arrangements
+   so the last row is intentional at desktop, tablet, and mobile widths.
+   -------------------------------------------------------------------------- */
+
+/* The animated lab gallery uses 2 columns for pairs and 3 columns for trios.
+   A single model (for example the delivery simulator) owns the full row. */
+.ea-grid > .ea-card:only-child { grid-column: 1 / -1; }
+.ea-grid:has(> .ea-card:nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Expandable topic cards: item count comes from the live DOM after the
+   interactive delivery tile has been inserted, so this stays accurate if
+   topics are added or removed later. */
+.eng-card-grid[data-compact-count="10"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.eng-card-grid[data-compact-count="9"]  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.eng-card-grid[data-compact-count="8"]  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.eng-card-grid[data-compact-count="6"]  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.eng-card-grid[data-compact-count="3"]  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.eng-card-grid[data-compact-count="2"]  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.eng-card-grid[data-compact-count="1"]  { grid-template-columns: minmax(0, 1fr); }
+
+/* Five learning stages and five source groups use a 3 + 2 composition:
+   the final pair intentionally widens to half-row cards rather than leaving
+   an empty third of the final line. */
+.eng-roadmap {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+}
+.eng-roadmap > li { grid-column: span 2; }
+.eng-roadmap > li:nth-child(n + 4) { grid-column: span 3; }
+
+.eng-source-groups { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.eng-source-group { grid-column: span 2; }
+.eng-source-group:nth-child(n + 4) { grid-column: span 3; }
+
+/* The seventh decision record fills its row; the decision summaries retain
+   their readable two-column rhythm above it. */
+.eng-decision-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* Fourteen technology domains remain a 4-column index on wide screens.
+   The final two entries share the complete final row; tablets use two columns. */
+.skills-matrix-grid > :nth-last-child(2),
+.skills-matrix-grid > :last-child { grid-column: span 2; }
+
+/* A seven-stage system sequence becomes 4 + 3 on medium screens. The second
+   row's three stages are widened evenly instead of leaving a vacant column. */
+@media (max-width: 1100px) {
+  .ea-grid:has(> .ea-card:nth-child(3):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ea-grid:has(> .ea-card:nth-child(3):last-child) > .ea-card:nth-child(3) { grid-column: 1 / -1; }
+
+  .eng-card-grid[data-compact-count="10"],
+  .eng-card-grid[data-compact-count="8"],
+  .eng-card-grid[data-compact-count="6"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eng-card-grid[data-compact-count="9"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .eng-card-grid[data-compact-count="3"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .eng-roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .eng-roadmap > li,
+  .eng-roadmap > li:nth-child(n + 4) { grid-column: auto; }
+  .eng-roadmap > li:last-child { grid-column: 1 / -1; }
+
+  .skills-matrix-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .skills-matrix-grid > :nth-last-child(2),
+  .skills-matrix-grid > :last-child { grid-column: auto; }
+
+  .eng-system-flow { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .eng-system-flow > li:nth-child(-n + 4) { grid-column: span 3; }
+  .eng-system-flow > li:nth-child(n + 5) { grid-column: span 4; }
+}
+
+@media (max-width: 820px) {
+  /* Two cards above, one full-width card below is more balanced than three
+     compressed columns on a tablet. */
+  .portfolio-evidence-guide-grid,
+  .platform-feature-grid,
+  .eng-evidence-levels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portfolio-evidence-guide-grid > :last-child,
+  .platform-feature-grid > :last-child,
+  .eng-evidence-levels > :last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .ea-grid:has(> .ea-card:nth-child(3):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ea-grid:has(> .ea-card:nth-child(3):last-child) > .ea-card:nth-child(3) { grid-column: 1 / -1; }
+
+  .eng-card-grid[data-compact-count="9"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eng-card-grid[data-compact-count="9"] > :last-child,
+  .eng-card-grid[data-compact-count="3"] > :last-child { grid-column: 1 / -1; }
+
+  .eng-source-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eng-source-group,
+  .eng-source-group:nth-child(n + 4) { grid-column: auto; }
+  .eng-source-group:last-child { grid-column: 1 / -1; }
+
+  .eng-decision-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .eng-system-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eng-system-flow > li { grid-column: auto !important; }
+  .eng-system-flow > li:last-child { grid-column: 1 / -1 !important; }
+}
+
+@media (max-width: 620px) {
+  .portfolio-evidence-guide-grid,
+  .platform-feature-grid,
+  .eng-evidence-levels { grid-template-columns: 1fr; }
+  .portfolio-evidence-guide-grid > :last-child,
+  .platform-feature-grid > :last-child,
+  .eng-evidence-levels > :last-child { grid-column: auto; }
+}
+
+@media (max-width: 460px) {
+  .eng-roadmap { grid-template-columns: 1fr !important; }
+  .eng-roadmap > li,
+  .eng-roadmap > li:last-child { grid-column: auto; }
+  .eng-system-flow { grid-template-columns: 1fr; }
+  .eng-system-flow > li:last-child { grid-column: auto !important; }
+}
+
+@media (max-width: 390px) {
+  .eng-card-grid[data-compact-count="9"],
+  .eng-card-grid[data-compact-count="3"] { grid-template-columns: 1fr; }
+  .eng-card-grid[data-compact-count="9"] > :last-child,
+  .eng-card-grid[data-compact-count="3"] > :last-child { grid-column: auto; }
+}
+
+@media (max-width: 1100px) {
+  .eng-card-grid[data-compact-count="3"] > :last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 620px) {
+  .ea-grid:has(> .ea-card:nth-child(3):last-child) { grid-template-columns: 1fr; }
+  .ea-grid:has(> .ea-card:nth-child(3):last-child) > .ea-card:nth-child(3) { grid-column: auto; }
+  .skills-matrix-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 360px) {
+  .eng-card-grid[data-compact-count] { grid-template-columns: 1fr; }
+  .eng-card-grid[data-compact-count] > * { grid-column: auto; }
+}
+
+/* Balanced layouts for secondary card collections and learning sequences. */
+@media (max-width: 1050px) {
+  /* The technology index becomes two columns at tablet widths; its 27th item
+     is given the complete final row instead of leaving a vacant half-row. */
+  #toolList > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+#toolList[data-grid-balance="pair-tail"] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+#toolList .is-grid-final-third { grid-column: span 2; }
+#toolList[data-grid-balance="pair-tail"] > .is-grid-final-half { grid-column: span 3; }
+#toolList .is-grid-final-full { grid-column: 1 / -1; }
+
+/* Eleven related technologies: 3 + 3 + 3 + 2 on wide screens. */
+@media (min-width: 901px) {
+  .motion-tech-list { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .motion-tech-list > button { grid-column: span 2; }
+  .motion-tech-list > button:nth-child(n + 10) { grid-column: span 3; }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .motion-tech-list { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .motion-tech-list > button { grid-column: span 3; }
+  .motion-tech-list > button:nth-child(n + 9) { grid-column: span 4; }
+}
+@media (min-width: 421px) and (max-width: 700px) {
+  .motion-tech-list { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .motion-tech-list > button { grid-column: span 2; }
+  .motion-tech-list > button:nth-child(n + 10) { grid-column: span 3; }
+}
+@media (max-width: 420px) {
+  .motion-tech-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .motion-tech-list > button { grid-column: auto; }
+  .motion-tech-list > button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .motion-timeline > li:last-child { grid-column: 1 / -1; }
+}
+
+/* Seven metrics: the final three share a complete third-width row. */
+.motion-metric-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.motion-metric-grid > .motion-metric-card { grid-column: span 3; }
+.motion-metric-grid > .motion-metric-card:nth-child(n + 5) { grid-column: span 4; }
+@media (max-width: 900px) {
+  .motion-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .motion-metric-grid > .motion-metric-card,
+  .motion-metric-grid > .motion-metric-card:nth-child(n + 5) { grid-column: auto; }
+  .motion-metric-grid > .motion-metric-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+
+/* Seven IaC lifecycle steps: 4 + 3 on tablet; a readable vertical sequence on phones. */
+@media (min-width: 621px) and (max-width: 1100px) {
+  .iac-steps,
+  .terraform-sim-steps { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .iac-steps > li,
+  .terraform-sim-steps > li { grid-column: span 3; }
+  .iac-steps > li:nth-child(n + 5),
+  .terraform-sim-steps > li:nth-child(n + 5) { grid-column: span 4; }
+}
+@media (max-width: 620px) {
+  .iac-steps,
+  .terraform-sim-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .iac-steps > li,
+  .terraform-sim-steps > li { grid-column: auto; }
+  .iac-steps > li:last-child:nth-child(odd),
+  .terraform-sim-steps > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (max-width: 460px) {
+  .iac-steps,
+  .terraform-sim-steps { grid-template-columns: 1fr; }
+  .iac-steps > li,
+  .terraform-sim-steps > li { grid-column: auto !important; }
+}
+
+/* Small grouped collections: avoid leaving a lone capability/input card. */
+.ea-platform-capabilities > :last-child:nth-child(odd),
+.ea-input-grid:has(> :nth-child(3):last-child) > :last-child { grid-column: 1 / -1; }
+
+@media (max-width: 560px) {
+  #toolList > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (max-width: 360px) {
+  .eng-tool-list { grid-template-columns: 1fr; }
+  #toolList > :last-child:nth-child(odd) { grid-column: auto; }
+}
+
+/* ========================================================================== 
+   SOLID MONOCHROME CARD SYSTEM
+   The hero/orbital profile and the final site-footer connection area are
+   intentionally excluded. Content cards use opaque grayscale tiers only;
+   gradients remain reserved for the protected hero artwork and data visuals.
+   ========================================================================== */
+:root {
+  --mono-card-primary: #111111;
+  --mono-card-raised: #191919;
+  --mono-card-inset: #0b0b0b;
+  --mono-card-border: rgba(255, 255, 255, .12);
+  --mono-card-border-strong: rgba(255, 255, 255, .22);
+  --mono-card-shadow: none;
+}
+html[data-theme="light"] {
+  /* Primary engineering cards remain #111111 in light mode as well; the
+     local text and border tokens below preserve readable contrast. */
+  --mono-card-primary: #111111;
+  --mono-card-raised: #191919;
+  --mono-card-inset: #0b0b0b;
+  --mono-card-border: rgba(255, 255, 255, .12);
+  --mono-card-border-strong: rgba(255, 255, 255, .22);
+  --mono-card-shadow: none;
+}
+
+/* Primary surfaces: career content, technical topic cards, galleries and labs. */
+main > section:not(.hero) :is(
+  .glass-card,
+  .glass-panel:not(.portrait-caption),
+  .about-statement,
+  .principle-card,
+  .focus-card,
+  .project-card,
+  .education-row,
+  .stack-row,
+  .stack-aside,
+  .architecture-panel,
+  .reference-architecture,
+  .architecture-detail,
+  .pipeline-playground,
+  .pod-playground,
+  .investigation-shell,
+  .investigation-view,
+  .trace-detail,
+  .history-event,
+  .recovery-state,
+  .slo-controls,
+  .slo-results,
+  .sre-control-room,
+  .slo-workbench,
+  .simulation-chart-wrap,
+  .simulation-metric,
+  .metrics-gallery,
+  .metrics-chart-card,
+  .metrics-summary-card,
+  .learning-snapshot,
+  .technology-constellation,
+  .constellation-detail,
+  .journey-detail,
+  .transparency-note,
+  .evidence-level,
+  .portfolio-evidence-guide,
+  .portfolio-artifact,
+  .eng-story,
+  .eng-principles,
+  .eng-topic-card,
+  .eng-diagram,
+  .eng-reference-card,
+  .eng-tool-explorer,
+  .eng-reference-banner,
+  .eng-lab-note,
+  .eng-next-step,
+  .eng-review-card,
+  .motion-panel,
+  .cloud-principle-card,
+  .cloud-network-architecture,
+  .cloud-resilience-strip,
+  .iac-lifecycle,
+  .iac-domain-card,
+  .container-lifecycle,
+  .container-detail,
+  .platform-gitops-diagram,
+  .security-pipeline,
+  .architecture-card,
+  .demo-dashboard,
+  .demo-chart-card,
+  .workbench-card,
+  .workbench-panel,
+  .finops-card,
+  .security-control-card,
+  .skills-category-card,
+  .skills-matrix-section,
+  .engineering-card
+) {
+  --bg: #111111;
+  --bg-soft: var(--mono-card-raised);
+  --panel: var(--mono-card-raised);
+  --panel-strong: #202020;
+  --glass: var(--mono-card-raised);
+  --white: #f5f5f5;
+  --text: #f2f2f2;
+  --text-soft: #c7c7c7;
+  --muted: #999999;
+  --faint: #777777;
+  --line: var(--mono-card-border);
+  --line-strong: var(--mono-card-border-strong);
+  --shadow: none;
+  color: #f2f2f2;
+  background-color: var(--mono-card-primary) !important;
+  background-image: none !important;
+  border-color: var(--mono-card-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Raised inner cards: consistent depth without gloss, haze or fading edges. */
+main > section:not(.hero) :is(
+  .portfolio-evidence-guide-card,
+  .motion-zone-card,
+  .motion-env-card,
+  .motion-layer,
+  .motion-panel-note,
+  .motion-status,
+  .architecture-node,
+  .pipeline-run-stage,
+  .pod-state-node,
+  .trace-span,
+  .tech-node,
+  .journey-step,
+  .cloud-zone,
+  .cloud-node,
+  .cloud-subnet,
+  .cloud-resilience-metrics > div,
+  .iac-steps > li,
+  .container-flow-node,
+  .platform-node,
+  .security-flow > li,
+  .demo-kpi-grid article,
+  .demo-sre-row article,
+  .finops-field,
+  .finops-output,
+  .terraform-sim-steps > li,
+  .skills-matrix-grid article,
+  .eng-flow > li,
+  .eng-k8s-control,
+  .eng-k8s-workers,
+  .eng-k8s-components > span,
+  .eng-k8s-node,
+  .architecture-detail-visual-panel,
+  .architecture-detail-sequence-panel
+) {
+  background-color: var(--mono-card-raised) !important;
+  background-image: none !important;
+  border-color: var(--mono-card-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Recessed visual/copy areas use a solid inset tone, never a transparent blend. */
+main > section:not(.hero) :is(
+  .motion-diagram-shell,
+  .motion-env-card code,
+  .architecture-detail-stage,
+  .iac-code-sample,
+  .arch-visual,
+  .finops-output,
+  .demo-chart-card,
+  .demo-kpi-grid article,
+  .demo-sre-row article,
+  .simulation-chart-wrap,
+  .metrics-data-details,
+  .metrics-chart-readout,
+  .metrics-source-strip,
+  .portfolio-artifact-proof,
+  .portfolio-claim-boundary
+) {
+  background-color: var(--mono-card-inset) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* The motion gallery and evidence guide were the remaining prominent gradients. */
+main > section:not(.hero) .motion-panel,
+main > section:not(.hero) .portfolio-evidence-guide {
+  background: var(--mono-card-primary) !important;
+  background-image: none !important;
+  border: 1px solid var(--mono-card-border) !important;
+  box-shadow: var(--mono-card-shadow) !important;
+}
+main > section:not(.hero) .motion-panel:hover,
+main > section:not(.hero) .portfolio-artifact:hover,
+main > section:not(.hero) .eng-topic-card:hover,
+main > section:not(.hero) .eng-reference-card:hover {
+  background: var(--mono-card-raised) !important;
+  background-image: none !important;
+  border-color: var(--mono-card-border-strong) !important;
+}
+
+/* Keep simple diagram nodes visibly filled; only their connecting paths stay clear. */
+main > section:not(.hero) :is(
+  .cloud-node,
+  .container-flow-node,
+  .platform-node,
+  .iac-steps > li,
+  .terraform-sim-steps > li,
+  .security-flow > li
+) {
+  color: var(--text) !important;
+}
+main > section:not(.hero) :is(
+  .cloud-node-strong,
+  .container-flow-node-strong,
+  .platform-node-strong
+) {
+  background-color: var(--mono-card-primary) !important;
+  border-color: var(--mono-card-border-strong) !important;
+  box-shadow: inset 0 0 0 1px var(--mono-card-border) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main > section:not(.hero) :is(.motion-panel, .portfolio-artifact, .eng-topic-card, .eng-reference-card) {
+    transition: none !important;
+  }
+}
+
+/* ======================================================================
+   2026.11 — PRIMARY CARD COLOR + FLAT NESTED SURFACES
+   Primary section panels use the requested #111111 in every theme.
+   Nested cards use solid charcoal tones and never cast inner/outer shadows.
+   The opening hero/orbital profile and the final contact section are excluded.
+   ====================================================================== */
+:root {
+  --primary-card-bg: #111111;
+  --primary-card-ink: #f2f2f2;
+  --primary-card-soft: #c7c7c7;
+  --primary-card-muted: #999999;
+  --primary-card-faint: #777777;
+  --primary-card-line: rgba(255, 255, 255, .12);
+  --primary-card-line-strong: rgba(255, 255, 255, .22);
+  --nested-card-bg: #191919;
+  --nested-card-raised: #202020;
+  --nested-card-inset: #0b0b0b;
+}
+
+/* Large / primary content surfaces. Do not target the protected hero or footer. */
+main .section.eng-section:not(.contact-section) .glass-card,
+main .section.eng-section:not(.contact-section) .glass-panel:not(.portrait-caption),
+main .section.eng-section:not(.contact-section) .about-statement,
+main .section.eng-section:not(.contact-section) .architecture-panel,
+main .section.eng-section:not(.contact-section) .architecture-detail,
+main .section.eng-section:not(.contact-section) .pipeline-playground,
+main .section.eng-section:not(.contact-section) .pod-playground,
+main .section.eng-section:not(.contact-section) .investigation-shell,
+main .section.eng-section:not(.contact-section) .investigation-view,
+main .section.eng-section:not(.contact-section) .reference-architecture,
+main .section.eng-section:not(.contact-section) .metrics-gallery,
+main .section.eng-section:not(.contact-section) .learning-snapshot,
+main .section.eng-section:not(.contact-section) .technology-constellation,
+main .section.eng-section:not(.contact-section) .skills-matrix-section,
+main .section.eng-section:not(.contact-section) .portfolio-evidence-guide,
+main .section.eng-section:not(.contact-section) .eng-story,
+main .section.eng-section:not(.contact-section) .eng-principles,
+main .section.eng-section:not(.contact-section) .eng-diagram,
+main .section.eng-section:not(.contact-section) .eng-tool-explorer,
+main .section.eng-section:not(.contact-section) .eng-reference-banner,
+main .section.eng-section:not(.contact-section) .eng-next-step,
+main .section.eng-section:not(.contact-section) .eng-review-studio,
+main .section.eng-section:not(.contact-section) .eng-evidence-standard,
+main .section.eng-section .sre-control-room,
+main .section.eng-section .sre-control-room,
+main .section.eng-section .slo-workbench,
+main .section.eng-section .eng-decision-notebook,
+main .section.eng-section .eng-review-studio,
+main .section.eng-section .eng-evidence-standard {
+  --bg: var(--primary-card-bg);
+  --bg-soft: var(--nested-card-bg);
+  --panel: var(--nested-card-bg);
+  --panel-strong: var(--nested-card-raised);
+  --glass: var(--nested-card-bg);
+  --white: #f5f5f5;
+  --text: var(--primary-card-ink);
+  --text-soft: var(--primary-card-soft);
+  --muted: var(--primary-card-muted);
+  --faint: var(--primary-card-faint);
+  --line: var(--primary-card-line);
+  --line-strong: var(--primary-card-line-strong);
+  --shadow: none;
+  --card-surface: var(--nested-card-bg);
+  --card-surface-raised: var(--nested-card-raised);
+  --card-surface-inset: var(--nested-card-inset);
+  --engineering-card-solid: var(--primary-card-bg);
+  --engineering-card-solid-raised: var(--nested-card-bg);
+  --engineering-card-solid-inset: var(--nested-card-inset);
+  color: var(--primary-card-ink);
+  background-color: var(--primary-card-bg) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Additional individual content cards use the same primary tone, not translucent grey. */
+main .section.eng-section:not(.contact-section) .principle-card,
+main .section.eng-section:not(.contact-section) .focus-card,
+main .section.eng-section:not(.contact-section) .project-card,
+main .section.eng-section:not(.contact-section) .education-row,
+main .section.eng-section:not(.contact-section) .stack-row,
+main .section.eng-section:not(.contact-section) .stack-aside,
+main .section.eng-section:not(.contact-section) .journey-step,
+main .section.eng-section:not(.contact-section) .eng-topic-card,
+main .section.eng-section:not(.contact-section) .eng-reference-card,
+main .section.eng-section:not(.contact-section) .eng-review-card,
+main .section.eng-section:not(.contact-section) .cloud-principle-card,
+main .section.eng-section:not(.contact-section) .iac-domain-card,
+main .section.eng-section:not(.contact-section) .eng-decision-card,
+main .section.eng-section:not(.contact-section) .portfolio-artifact {
+  --bg: var(--primary-card-bg);
+  --bg-soft: var(--nested-card-bg);
+  --panel: var(--nested-card-bg);
+  --panel-strong: var(--nested-card-raised);
+  --text: var(--primary-card-ink);
+  --text-soft: var(--primary-card-soft);
+  --muted: var(--primary-card-muted);
+  --faint: var(--primary-card-faint);
+  --line: var(--primary-card-line);
+  --line-strong: var(--primary-card-line-strong);
+  color: var(--primary-card-ink);
+  background-color: var(--primary-card-bg) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Inner cards: solid layered charcoal, with no inset bevel, glow, or drop shadow. */
+main .section.eng-section:not(.contact-section) .slo-controls,
+main .section.eng-section:not(.contact-section) .slo-results,
+main .section.eng-section:not(.contact-section) .slo-metric,
+main .section.eng-section:not(.contact-section) .slo-metric-primary,
+main .section.eng-section:not(.contact-section) .slo-principle,
+main .section.eng-section:not(.contact-section) .slo-budget-note,
+main .section.eng-section:not(.contact-section) .simulation-metric,
+main .section.eng-section:not(.contact-section) .simulation-chart-wrap,
+main .section.eng-section:not(.contact-section) .simulation-event-log,
+main .section.eng-section:not(.contact-section) .demo-terminal,
+main .section.eng-section:not(.contact-section) .metrics-chart-card,
+main .section.eng-section:not(.contact-section) .metrics-summary-card,
+main .section.eng-section:not(.contact-section) .metrics-data-details,
+main .section.eng-section:not(.contact-section) .metrics-chart-readout,
+main .section.eng-section:not(.contact-section) .metrics-source-strip,
+main .section.eng-section:not(.contact-section) .trace-detail,
+main .section.eng-section:not(.contact-section) .history-event,
+main .section.eng-section:not(.contact-section) .recovery-state,
+main .section.eng-section:not(.contact-section) .architecture-node,
+main .section.eng-section:not(.contact-section) .pipeline-run-stage,
+main .section.eng-section:not(.contact-section) .pod-state-node,
+main .section.eng-section:not(.contact-section) .trace-span,
+main .section.eng-section:not(.contact-section) .eng-card-detail,
+main .section.eng-section:not(.contact-section) .eng-deep-note,
+main .section.eng-section:not(.contact-section) .eng-decision-card,
+main .section.eng-section:not(.contact-section) .eng-review-gates > div,
+main .section.eng-section:not(.contact-section) .portfolio-evidence-guide-card,
+main .section.eng-section:not(.contact-section) .learning-stage-card,
+main .section.eng-section:not(.contact-section) .reference-flow-node,
+main .section.eng-section:not(.contact-section) .reference-architecture-detail,
+main .section.eng-section .sre-control-room .simulation-metric,
+main .section.eng-section .sre-control-room .simulation-chart-wrap,
+main .section.eng-section .sre-control-room .simulation-event-log,
+main .section.eng-section .sre-control-room .demo-terminal,
+main .section.eng-section .slo-workbench .slo-controls,
+main .section.eng-section .slo-workbench .slo-results,
+main .section.eng-section .slo-workbench .slo-metric,
+main .section.eng-section .slo-workbench .slo-principle {
+  background-color: var(--nested-card-bg) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Recessed chart / data / note areas stay visually distinct but completely flat. */
+main .section.eng-section:not(.contact-section) .simulation-chart-wrap,
+main .section.eng-section:not(.contact-section) .slo-budget-note,
+main .section.eng-section:not(.contact-section) .metrics-data-details,
+main .section.eng-section:not(.contact-section) .metrics-chart-readout,
+main .section.eng-section:not(.contact-section) .metrics-dora-note,
+main .section.eng-section:not(.contact-section) .eng-review-rule,
+main .section.eng-section:not(.contact-section) .eng-tool-detail,
+main .section.eng-section .sre-control-room .simulation-chart-wrap,
+main .section.eng-section .sre-control-room .demo-terminal,
+main .section.eng-section .slo-workbench .slo-budget-note {
+  background-color: var(--nested-card-inset) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove card hover shadows as well; use a restrained border change for feedback. */
+main .section.eng-section:not(.contact-section) .glass-card:hover,
+main .section.eng-section:not(.contact-section) .glass-panel:hover,
+main .section.eng-section:not(.contact-section) .project-card:hover,
+main .section.eng-section:not(.contact-section) .eng-topic-card:hover,
+main .section.eng-section:not(.contact-section) .eng-reference-card:hover,
+main .section.eng-section:not(.contact-section) .eng-review-card:hover,
+main .section.eng-section:not(.contact-section) .architecture-node:hover,
+main .section.eng-section:not(.contact-section) .pipeline-run-stage:hover,
+main .section.eng-section:not(.contact-section) .pod-state-node:hover,
+main .section.eng-section:not(.contact-section) .trace-span:hover,
+main .section.eng-section:not(.contact-section) .tech-node:hover,
+main .section.eng-section:not(.contact-section) .journey-step:hover,
+main .section.eng-section:not(.contact-section) .journey-step.is-active,
+main .section.eng-section .sre-control-room .simulation-metric:hover,
+main .section.eng-section .slo-workbench .slo-metric:hover {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Keyboard focus remains visible without relying on a shadow halo. */
+main .section.eng-section:not(.contact-section) :is(.architecture-node, .pipeline-run-stage, .pod-state-node, .trace-span, .tech-node, .journey-step, .reference-flow-node):focus-visible {
+  outline: 2px solid var(--primary-card-soft) !important;
+  outline-offset: 3px;
+  box-shadow: none !important;
+}
+
+/* Preserve chart encodings (SVG strokes/fills) while keeping their containing cards flat. */

@@ -19,6 +19,7 @@
   const wait = ms => new Promise(resolve => window.setTimeout(resolve, isReducedMotion() ? 0 : ms));
   const safeText = (element, value) => { if (element) element.textContent = String(value); };
 
+  /** Create the shared semantic shell used by the original motion panels. */
   const panelShell = (kicker, title, description, note, content, extraClass = '') => `
     <section class="motion-panel ${extraClass}" aria-label="${title}">
       <div class="motion-panel-inner">
@@ -30,6 +31,8 @@
       </div>
     </section>`;
 
+  /** Mount generated markup only into the explicitly named placeholder. */
+  // `markup` is assembled by this file from authored model data; never pass user-entered HTML here.
   const mount = (key, markup) => {
     const target = document.querySelector(`[data-anim-mount="${key}"]`);
     if (!target) return null;
@@ -37,6 +40,7 @@
     return target.firstElementChild;
   };
 
+  /** Update visible and machine-readable status for an interactive model. */
   const setStatus = (element, text, state = 'waiting') => {
     if (!element) return;
     element.textContent = text;
@@ -59,6 +63,7 @@
       });
     }, { rootMargin: '100px 0px', threshold: 0.08 });
   }
+  /** Start an entrance animation only when visible; reduced motion runs it immediately. */
   const onceVisible = (element, callback) => {
     if (!element) return;
     if (isReducedMotion() || !visibilityObserver) { callback(); return; }
@@ -68,6 +73,7 @@
   const trackVisibility = element => { if (element && visibilityObserver) visibilityObserver.observe(element); };
 
   // Shared SVG drawing utility used by the architecture gallery and four domain-specific references.
+  /** Reveal connector paths while retaining a static complete diagram for reduced motion. */
   const drawSvg = svg => {
     if (!svg) return;
     const paths = [...svg.querySelectorAll('.motion-edge')];
@@ -256,6 +262,7 @@
     `${architectureFlowMarkup}<div class="motion-controls"><button class="motion-button motion-button-primary" type="button" data-arch-redraw>Replay sequence</button><span class="motion-status" data-arch-status data-state="waiting" aria-live="polite">Ready to play</span></div><p class="motion-microcopy">Conceptual model only. Exact DNS behaviour, TLS termination, load-balancer target selection, database access, replication mode and recovery semantics depend on the selected provider, managed services and workload requirements.</p>`
   ));
 
+  /** Build a compact architecture reference from an ordered list of labeled nodes. */
   const miniArchitecture = (title, nodes, desc) => {
     const width = 720;
     const boxWidth = 130;
@@ -571,6 +578,7 @@
   }
 
   // Shared terminal rendering primitives for #09 and #20.
+  /** Render terminal output with textContent so command output is never parsed as HTML. */
   const renderTerminalFrame = (body, command, outputLines, cursor = false) => {
     if (!body) return;
     body.replaceChildren();

@@ -45,13 +45,16 @@ PIPELINE_STAGES = ("source", "validate", "build", "secure", "publish", "deploy",
 
 
 class PortfolioParser(HTMLParser):
+    """Collect IDs and local references needed for structural/deployment validation."""
     def __init__(self) -> None:
+        """Initialize independent inventories for anchors, links, and resource URLs."""
         super().__init__(convert_charrefs=True)
         self.ids: list[str] = []
         self.links: list[str] = []
         self.resources: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        """Record attributes from each opening tag; HTMLParser handles markup tokenization."""
         values = dict(attrs)
         if values.get("id"):
             self.ids.append(values["id"])
@@ -62,11 +65,13 @@ class PortfolioParser(HTMLParser):
 
 
 def fail(message: str) -> None:
+    """Print one actionable validation error and stop the release check."""
     print(f"FAIL: {message}")
     raise SystemExit(1)
 
 
 def main() -> int:
+    """Validate required content, safety boundaries, local assets, and Pages packaging."""
     # Keep the distributable source tree clean; Python caches and local tool output
     # have no place in a public portfolio archive.
     forbidden_artifacts = []
@@ -193,8 +198,16 @@ def main() -> int:
     if 'href="animations.css"' not in html or 'src="animations.js"' not in html or 'href="advanced-animations.css"' not in html or 'src="advanced-animations.js"' not in html or 'href="final-interactions.css"' not in html or 'src="final-interactions.js"' not in html:
         fail("animation assets are not mounted by the main document")
 
-    if 'No completed project case studies are published here yet.' not in html:
-        fail("project evidence section must preserve the no-fabricated-project boundary")
+    if 'No standalone Cloud/DevOps project case studies are published yet.' not in html:
+        fail("evidence section must preserve the no-fabricated-project boundary")
+    if html.count('class="portfolio-artifact glass-card') != 4:
+        fail("evidence section must show four inspectable existing portfolio artifacts")
+    for marker in ('CONCEPTUAL REFERENCE', 'BROWSER-LOCAL SIMULATION', 'IMPLEMENTED REPOSITORY ARTIFACT', 'NO PRODUCTION CLAIMS'):
+        if marker not in html:
+            fail(f"evidence classification or claim boundary is missing: {marker}")
+    for marker in ('portfolio-evidence-guide', 'portfolio-artifact-grid', 'portfolio-claim-boundary'):
+        if marker not in html:
+            fail(f"evidence-first portfolio component is missing: {marker}")
     if 'not AWS, Azure, or Google Cloud pricing' not in html:
         fail("FinOps simulator must disclose its illustrative, non-provider pricing")
     if 'DEMO DATA ONLY' not in html:

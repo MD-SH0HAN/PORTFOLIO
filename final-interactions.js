@@ -10,6 +10,7 @@
     || document.documentElement.dataset.reduceMotion === 'true';
   const toast = document.getElementById('toast');
   let toastTimer = 0;
+  /** Announce interaction results through the shared non-blocking status message. */
   const feedback = (message, level = 'info') => {
     if (!toast) return;
     window.clearTimeout(toastTimer);
@@ -107,6 +108,7 @@
     ]
   ];
 
+  /** Create dialog/interface nodes without parsing untrusted text as HTML. */
   const create = (tag, className, text) => {
     const element = document.createElement(tag);
     if (className) element.className = className;
@@ -122,6 +124,7 @@
   let architectureStage = null;
   let architectureStatus = null;
   let architectureDrawButton = null;
+  /** Build the architecture detail dialog once, then reuse it for all twelve patterns. */
   const ensureArchitectureDialog = () => {
     if (architectureDialog) return architectureDialog;
     architectureDialog = create('dialog', 'architecture-detail-dialog');
@@ -224,6 +227,7 @@
     return architectureDialog;
   };
 
+  /** Populate the dialog, preserve the invoking control, and expose the selected pattern. */
   const openArchitecture = (card, trigger) => {
     const index = [...gallery.querySelectorAll('.architecture-card')].indexOf(card);
     const dialog = ensureArchitectureDialog();
@@ -365,6 +369,7 @@
   }
 
   /* 06 — Mobile graph ergonomics: make horizontal graph canvases discoverable by touch and keyboard. */
+  /** Add discoverable keyboard/touch affordances to diagrams that must scroll on small screens. */
   const enhanceScrollableGraphs = () => {
     document.querySelectorAll('.ea-graph-wrap, .constellation-canvas, .architecture-detail-stage').forEach((region, index) => {
       if (region.dataset.panEnhanced === 'true') return;

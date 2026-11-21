@@ -1,4 +1,6 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MD Shohan - Cloud &amp; DevOps Engineering Technical Portfolio</title><meta name="description" content="A learning-stage technical knowledge map across cloud infrastructure, DevOps, platform engineering, observability, reliability and security."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+<!doctype html>
+<!-- Multi-page technical portfolio. Each .sheet is an A4 page; @page and @media print remove browser-only margins and shadows. --><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MD Shohan - Cloud &amp; DevOps Engineering Technical Portfolio</title><meta name="description" content="A learning-stage technical knowledge map across cloud infrastructure, DevOps, platform engineering, observability, reliability and security."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+/* Print stylesheet map: page tokens → typography → cards and diagrams → page-specific layout → print reset. */
 :root{--ink:#13202c;--ink2:#243746;--muted:#5c6b76;--soft:#f3f6f8;--line:#dce4e9;--accent:#276b83;--accent2:#dceef2;--white:#fff;--font:"Nunito",sans-serif}
 @page{size:A4;margin:0}
 *{box-sizing:border-box}
@@ -75,7 +77,8 @@ p{margin:0 0 2.5mm;color:var(--muted)}
 .profile-onepage .cover-body{padding-top:7mm}
 .profile-onepage .card p{font-size:7.2pt}
 @media print{html,body{background:#fff}.sheet{margin:0;box-shadow:none}.sheet:last-child{page-break-after:auto}}
-</style></head><body><section class="sheet cover" id="cover">
+</style></head><body><!-- Cover: identity, portfolio scope, engineering defaults, and document contents. -->
+<section class="sheet cover" id="cover">
   <div class="cover-top">
     <div class="top"><span class="brand">MD SHOHAN / CLOUD &amp; DEVOPS ENGINEERING</span><span>TECHNICAL PORTFOLIO · 2026</span></div>
     <p class="eyebrow">CSE UNDERGRADUATE · BANGLADESH UNIVERSITY</p>
@@ -102,7 +105,8 @@ p{margin:0 0 2.5mm;color:var(--muted)}
     <div class="callout" style="margin-top:5mm"><strong>Scope note.</strong> No project gallery is published yet. The architecture examples in this document are learning references, not proof of live deployments or production operations.</div>
   </div>
   <div class="footer"><span>MD SHOHAN · AUTOMATE CHANGE / SEE CLEARLY / RECOVER DELIBERATELY</span><span>01 / 05</span></div>
-</section><section class="sheet" id="foundations">
+</section><!-- Page 2: foundational systems knowledge and operating habits. -->
+<section class="sheet" id="foundations">
   <div class="top"><span class="brand">MD SHOHAN / ENGINEERING FOUNDATIONS</span><span>TECHNICAL PORTFOLIO · 02 / 05</span></div>
   <div class="page-title"><div><p class="eyebrow">01 / CORE ENGINEERING FOUNDATIONS</p><h2>Understand the substrate first.</h2><p class="small">Reliable delivery depends on understanding the operating system, network, runtime, application contract, and the way change is reviewed.</p></div><span class="index">01</span></div>
   <div class="grid two">
@@ -124,7 +128,8 @@ p{margin:0 0 2.5mm;color:var(--muted)}
   </div>
   <div class="callout" style="margin-top:3mm;padding:2.3mm 3.2mm;font-size:6.9pt;line-height:1.36"><strong>Diagnostic loop.</strong> Confirm host, user, process, environment, path and recent change; capture a baseline; test one layer at a time (process/socket → route → DNS → TLS → HTTP → dependency); then verify the result, rollback path, cleanup and remaining uncertainty. Explain what each command measures and what it cannot prove.</div>
   <div class="footer"><span>MD SHOHAN · SYSTEMS / NETWORKING / AUTOMATION</span><span>02 / 05</span></div>
-</section><section class="sheet" id="platform">
+</section><!-- Page 3: delivery, infrastructure, cloud, and platform concepts. -->
+<section class="sheet" id="platform">
   <div class="top"><span class="brand">MD SHOHAN / DELIVERY & PLATFORM</span><span>TECHNICAL PORTFOLIO · 03 / 05</span></div>
   <div class="page-title"><div><p class="eyebrow">02 / CLOUD &amp; DEVOPS ENGINEERING ECOSYSTEM</p><h2>Build repeatable paths to runtime.</h2><p class="small">The platform layer connects container packaging, orchestration, infrastructure provisioning, CI/CD, artifact management, and cloud services.</p></div><span class="index">02</span></div>
   <div class="grid two">
@@ -145,7 +150,8 @@ p{margin:0 0 2.5mm;color:var(--muted)}
   </div>
   <div class="callout" style="margin-top:3mm;padding:2.3mm 3.2mm;font-size:6.8pt;line-height:1.32"><strong>Verification & release gate.</strong> A manifest is not proof of runtime enforcement: verify CNI/NetworkPolicy, Metrics API, identity bindings, storage classes and admission controls. Tie releases to reviewed source, least-privilege identity, immutable artifacts and authorization. Before traffic, verify rendered settings, probes, endpoints, data compatibility, observable abort thresholds and a tested rollback. Deployment success alone does not prove service health.</div>
   <div class="footer"><span>MD SHOHAN · CONTAINERS / CLOUD / GITOPS</span><span>03 / 05</span></div>
-</section><section class="sheet" id="reliability">
+</section><!-- Page 4: observability, reliability, security, and recovery. -->
+<section class="sheet" id="reliability">
   <div class="top"><span class="brand">MD SHOHAN / RELIABILITY & SECURITY</span><span>TECHNICAL PORTFOLIO · 04 / 05</span></div>
   <div class="page-title"><div><p class="eyebrow">04 / OBSERVABILITY, RELIABILITY & SECURITY</p><h2>Make service behaviour visible.</h2><p class="small">Operational quality depends on trustworthy signals, explicit objectives, disciplined response, secure delivery, and recovery that has been tested.</p></div><span class="index">03</span></div>
   <div class="flow">
@@ -166,7 +172,8 @@ p{margin:0 0 2.5mm;color:var(--muted)}
   <div class="rule"></div>
   <div class="callout" style="padding:2.5mm 3.2mm;font-size:6.8pt;line-height:1.32"><strong>Operational control.</strong> Combine RED (rate, errors, duration), USE (utilization, saturation, errors), and Golden Signals (latency, traffic, errors, saturation). Define user-centred good events and measurement windows; alert on sustained impact with an owner, severity and runbook. During incidents preserve a timestamped evidence timeline, separate observations from hypotheses, quantify only measured impact, and assign blameless corrective actions with owners and verification criteria.</div>
   <div class="footer"><span>MD SHOHAN · OBSERVE / DIAGNOSE / RECOVER</span><span>04 / 05</span></div>
-</section><section class="sheet" id="references">
+</section><!-- Page 5: illustrative reference patterns, evidence boundaries, and contact information. -->
+<section class="sheet" id="references">
   <div class="top"><span class="brand">MD SHOHAN / REFERENCE PATTERNS & SCOPE</span><span>TECHNICAL PORTFOLIO · 05 / 05</span></div>
   <div class="page-title"><div><p class="eyebrow">05 / INTEGRATED ENGINEERING REFERENCES</p><h2>Connected patterns. Explicit boundaries.</h2><p class="small">These examples connect the domains above. They are design and learning references, not claims of live deployment or production operation.</p></div><span class="index">04</span></div>
   <div class="grid two">

@@ -1,6 +1,10 @@
 # MD SHOHAN — Cloud & DevOps Engineering Portfolio
 
-A single-page, dependency-free HTML/CSS/JavaScript portfolio and technical knowledge map. The design remains monochrome and engineering-focused while the information architecture now covers cloud infrastructure, delivery automation, infrastructure as code, containers, platform engineering, observability, SRE, DevSecOps, FinOps, and reference architectures.
+A single-page, dependency-free HTML/CSS/JavaScript career portfolio and technical learning library for an undergraduate aspiring to work in Cloud and DevOps engineering. The main story prioritizes current career stage, evidence boundaries, and inspectable repository artifacts; the deeper reference library covers cloud infrastructure, delivery automation, Infrastructure as Code, containers, platform engineering, observability, SRE, DevSecOps, FinOps, and architecture patterns.
+
+## Code reading and maintenance
+
+Start with [CODE-READING-GUIDE.md](CODE-READING-GUIDE.md) for the runtime loading order, file responsibilities, evidence boundaries, and local test commands. Source files include comments at module, section, and non-obvious function boundaries; comments focus on intent and maintenance context rather than repeating syntax.
 
 ## Run locally
 
@@ -14,21 +18,33 @@ Open <http://127.0.0.1:8080/>. Any static HTTP server can be used. The site can 
 
 ## Information architecture
 
-1. **Hero and engineering mindset** — personal introduction, existing education context, engineering principles, GitHub, email, and portfolio download.
-2. **Core foundations** — Linux, operating systems, networking, computer systems, shell/programming, Git, and API fundamentals.
-3. **Cloud infrastructure engineering** — cloud fundamentals, compute, VPC/VNet, public/private/data subnets, gateways, load balancing, managed storage and databases, IAM, DNS/TLS, high availability, and disaster recovery.
-4. **DevOps and CI/CD** — source-to-runtime delivery, automated validation, security gates, container builds, registries, deployment, and rollback concepts.
-5. **Infrastructure as Code** — Terraform/OpenTofu lifecycle, providers, resources, variables, outputs, modules, state, remote backends, drift, CloudFormation, and Ansible.
-6. **Docker and Kubernetes** — image lifecycle, volumes, networking, Compose, control plane, nodes, Pods, Deployments, ReplicaSets, Services, Ingress, ConfigMaps, Secrets, PV/PVC, namespaces, RBAC, Helm, probes, updates, and autoscaling.
-7. **Platform engineering and GitOps** — internal developer platforms, self-service, golden paths, Backstage, Argo CD, Flux, and reconciliation.
-8. **Observability and SRE** — metrics, logs, traces, synthetic dashboards, Prometheus/Grafana/OpenTelemetry concepts, SLI/SLO/SLA, error budgets, incidents, and root cause analysis.
-9. **Cloud security and DevSecOps** — identity, network security, encryption, secrets, scanning, software supply chain, policy as code, and compliance concepts.
-10. **FinOps** — right-sizing, autoscaling, budgets, tagging, storage and egress, idle resource detection, and a browser-local illustrative cost estimator.
-11. **Architecture gallery** — twelve responsive conceptual diagrams: three-tier cloud, high availability, VPC/subnets, CI/CD, Docker, Kubernetes, Terraform, GitOps, observability, DevSecOps, microservices, and disaster recovery.
-12. **Projects and evidence** — explicit empty state; no completed work, client deployment, certification, or achievement is fabricated.
-13. **Interactive workbench** — existing CI/CD failure-gate simulator, Kubernetes readiness state machine, SLO/error-budget calculator, and incident simulator, plus Terraform lifecycle and illustrative cost simulations.
-14. **Technology map and learning progression** — categorized technology reference, search/filter explorer, and ordered study path.
-15. **Engineering playbook and decision practice** — ten study guides, architecture trade-off scenarios, threat modelling, FinOps, incident reviews, quality assurance, and evidence-led learning records.
+The page is organized in two layers: a recruiter-readable career story first, followed by a deeper technical reference and learning library.
+
+1. **Profile and evidence guide** — undergraduate positioning, engineering principles, and a visible distinction between conceptual references, browser-local simulations, and implemented repository artifacts.
+2. **Core systems foundations** — Linux, operating systems, networking, resource behaviour, shell/programming, Git, and API fundamentals.
+3. **Cloud infrastructure engineering** — identity, network boundaries, compute, data, availability, recovery, and provider-neutral design patterns.
+4. **Delivery and Infrastructure as Code** — source-to-runtime delivery, automated validation, immutable artifacts, CI/CD, Terraform/OpenTofu lifecycle, state, drift, and configuration management.
+5. **Containers and platform operations** — Docker, Kubernetes workloads, probes, scheduling, resource boundaries, declarative operations, GitOps, and platform engineering.
+6. **Reliability, observability, and security** — telemetry, SLOs, incident response, secure delivery, identity, secrets, recovery, and cost accountability.
+7. **Integrated architecture and learning progression** — connected reference patterns, engineering decision records, readiness checkpoints, and an evidence-led learning sequence.
+8. **Selected repository evidence** — four existing artifacts: the static portfolio application, repository quality/deployment workflow configuration, browser-local simulation models, and the engineering playbook. These are not presented as completed Cloud/DevOps project case studies.
+9. **Technical reference appendix** — a 14-domain technology map, twelve conceptual architecture diagrams, and interactive browser-local workbench models.
+10. **Connection** — the original full contact and social destination section.
+
+The first hero/orbital profile and final full connection section are intentionally preserved as the visual bookends of the page. The middle sections can evolve as new evidence is added.
+
+## Evidence in this repository
+
+The portfolio has no standalone Cloud/DevOps project case studies yet. It still contains genuine, inspectable work that can be reviewed without presenting it as production infrastructure experience:
+
+| Artifact | What can be inspected | Boundary |
+|---|---|---|
+| Static portfolio application | HTML, CSS, JavaScript, section navigation, accessible controls, architecture explorer, and responsive learning interfaces | A static website implementation; not a cloud infrastructure deployment |
+| Repository quality and delivery automation | Structural checker, JavaScript syntax checks, Chromium smoke-test scripts, and GitHub Actions workflow definitions | Workflow configuration is inspectable; successful hosted deployment or external infrastructure operation is not implied |
+| Engineering simulation models | Purpose-built browser-local models for system and delivery concepts, with local interaction tests | Illustrative models; no shell commands, cloud APIs, Kubernetes cluster, or production monitoring backend is called |
+| Engineering playbook | Ten focused study guides, decision records, checklists, and reusable evidence templates | Technical documentation and learning material; not proof that each procedure was performed in production |
+
+The `projects/` directory is intentionally empty until a future Cloud/DevOps implementation has reproducible setup, source, validation evidence, engineering decisions, and known limitations. The project gallery is not padded with hypothetical work.
 
 ## Monochrome engineering animations
 
@@ -116,7 +132,7 @@ The 12 architecture-gallery cards each receive their own Draw flow / Replay flow
 - Architecture diagrams are conceptual references; they do not depict a live cloud account, managed Kubernetes cluster, production observability stack, or developer portal.
 - Observability metrics are synthetic illustration data. The FinOps estimator uses fictional, clearly labeled unit rates and is not provider pricing.
 - Interactive workbenches use browser-local state. They do not call a real CI platform, Terraform provider, Kubernetes cluster, Prometheus server, cloud billing API, or application endpoint.
-- No completed project case studies are published yet. New work should be added only when the repository, setup, architecture, tests, and results can be verified.
+- No standalone Cloud/DevOps project case studies are published yet. The Evidence section documents four existing portfolio artifacts instead: the website implementation, repository quality/deployment workflow configuration, browser-local simulations, and ten playbook guides. The `projects/` directory remains intentionally empty until an independently inspectable Cloud/DevOps implementation is ready.
 - The downloadable technical PDF has updated middle pages 2–4. Its first and last pages reuse the supplied pages and render pixel-identically to the original; the website hero and final contact section source blocks are unchanged. The print-ready HTML master is the editable source for its five-page technical content.
 - No LinkedIn profile was present in the source portfolio, so no LinkedIn URL has been invented.
 
@@ -133,39 +149,31 @@ Portfolio/
 ├── animations.js
 ├── advanced-animations.js
 ├── final-interactions.js
+├── Profile Photo.webp
+├── README.md
+├── .gitignore
+├── .nojekyll
+├── 404.html
+├── robots.txt
+├── sitemap.xml
+├── LICENSE
+├── requirements-dev.txt
 ├── assets/
 │   ├── favicon.png
 │   ├── portrait-placeholder.svg
 │   ├── social-preview.png
 │   └── MD-SHOHAN-DevOps-Portfolio.pdf
 ├── documents/
-│   ├── engineering-playbook/
-│   │   ├── README.md
-│   │   ├── linux-network-troubleshooting.md
-│   │   ├── containers-kubernetes-troubleshooting.md
-│   │   ├── terraform-cicd-review.md
-│   │   ├── operational-readiness.md
-│   │   ├── learning-evidence-template.md
-│   │   ├── architecture-decision-records.md
-│   │   ├── security-threat-model-workbook.md
-│   │   ├── finops-capacity-review.md
-│   │   ├── incident-postmortem-template.md
-│   │   └── engineering-quality-assurance.md
+│   ├── engineering-playbook/       # ten guides + index
 │   ├── one-page-profile-print.html
 │   ├── technical-portfolio-print.html
 │   └── README.md
-├── projects/                 # intentionally empty until verified work is published
+├── projects/                       # intentionally empty until verified work exists
 ├── scripts/
 │   ├── check_portfolio.py
 │   ├── browser_smoke.py
 │   ├── advanced_animation_smoke.py
 │   └── final_interactions_smoke.py
-├── requirements-dev.txt
-├── Profile Photo.webp
-├── fixed-desktop.png
-├── fixed-mobile.png
-├── technology-map-desktop.png
-├── technology-map-mobile.png
 └── .github/
     ├── dependabot.yml
     └── workflows/
@@ -190,7 +198,7 @@ python scripts/advanced_animation_smoke.py
 python scripts/final_interactions_smoke.py
 ```
 
-The first five commands validate the repository without extra dependencies. The remaining commands install and run optional browser-only test tooling; this tooling is not needed to serve or deploy the static site. The checker validates required sections and controls, all 12 architecture patterns, 14 technical domains, all original animation mounts, 26 individual concept-specific visual renderers, the absence of shared horizontal progress rails, 12 gallery draw controls, the seven-stage delivery runner, eleven linked engineering playbook documents, unique IDs, local fragment and asset references, basic accessibility safeguards, SEO/structured data, the downloadable PDF, favicon size, retired paths, and the intentionally empty projects directory. All four JavaScript files are syntax-checked. The deployment workflow includes all six animation/interaction assets, assembles only the public site files, validates them, and publishes the static artifact.
+The first five commands validate the repository without extra dependencies. The remaining commands install and run optional browser-only test tooling; this tooling is not needed to serve or deploy the static site. The checker validates required sections and controls, the three-tier evidence guide, four inspectable portfolio artifacts, all 12 architecture patterns, 14 technical domains, all original animation mounts, 26 individual concept-specific visual renderers, the absence of shared horizontal progress rails, 12 gallery draw controls, the seven-stage delivery runner, eleven linked engineering playbook documents, unique IDs, local fragment and asset references, basic accessibility safeguards, SEO/structured data, the downloadable PDF, favicon size, retired paths, and the intentionally empty projects directory. All four JavaScript files are syntax-checked. The deployment workflow includes all six animation/interaction assets, assembles only the public site files, validates them, and publishes the static artifact.
 
 ## Deployment
 
@@ -292,3 +300,15 @@ The cursor-following engineering grid, SVG pointer connection overlay, card spot
 The separate long overview section was intentionally removed. A compact, icon-led five-area index now sits inside the existing intro hero, with short topic labels and a four-number content snapshot (14 learning domains, 12 architecture patterns, 26 browser-local labs, and 10 playbook guides). It uses the site's existing line-based visual language: no large filled cards, no extra section, no icon CDN, and no external runtime dependency. The original profile copy, portrait, education details, and existing engineering identity remain intact. The five links point to the existing Foundations, Cloud, Delivery, Observability, and Architecture Gallery sections.
 
 
+
+
+## Evidence-first portfolio refinement
+
+The main reading order now presents the learning journey and repository evidence before the optional technology/architecture/workbench appendix. The advanced Kubernetes/platform material follows the container foundations. The About section explains the three evidence types used throughout the page: conceptual reference, browser-local simulation, and implemented repository artifact. The Evidence section documents only work that already exists in this repository; it does not fabricate standalone Cloud/DevOps projects.
+
+The opening hero/orbital profile, principles strip, and final full connection section are preserved byte-for-byte in the source. New styling is scoped to the internal engineering/evidence sections.
+
+
+## Final code audit and source comments
+
+The source now includes human-oriented comments at module, section, function, trust-boundary, and workflow boundaries. See [CODE-READING-GUIDE.md](CODE-READING-GUIDE.md) for the runtime map and test commands, and [FINAL-CODE-AUDIT.md](FINAL-CODE-AUDIT.md) for the 145-check local verification record and its limitations.

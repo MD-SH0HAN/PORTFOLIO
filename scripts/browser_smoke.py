@@ -19,12 +19,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def data_uri(path: Path) -> str:
+    """Encode a local image as a data URI so the browser test needs no file server."""
     suffix = path.suffix.lower()
     mime = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml"}.get(suffix, "application/octet-stream")
     return f"data:{mime};base64,{base64.b64encode(path.read_bytes()).decode('ascii')}"
 
 
 def standalone_document() -> str:
+    """Inline the production HTML, CSS, JS, and local images into one test document."""
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     # Inline the exact production stylesheets; no test-only layout overrides are applied.
     for asset in ("styles.css", "animations.css", "advanced-animations.css", "final-interactions.css"):
@@ -57,6 +59,7 @@ def standalone_document() -> str:
 
 
 def main() -> int:
+    """Run end-to-end interaction, accessibility, navigation, and responsive smoke checks."""
     failures: list[str] = []
     browser_errors: list[str] = []
     passed: list[str] = []
@@ -74,6 +77,7 @@ def main() -> int:
         page.on("pageerror", lambda error: browser_errors.append(str(error)))
         page.on("console", lambda message: browser_errors.append(f"console.error: {message.text}") if message.type == "error" else None)
 
+        # Load the exact production assets in a self-contained page, then verify core semantics and navigation.
         try:
             page.set_content(document, wait_until="load", timeout=30000)
             page.wait_for_selector("#heroTitle", timeout=10000)
@@ -108,6 +112,7 @@ def main() -> int:
             else:
                 failures.append("existing profile hero content changed unexpectedly")
 
+            # This is a focused accessibility smoke check, not a substitute for a full WCAG audit.
             accessibility = page.evaluate(r"""() => {
               const text = element => (element.innerText || element.textContent || '').replace(/\s+/g, ' ').trim();
               const named = element => Boolean(element.getAttribute('aria-label') || element.getAttribute('aria-labelledby') || element.getAttribute('title') || text(element));

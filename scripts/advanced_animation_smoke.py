@@ -10,6 +10,7 @@ from browser_smoke import standalone_document
 
 
 def main() -> int:
+    """Exercise all advanced lab models, controls, graph ordering, and narrow layouts."""
     passed: list[str] = []
     failed: list[str] = []
     errors: list[str] = []
@@ -24,6 +25,7 @@ def main() -> int:
         page.set_default_timeout(5000)
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
+        # Every lab is tested through its public data-attribute controls, not private implementation hooks.
         try:
             page.set_content(standalone_document(), wait_until="load", timeout=30000)
             page.wait_for_function("document.querySelectorAll('[data-ea-lab]').length === 26", timeout=10000)

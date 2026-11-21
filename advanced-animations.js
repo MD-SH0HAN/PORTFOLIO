@@ -10,6 +10,7 @@
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
     || document.documentElement.dataset.reduceMotion === 'true';
   const esc = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  // Maps each portfolio section to the lab IDs that belong in that learning area.
   const sectionMap = {
     focus: ['linux-process','network-journey','git-branching','api-lifecycle'],
     'cloud-infrastructure': ['vpc-routing','network-policy','disaster-recovery'],
@@ -23,6 +24,7 @@
     finops: ['cloud-cost','rightsizing']
   };
 
+  // Declarative lab registry: descriptions, states, steps, and sources are data; renderers below provide behavior.
   const labs = [
     {id:'linux-process',section:'focus',n:'01',title:'Linux process lifecycle',kind:'state',tag:'STATE MACHINE',desc:'Follow a process from creation to termination. A blocked process waits for an event; a terminated process does not transition back to running.',states:['Created','Ready','Running','Waiting','Terminated'],path:[0,1,2,3,1,2,4],pathNotes:['Kernel creates the task and its initial process context.','The scheduler can select a runnable task.','The task is executing on a CPU.','The task sleeps until I/O or another event completes.','The event completes and the task returns to the runnable queue.','The scheduler selects the runnable task again.','The process exits; resources are reclaimed.'],source:'Linux scheduling concepts · simplified educational lifecycle'},
     {id:'network-journey',section:'focus',n:'02',title:'Network request journey',kind:'sequence',tag:'PROTOCOL SEQUENCE',desc:'Separate name resolution from transport and application protocols: DNS lookup, TCP establishment, TLS negotiation, HTTP request and response.',steps:[['Client','Request hostname'],['DNS resolver','Query and answer'],['TCP','Three-way handshake'],['TLS','Certificate and session negotiation'],['HTTP','Request reaches the origin'],['Origin','Response returns to client']],source:'DNS, TCP, TLS and HTTP are separate protocol layers; exact connection reuse and DNS transport vary by implementation.'},
@@ -120,6 +122,7 @@
   };
   const initialDetail = lab => initialDetails[lab.id] || 'Step through the model to inspect its structure.';
 
+  // Escape all data-derived labels before interpolating them into the generated lab markup.
   const stage = (i, title, detail, cls='') => `<div class="${cls} ea-stage" data-ea-stage="${i}"><span class="ea-stage-index">${String(i+1).padStart(2,'0')}</span><strong>${esc(title)}</strong>${detail?`<small>${esc(detail)}</small>`:''}</div>`;
   const visualRenderers = {
     'linux-process': lab => {
@@ -246,6 +249,7 @@
     return order.length===lab.nodes.length?order:lab.nodes.map((_,i)=>i);
   };
 
+  /** Reflect rollout progress without implying a real cluster or deployment operation. */
   const updateRolloutVisual = (card, desired, stepIndex) => {
     const stageIndex=Number.isFinite(stepIndex)?stepIndex:-1;
     let oldCount=desired, newCount=0, readyCount=0;
@@ -262,6 +266,7 @@
     });
   };
 
+  /** Execute the domain-specific calculation behind a lab that needs more than a static stage list. */
   const customResult = (lab, card) => {
     const get = name => card.querySelector(`[data-ea-input="${name}"]`);
     const out = card.querySelector('[data-ea-result]'); if (!out) return;
@@ -416,6 +421,7 @@
 
   const stageCount = lab => lab.path ? lab.path.length : lab.kind==='sequence' ? lab.steps.length : lab.kind==='state' ? lab.states.length : lab.kind==='graph' ? lab.nodes.length : lab.data.length;
 
+  /** Synchronize the active step, visual highlight, and live status for one lab. */
   const setStepState = (card, lab, index) => {
     const total=stageCount(lab);
     const clamped=Math.max(-1,Math.min(index,total-1));
@@ -524,8 +530,10 @@
     labVisibilityObserver?.observe(card);
   };
 
+  /** Create one lab article from its registry record; all controls are scoped by data attributes. */
   const makeCard = (lab) => `<article class="ea-card${lab.id==='telemetry-correlation'?' ea-card-wide ea-card-observability':''}" data-ea-lab="${lab.id}"><div class="ea-card-head"><span>${lab.n} / ${esc(lab.tag)}</span><span class="ea-local-badge">LOCAL MODEL</span></div><h3>${esc(lab.title)}</h3><p class="ea-description">${esc(lab.desc)}</p><div class="ea-visual" data-visual-model="${lab.id}">${createStageVisual(lab)}</div>${lab.custom?`<div class="ea-custom">${customMarkup[lab.custom]}</div>`:''}<div class="ea-controls"><button type="button" data-ea-action="play">Play</button><button type="button" data-ea-action="pause" disabled>Pause</button><button type="button" data-ea-action="step">Step →</button><button type="button" data-ea-action="reset">Reset</button></div><p class="ea-status" data-ea-status aria-live="polite">Ready · use Step or Play.</p><p class="ea-source-note">${esc(lab.source)}</p></article>`;
 
+  /** Mount every configured lab and delegate Play/Pause/Step/Reset actions to its own card. */
   const initGallery = () => {
     const cards=[...document.querySelectorAll('#architectureGalleryGrid .architecture-card')];
     cards.forEach((card,index)=>{
@@ -548,11 +556,13 @@
     });
   };
 
+  /** Initialize the advanced lab gallery after the page DOM is available. */
   const init = () => {
     Object.entries(sectionMap).forEach(([sectionId,ids])=>{
       const section=document.getElementById(sectionId);if(!section)return;
       const selected=ids.map(id=>labs.find(lab=>lab.id===id)).filter(Boolean);if(!selected.length)return;
       const existing=section.querySelector(':scope > .ea-lab-section');if(existing)return;
+      // The template uses the fixed lab registry; esc() protects all registry text inserted into HTML.
       const wrapper=document.createElement('div');wrapper.className='ea-lab-section';wrapper.innerHTML=`<div class="ea-section-heading"><div><span class="mono">INTERACTIVE ENGINEERING MOTION LABS / ${esc(sectionId.toUpperCase())}</span><h3>Explore the system <span>in motion.</span></h3><p>Step through each model, inspect the decision points and replay the flow. These are illustrative browser-local learning experiences, not live infrastructure.</p></div><span class="ea-count">${selected.length} VISUAL MODELS</span></div><div class="ea-grid">${selected.map(makeCard).join('')}</div>`;
       section.append(wrapper);selected.forEach(initCard);
     });

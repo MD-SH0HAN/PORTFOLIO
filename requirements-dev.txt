@@ -1,2 +1,3 @@
-# Optional browser-only test tooling; the deployed portfolio has no Python or Node runtime dependency.
+# Pinned test-only dependency: Playwright drives Chromium in CI and local verification.
+# The deployed static site has no Python or Node runtime dependency.
 playwright==1.65.2

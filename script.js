@@ -1,3 +1,10 @@
+/*
+ * Core portfolio controller.
+ * Responsibilities: profile/contact links, theme and accessibility preferences,
+ * section navigation, synthetic reliability/pipeline/Kubernetes/FinOps models,
+ * the technology explorer, command palette, and architecture/evidence navigation.
+ * This module enhances the static HTML; it does not provision or contact cloud services.
+ */
 (() => {
   'use strict';
   const root = document.documentElement;
@@ -83,6 +90,7 @@
       link.setAttribute('tabindex', '-1');
       link.classList.add('is-unconfigured');
     }
+    // Profile icons are fixed SVG snippets from the local allow-listed map, never remote or user-provided markup.
     const iconMarkup = profileIconMarkup[link.dataset.profile];
     if (iconMarkup && !link.querySelector('svg')) {
       link.insertAdjacentHTML('afterbegin', iconMarkup);
@@ -95,6 +103,7 @@
     const link = document.createElement('a');
     link.className = 'contact-profile-link';
     link.href = profile.href;
+    // Reuse the same fixed, local SVG allow-list used by the authored profile links above.
     link.insertAdjacentHTML('afterbegin', profileIconMarkup[profile.key] || profileIconMarkup.portfolio);
 
     const label = document.createElement('span');
@@ -117,6 +126,7 @@
     return link;
   };
 
+  /** Render one directory group from the single profileDestinations data source. */
   const renderContactProfiles = (elementId, group) => {
     const container = document.getElementById(elementId);
     if (!container) return;
@@ -161,6 +171,7 @@
   // Theme persists when storage is available; both themes retain the monochrome language.
   const savedTheme = (() => { try { return localStorage.getItem('shohan-theme'); } catch (_) { return null; } })();
   if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
+  /** Keep the theme button label and document theme metadata synchronized. */
   const updateThemeControl = () => {
     if (!themeToggle) return;
     const light = root.dataset.theme === 'light';
@@ -168,6 +179,7 @@
     themeToggle.title = light ? 'Switch to dark theme' : 'Switch to light theme';
     if (themeColorMeta) themeColorMeta.setAttribute('content', light ? '#ececec' : '#090909');
   };
+  /** Switch themes and persist the preference when browser storage is available. */
   const toggleTheme = () => {
     const nextTheme = root.dataset.theme === 'light' ? 'dark' : 'light';
     root.dataset.theme = nextTheme;
@@ -275,6 +287,7 @@
     });
   let activeSectionId = '';
 
+  /** Select the current navigation item using a stable reading line below the sticky header. */
   const updateActiveSection = () => {
     if (!sections.length) return;
 
@@ -315,6 +328,7 @@
   });
   backToTop?.addEventListener('blur', () => window.requestAnimationFrame(updateScrollUI));
 
+  /** Update scroll progress, Back-to-Top visibility, and scroll-linked SVG paths once per frame. */
   const updateScrollUI = () => {
     const scrollable = root.scrollHeight - window.innerHeight;
     const amount = scrollable > 0 ? Math.min(100, Math.max(0, window.scrollY / scrollable * 100)) : 0;
@@ -404,6 +418,7 @@
   const sloRequests = document.getElementById('sloRequests');
   const fmt = new Intl.NumberFormat('en-US');
   const byId = id => document.getElementById(id);
+  /** Animate a numeric readout while preserving its live-region announcement semantics. */
   const animateNumber = (element, target, formatter = value => fmt.format(Math.round(value)), writer = null) => {
     if (!element || !Number.isFinite(target)) return;
     if (element._countFrame) cancelAnimationFrame(element._countFrame);
@@ -512,6 +527,7 @@
     const requestBudget = Math.floor(Number(sloRequests.value) * Number(sloWindow.value) * Math.max(0, 1 - Number(sloTarget.value) / 100) + 1e-9);
     return requestBudget;
   };
+  /** Rebuild the reliability simulator timeline from its local event history. */
   const renderSimulationTimeline = () => {
     if (!simulationTimeline) return;
     simulationTimeline.replaceChildren();
@@ -536,6 +552,7 @@
     const level = kind === 'danger' ? 'ERROR' : kind === 'warning' ? 'WARN' : kind === 'success' ? 'SUCCESS' : 'INFO';
     appendTerminalLine('simulationTerminalLog', level, message);
   };
+  /** Draw the synthetic latency/error series; these samples are generated in this browser. */
   const renderSimulationChart = () => {
     if (!simulationChartBars || !simulationLatencyPath || !simulationLatencyDot) return;
     const samples = simulation.samples.slice(-24);
@@ -648,6 +665,7 @@
   byId('resetSimulation')?.addEventListener('click', () => resetSimulation(true));
 
   const sloRing = byId('sloRing');
+  /** Recalculate time and request error budgets from the selected illustrative SLO inputs. */
   const updateSlo = () => {
     if (!sloTarget || !sloWindow || !sloRequests) return;
     const target = Number(sloTarget.value);
@@ -702,6 +720,7 @@
     deploy: 'The release is promoted to its selected environment.',
     operate: 'Post-deploy health and operational feedback are inspected.'
   };
+  /** Update one simulated delivery stage and its accessible status text. */
   const setPipelineState = (stage, state, label) => {
     stage.classList.remove('is-running', 'is-pass', 'is-fail', 'is-skipped');
     if (state) stage.classList.add(`is-${state}`);
@@ -888,6 +907,25 @@
   const detailRelations = document.getElementById('toolDetailRelations');
   const detailLink = document.getElementById('toolDetailLink');
   let activeToolFilter = 'all';
+  /** Choose a balanced CSS column count from the current filtered tool-card count. */
+  const balanceToolGrid = () => {
+    if (!toolList) return;
+    const visibleTools = toolButtons.filter(button => !button.hidden);
+    toolButtons.forEach(button => button.classList.remove('is-grid-final-third', 'is-grid-final-half', 'is-grid-final-full'));
+    delete toolList.dataset.gridBalance;
+    if (!visibleTools.length) return;
+
+    const columns = getComputedStyle(toolList).gridTemplateColumns.trim().split(/\s+/).length;
+    const remainder = visibleTools.length % columns;
+    if (columns === 3 && remainder === 2) {
+      // Three-column index with two remaining entries: widen both to half-row cards.
+      toolList.dataset.gridBalance = 'pair-tail';
+      visibleTools.slice(0, -2).forEach(button => button.classList.add('is-grid-final-third'));
+      visibleTools.slice(-2).forEach(button => button.classList.add('is-grid-final-half'));
+    } else if (remainder === 1 && columns > 1) {
+      visibleTools.at(-1)?.classList.add('is-grid-final-full');
+    }
+  };
   const selectTool = name => {
     const item = toolDefinitions[name];
     if (!item) return;
@@ -909,6 +947,7 @@
       detailLink.textContent = `Explore related section ↗`;
     }
   };
+  /** Apply text/category filters, then rebalance the visible technology cards. */
   const applyToolFilters = () => {
     const query = (toolSearch?.value || '').trim().toLowerCase();
     let visibleCount = 0;
@@ -921,6 +960,7 @@
       button.hidden = !visible;
       if (visible) visibleCount += 1;
     });
+    balanceToolGrid();
     let empty = toolList?.querySelector('.eng-tool-empty');
     if (toolList && visibleCount === 0) {
       if (!empty) { empty = document.createElement('p'); empty.className = 'eng-tool-empty'; empty.textContent = 'No matching technologies. Try a different term or domain.'; toolList.appendChild(empty); }
@@ -941,6 +981,7 @@
   }));
   toolButtons.forEach(button => button.addEventListener('click', () => selectTool(button.dataset.tool)));
   toolSearch?.addEventListener('input', applyToolFilters);
+  window.addEventListener('resize', balanceToolGrid, { passive: true });
   if (toolButtons.length) { selectTool('Linux'); applyToolFilters(); }
 
   // Keyboard-accessible command palette for the single integrated portfolio.
@@ -992,6 +1033,7 @@
   const commandFilterButtons = [...document.querySelectorAll('[data-command-filter]')];
   const commandRecentKey = 'shohan-command-recents';
   let sessionCommandRecents = [];
+  /** Read recent command-palette destinations defensively from localStorage. */
   const readCommandRecents = () => {
     try {
       const parsed = JSON.parse(localStorage.getItem(commandRecentKey) || '[]');
@@ -1016,6 +1058,7 @@
     learning: ['LEARNING'],
     tools: ['WORKBENCH', 'SUPPORTING', 'REFERENCE', 'EVIDENCE', 'DOCUMENTATION', 'PREFERENCES', 'PROFILE', 'CONTACT', 'TOOLS', 'FINOPS']
   };
+  /** Build searchable commands from real section and lab anchors already in the DOM. */
   const discoverDynamicCommands = () => {
     const dynamic = [];
     document.querySelectorAll('[data-ea-lab]').forEach(card => {
@@ -1075,6 +1118,7 @@
       catch (error) { showToast(`Unable to open destination: ${error.message}`); }
     }, 20);
   };
+  /** Render the filtered command results and update the result-count announcement. */
   const renderCommands = () => {
     if (!commandResults || !commandSearch) return;
     const query = commandSearch.value.trim().toLowerCase();
@@ -1119,6 +1163,7 @@
     activeCommandIndex = 0;
     renderCommands();
   }));
+  /** Open the command palette and place keyboard focus in its search field. */
   const openCommandPalette = () => {
     if (!commandDialog || !commandSearch) return;
     if (typeof commandDialog.showModal === 'function') commandDialog.showModal();
@@ -1199,6 +1244,7 @@
   };
   const money = value => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
   const countFormat = value => new Intl.NumberFormat('en-US').format(value);
+  /** Calculate the teaching estimate from hypothetical unit rates and selected quantities. */
   const finopsCalculate = () => {
     if (!finopsInputs.compute || !finopsInputs.storage || !finopsInputs.egress) return;
     const computeQty = Number(finopsInputs.compute.value);
@@ -1247,6 +1293,7 @@
     { name: 'MONITOR', message: 'After a real apply, monitor infrastructure health, costs, policy, and drift; plan and remediate discrepancies.' }
   ];
   let terraformStage = 0;
+  /** Render the current step of the local Terraform lifecycle walkthrough. */
   const renderTerraformStage = () => {
     terraformSteps.forEach((step, index) => {
       step.classList.toggle('is-done', index < terraformStage);
@@ -1274,6 +1321,7 @@
   renderTerraformStage();
 
   // Connected reference architecture: one data model drives the selectable stages and evidence prompts.
+  /** Connect the seven-stage delivery reference to its detail and evidence panels. */
   const initializeEngineeringSystemExplorer = () => {
     const explorer = document.querySelector('.eng-system-explorer');
     if (!explorer) return;
@@ -1374,6 +1422,7 @@
   initializeEngineeringSystemExplorer();
 
   // Compact engineering topics into overview tiles; keep each full article in an accessible detail dialog.
+  /** Move long topic content into accessible dialogs while preserving its original DOM nodes. */
   const initializeExpandableTopicCards = () => {
     const topicDialog = document.getElementById('topicDetailDialog');
     const topicDialogTitle = document.getElementById('topicDetailTitle');
@@ -1408,6 +1457,7 @@
       movedPanels.push(panel);
     };
 
+    // Topic markup is copied from the static HTML authored in index.html. Keep user input out of this HTML sink; dynamic labels use textContent below.
     const openTopicDetails = (card, detailMarkup, supplementaryPanel = null) => {
       returnFocusTo = card.querySelector('.topic-card-trigger') || card;
       const heading = card.dataset.topicTitle || 'Topic details';
@@ -1444,6 +1494,7 @@
     const topicCards = [...document.querySelectorAll('main .eng-topic-card')];
     topicCards.forEach(card => {
       if (card.classList.contains('eng-topic-card--compact')) return;
+      // Capture the authored article once before converting the card into its compact trigger.
       const detailMarkup = card.innerHTML;
       const index = card.querySelector('.eng-index')?.textContent.trim() || 'REFERENCE';
       const domain = card.querySelector('.eng-domain')?.textContent.trim() || 'ENGINEERING';
@@ -1500,6 +1551,14 @@
       card.setAttribute('data-topic-card', 'true');
 
       trigger.addEventListener('click', () => openTopicDetails(card, detailMarkup, supplementaryPanel));
+    });
+
+    // Give each compact topic grid an explicit item-count contract. The responsive
+    // stylesheet can then choose balanced columns for the real content count instead
+    // of forcing every group into the same four-column template.
+    document.querySelectorAll('.eng-card-grid').forEach(grid => {
+      const compactCount = grid.querySelectorAll(':scope > .eng-topic-card--compact').length;
+      grid.dataset.compactCount = String(compactCount);
     });
 
     topicDialogClose.addEventListener('click', () => {

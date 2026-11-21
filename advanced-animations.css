@@ -1,4 +1,10 @@
 /*
+ * Presentation layer for the 26 advanced engineering learning labs.
+ * Each lab has a distinct visual grammar; shared card controls are styled here,
+ * while its state and calculations live in advanced-animations.js.
+ * All visuals are browser-local teaching models, not live infrastructure.
+ */
+/*
  * Advanced engineering motion labs — 26 concept-specific visual grammars.
  * Layouts are intentionally compact and vertically composed; no lab depends
  * on a horizontal step rail or swipe-to-follow progress bar.
