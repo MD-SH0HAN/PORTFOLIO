@@ -18,8 +18,9 @@ The current source passes the structural, syntax, browser, responsive, and card-
 | Main browser smoke suite | **46 / 46** | Core loading, accessibility semantics, keyboard controls, theme, navigation, simulators, and responsive width |
 | Advanced learning labs | **54 / 54** | 26 lab models, calculations, step/play/pause/reset controls, diagrams, reduced motion, and responsive canvases |
 | Final interaction suite | **32 / 32** | Content-aware grids, filter balancing, architecture dialog, command palette, focus restoration, and mobile diagrams |
-| Monochrome surface suite | **13 / 13** | 77 primary cards use `#111111` in both themes, flat nested layers, protected footer treatment, and no horizontal page overflow |
-| **Total browser assertions** | **145 / 145** | All four independent Chromium suites passed |
+| Theme synchronization suite | **13 / 13** | System preference, manual toggle, persistence, cross-tab updates, and accessible state |
+| Theme-aware surface suite | **15 / 15** | Primary/nested cards and terminal panels use theme-matched surfaces and ink, protected footer treatment, and no horizontal page overflow |
+| **Total browser assertions** | **160 / 160** | All five independent Chromium suites passed |
 | CSSOM parsing | PASS | Chromium parsed all four production stylesheets (2,219 + 293 + 642 + 189 top-level rules) |
 | Standalone HTML documents | PASS | `404.html`, one-page print profile, and five-page technical portfolio render with expected headings/content |
 | XML / YAML parsing | PASS | Sitemap XML, Dependabot YAML, and both GitHub Actions workflows parse |

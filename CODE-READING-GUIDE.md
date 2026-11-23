@@ -4,7 +4,7 @@ This guide explains where to begin when maintaining the portfolio. The site is a
 
 ## Runtime loading order
 
-`index.html` loads stylesheets in this order: `styles.css`, `animations.css`, `advanced-animations.css`, then `final-interactions.css`. The last stylesheet intentionally owns the final content-aware card grids and solid monochrome surface rules. Do not move it earlier without rerunning the theme and layout tests. `styles.css` is a long accumulated cascade with later component refinements; treat its final rules as overrides and avoid adding another broad patch at the end. A future stylesheet consolidation should be a separate, screenshot-driven refactor.
+`index.html` loads stylesheets in this order: `styles.css`, `animations.css`, `advanced-animations.css`, then `final-interactions.css`. The last stylesheet intentionally owns the final content-aware card grids and theme-aware monochrome surface rules. Primary and nested card colors are driven by the same dark/light tokens, while the interactive terminal renderer also defines a theme-specific palette. Do not move it earlier without rerunning the theme and layout tests. `styles.css` is a long accumulated cascade with later component refinements; treat its final rules as overrides and avoid adding another broad patch at the end. A future stylesheet consolidation should be a separate, screenshot-driven refactor.
 
 The deferred JavaScript files load in this order:
 
@@ -23,7 +23,7 @@ The files use small IIFEs to keep their implementation details out of the global
 | `styles.css` | Theme tokens, global layout, typography, header/hero, section and component styling, responsive rules | File header and existing topic comments; later refinement blocks intentionally override earlier declarations |
 | `animations.css` | Core motion-panel and diagram presentation | File header and numbered diagram comments |
 | `advanced-animations.css` | Styling for the 26 advanced labs | Numbered lab comments |
-| `final-interactions.css` | Dialogs, final responsive grid rules, and primary/nested card surface contract | File header; search for `content-aware`, `Primary surfaces`, or `Nested cards` |
+| `final-interactions.css` | Dialogs, final responsive grid rules, and theme-aware primary/nested card surfaces | File header; search for `content-aware`, `Theme-aware`, or `Primary surfaces` |
 | `script.js` | Main UI controller and local teaching calculators | File header and JSDoc comments above the main helper functions |
 | `animations.js` | Shared animation helpers and original engineering diagrams | `panelShell`, `mount`, `onceVisible`, `drawSvg`, and numbered model comments |
 | `advanced-animations.js` | Lab registry, visual models, calculations, and per-card playback | `sectionMap`, `labs`, `customResult`, `setStepState`, and `initGallery` |
@@ -32,7 +32,7 @@ The files use small IIFEs to keep their implementation details out of the global
 | `scripts/browser_smoke.py` | Builds a self-contained test document and runs core browser checks | `standalone_document` and `main` |
 | `scripts/advanced_animation_smoke.py` | Exercises lab states, calculations, graphs, and playback | `main` |
 | `scripts/final_interactions_smoke.py` | Tests responsive grids, command search, dialogs, focus, and mobile diagrams | `main` |
-| `scripts/monochrome_surface_smoke.py` | Checks exact primary colors and flat nested cards in both themes | `CARD_SELECTORS`, `PRIMARY_CARD_SELECTORS`, and `main` |
+| `scripts/monochrome_surface_smoke.py` | Checks theme-matched primary/nested card fills, text, and terminal panels | `CARD_SELECTORS`, `PRIMARY_CARD_SELECTORS`, and `main` |
 | `.github/workflows/portfolio-quality.yml` | Read-only validation on pushes and pull requests | `validate` job |
 | `.github/workflows/deploy-pages.yml` | Repeats validation, packages public files, and deploys Pages | `build` must pass before `deploy` can run |
 | `.github/dependabot.yml` | Scheduled review of pinned GitHub Actions | Weekly update policy |
@@ -72,6 +72,7 @@ python -m py_compile scripts/*.py
 python scripts/browser_smoke.py
 python scripts/advanced_animation_smoke.py
 python scripts/final_interactions_smoke.py
+python scripts/theme_smoke.py
 python scripts/monochrome_surface_smoke.py
 ```
 

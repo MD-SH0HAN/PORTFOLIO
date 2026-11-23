@@ -1,38 +1,23 @@
-# Primary Card Surface Update
+# Theme-Aware Primary Card Surfaces
 
-Date: 2026-11-21
+Date: 2026-11-23
 
-## Requested design rule
+## Theme behavior
 
-All large / primary content cards use the exact solid background `#111111` in both dark and light themes. Primary card text and borders use light monochrome tokens so contrast remains clear when the site is in light mode.
+Every primary content card, nested panel, chart/data inset, and associated text/border token follows the active document theme.
 
-## Nested card treatment
+- Dark mode: dark charcoal primary surfaces, darker inset data areas, light foreground text, and subtle light borders.
+- Light mode: white/light-gray primary surfaces, light-gray inset data areas, dark foreground text, and subtle dark borders.
+- Hover and selected states retain a clear monochrome distinction in both themes.
 
-Inner cards are intentionally separated from the primary surface using flat solid fills:
-
-- Primary card: `#111111`
-- Raised inner card: `#191919`
-- Recessed chart / data surface: `#0B0B0B`
-
-Decorative inset bevels, card drop shadows, glow shadows, and gradient fills were removed from the affected primary and nested content-card surfaces. Borders remain to distinguish component boundaries. Functional chart strokes, gauges, SVG paths, and data encodings remain intact.
-
-## Explicitly reviewed examples
-
-- Reliability signals / `.sre-control-room`
-- SLO Explorer / `.slo-workbench`
-- SLO controls, results, metrics, and budget note
-- Reliability metrics, chart panel, event timeline, and event stream
-- Engineering review and evidence panels
-- Technology matrix, topic cards, motion models, and other primary content cards
+The surface system is token-driven from `html[data-theme]`; card components do not hardcode a dark fill or light-only foreground.
 
 ## Protected areas
 
-- Opening hero and orbital profile
-- Final full-connection contact/footer section
-- `index.html` and all user-facing content / interaction logic
-
-The source `index.html` is unchanged from the preceding Solid Monochrome Cards release.
+- Opening hero and orbital profile.
+- Final full-connection contact/footer area, which retains its own theme-aware surface rules.
+- Functional chart strokes, gauges, SVG paths, data encodings, and interactive states.
 
 ## Validation
 
-The browser regression suite checks exact computed primary color (`rgb(17, 17, 17)`), no gradient/image, no box shadow, foreground readability, nested card fills, footer preservation, and page overflow at 320, 390, 768, 1024, and 1440 CSS pixels.
+The browser regression suite checks theme-matched primary fills and text, solid nested surface tiers, no card gradients or shadows, footer preservation, and no horizontal page overflow at 320, 390, 768, 1024, and 1440 CSS pixels.

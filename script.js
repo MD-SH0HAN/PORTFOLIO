@@ -168,27 +168,51 @@
     catch (_) { return update(); }
   };
 
-  // Theme persists when storage is available; both themes retain the monochrome language.
-  const savedTheme = (() => { try { return localStorage.getItem('shohan-theme'); } catch (_) { return null; } })();
-  if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
-  /** Keep the theme button label and document theme metadata synchronized. */
+  // The selected theme is explicit only after a visitor chooses one. Until
+  // then, follow the operating-system preference, including live changes.
+  const themePreferenceKey = 'shohan-theme';
+  const systemThemePreference = window.matchMedia('(prefers-color-scheme: light)');
+  const getSystemTheme = () => systemThemePreference.matches ? 'light' : 'dark';
+  const readSavedTheme = () => {
+    try {
+      const stored = localStorage.getItem(themePreferenceKey);
+      return stored === 'light' || stored === 'dark' ? stored : null;
+    } catch (_) { return null; }
+  };
+  let explicitTheme = readSavedTheme();
+  if (explicitTheme) root.dataset.theme = explicitTheme;
+  else root.dataset.theme = getSystemTheme();
+
+  /** Keep theme metadata and the accessible toggle state synchronized. */
   const updateThemeControl = () => {
-    if (!themeToggle) return;
     const light = root.dataset.theme === 'light';
-    themeToggle.setAttribute('aria-label', light ? 'Switch to dark monochrome theme' : 'Switch to light monochrome theme');
-    themeToggle.title = light ? 'Switch to dark theme' : 'Switch to light theme';
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-pressed', String(light));
+      themeToggle.title = light ? 'Switch to dark theme' : 'Switch to light theme';
+    }
     if (themeColorMeta) themeColorMeta.setAttribute('content', light ? '#ececec' : '#090909');
   };
-  /** Switch themes and persist the preference when browser storage is available. */
+  /** Apply one resolved theme to the document and all theme-aware controls. */
+  const applyTheme = theme => {
+    root.dataset.theme = theme === 'light' ? 'light' : 'dark';
+    updateThemeControl();
+  };
+  /** Switch themes and persist an explicit choice when browser storage is available. */
   const toggleTheme = () => {
     const nextTheme = root.dataset.theme === 'light' ? 'dark' : 'light';
-    root.dataset.theme = nextTheme;
-    try { localStorage.setItem('shohan-theme', nextTheme); } catch (_) { /* Storage may be unavailable for local files. */ }
-    updateThemeControl();
+    explicitTheme = nextTheme;
+    try { localStorage.setItem(themePreferenceKey, nextTheme); } catch (_) { /* The selection remains active for this page view. */ }
+    applyTheme(nextTheme);
     showToast(`Switched to ${nextTheme} theme.`);
   };
   updateThemeControl();
   themeToggle?.addEventListener('click', toggleTheme);
+
+  const syncSystemTheme = () => {
+    if (!explicitTheme) applyTheme(getSystemTheme());
+  };
+  if (typeof systemThemePreference.addEventListener === 'function') systemThemePreference.addEventListener('change', syncSystemTheme);
+  else systemThemePreference.addListener?.(syncSystemTheme);
 
   // Respect the visitor's operating-system reduced-motion preference and avoid
   // running SVG motion in sections that are well outside the viewport.
@@ -268,11 +292,12 @@
   if (typeof reducedMotion.addEventListener === 'function') reducedMotion.addEventListener('change', syncAccessibilityPreferences);
   else reducedMotion.addListener?.(syncAccessibilityPreferences);
 
-  // Keep the portfolio in sync when the shared preference changes in another tab.
+  // Keep tabs in sync when the preference changes, and return to system mode
+  // when the key is removed or localStorage is cleared in another tab.
   window.addEventListener('storage', event => {
-    if (event.key !== 'shohan-theme' || (event.newValue !== 'light' && event.newValue !== 'dark')) return;
-    root.dataset.theme = event.newValue;
-    updateThemeControl();
+    if (event.key !== themePreferenceKey && event.key !== null) return;
+    explicitTheme = event.newValue === 'light' || event.newValue === 'dark' ? event.newValue : null;
+    applyTheme(explicitTheme || getSystemTheme());
   });
 
   // Scroll progress, reliable active-section navigation, and the Back to Top control.

@@ -703,27 +703,37 @@
 }
 
 /* ========================================================================== 
-   SOLID MONOCHROME CARD SYSTEM
-   The hero/orbital profile and the final site-footer connection area are
-   intentionally excluded. Content cards use opaque grayscale tiers only;
-   gradients remain reserved for the protected hero artwork and data visuals.
+   THEME-AWARE SOLID MONOCHROME CARD SYSTEM
+   The hero/orbital profile and final contact area remain independently styled.
+   Every content-card tier, including its ink and borders, follows data-theme.
+   Opaque grayscale surfaces keep the layout crisp without glass gradients.
    ========================================================================== */
 :root {
   --mono-card-primary: #111111;
   --mono-card-raised: #191919;
+  --mono-card-panel-strong: #202020;
   --mono-card-inset: #0b0b0b;
+  --mono-card-ink: #f2f2f2;
+  --mono-card-soft: #c7c7c7;
+  --mono-card-muted: #999999;
+  --mono-card-faint: #777777;
+  --mono-card-white: #f5f5f5;
   --mono-card-border: rgba(255, 255, 255, .12);
   --mono-card-border-strong: rgba(255, 255, 255, .22);
   --mono-card-shadow: none;
 }
 html[data-theme="light"] {
-  /* Primary engineering cards remain #111111 in light mode as well; the
-     local text and border tokens below preserve readable contrast. */
-  --mono-card-primary: #111111;
-  --mono-card-raised: #191919;
-  --mono-card-inset: #0b0b0b;
-  --mono-card-border: rgba(255, 255, 255, .12);
-  --mono-card-border-strong: rgba(255, 255, 255, .22);
+  --mono-card-primary: #ffffff;
+  --mono-card-raised: #f5f5f5;
+  --mono-card-panel-strong: #ebebeb;
+  --mono-card-inset: #ececec;
+  --mono-card-ink: #141414;
+  --mono-card-soft: #444444;
+  --mono-card-muted: #606060;
+  --mono-card-faint: #777777;
+  --mono-card-white: #141414;
+  --mono-card-border: rgba(0, 0, 0, .12);
+  --mono-card-border-strong: rgba(0, 0, 0, .22);
   --mono-card-shadow: none;
 }
 
@@ -796,20 +806,20 @@ main > section:not(.hero) :is(
   .skills-matrix-section,
   .engineering-card
 ) {
-  --bg: #111111;
+  --bg: var(--mono-card-primary);
   --bg-soft: var(--mono-card-raised);
   --panel: var(--mono-card-raised);
-  --panel-strong: #202020;
+  --panel-strong: var(--mono-card-panel-strong);
   --glass: var(--mono-card-raised);
-  --white: #f5f5f5;
-  --text: #f2f2f2;
-  --text-soft: #c7c7c7;
-  --muted: #999999;
-  --faint: #777777;
+  --white: var(--mono-card-white);
+  --text: var(--mono-card-ink);
+  --text-soft: var(--mono-card-soft);
+  --muted: var(--mono-card-muted);
+  --faint: var(--mono-card-faint);
   --line: var(--mono-card-border);
   --line-strong: var(--mono-card-border-strong);
   --shadow: none;
-  color: #f2f2f2;
+  color: var(--mono-card-ink);
   background-color: var(--mono-card-primary) !important;
   background-image: none !important;
   border-color: var(--mono-card-border) !important;
@@ -932,22 +942,22 @@ main > section:not(.hero) :is(
 }
 
 /* ======================================================================
-   2026.11 — PRIMARY CARD COLOR + FLAT NESTED SURFACES
-   Primary section panels use the requested #111111 in every theme.
-   Nested cards use solid charcoal tones and never cast inner/outer shadows.
+   2026.11 — THEME-AWARE PRIMARY CARD COLOR + FLAT NESTED SURFACES
+   Primary and nested surfaces switch their complete grayscale palette with
+   the active theme; no content panel is pinned to a dark fill in light mode.
    The opening hero/orbital profile and the final contact section are excluded.
    ====================================================================== */
 :root {
-  --primary-card-bg: #111111;
-  --primary-card-ink: #f2f2f2;
-  --primary-card-soft: #c7c7c7;
-  --primary-card-muted: #999999;
-  --primary-card-faint: #777777;
-  --primary-card-line: rgba(255, 255, 255, .12);
-  --primary-card-line-strong: rgba(255, 255, 255, .22);
-  --nested-card-bg: #191919;
-  --nested-card-raised: #202020;
-  --nested-card-inset: #0b0b0b;
+  --primary-card-bg: var(--mono-card-primary);
+  --primary-card-ink: var(--mono-card-ink);
+  --primary-card-soft: var(--mono-card-soft);
+  --primary-card-muted: var(--mono-card-muted);
+  --primary-card-faint: var(--mono-card-faint);
+  --primary-card-line: var(--mono-card-border);
+  --primary-card-line-strong: var(--mono-card-border-strong);
+  --nested-card-bg: var(--mono-card-raised);
+  --nested-card-raised: var(--mono-card-panel-strong);
+  --nested-card-inset: var(--mono-card-inset);
 }
 
 /* Large / primary content surfaces. Do not target the protected hero or footer. */
@@ -985,7 +995,7 @@ main .section.eng-section .eng-evidence-standard {
   --panel: var(--nested-card-bg);
   --panel-strong: var(--nested-card-raised);
   --glass: var(--nested-card-bg);
-  --white: #f5f5f5;
+  --white: var(--mono-card-white);
   --text: var(--primary-card-ink);
   --text-soft: var(--primary-card-soft);
   --muted: var(--primary-card-muted);
@@ -1027,6 +1037,7 @@ main .section.eng-section:not(.contact-section) .portfolio-artifact {
   --bg-soft: var(--nested-card-bg);
   --panel: var(--nested-card-bg);
   --panel-strong: var(--nested-card-raised);
+  --white: var(--mono-card-white);
   --text: var(--primary-card-ink);
   --text-soft: var(--primary-card-soft);
   --muted: var(--primary-card-muted);
@@ -1132,3 +1143,91 @@ main .section.eng-section:not(.contact-section) :is(.architecture-node, .pipelin
 }
 
 /* Preserve chart encodings (SVG strokes/fills) while keeping their containing cards flat. */
+
+/* 2026.11 — consistent unfilled controls across every non-intro section.
+   The hero/intro page and its CTA treatment are intentionally left untouched.
+   Active controls remain identifiable through text and border contrast, never a fill. */
+main button:not(.hero button),
+.command-dialog button:not(.icon-button),
+#backToTop {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+main button:not(.hero button):hover,
+main button:not(.hero button):focus-visible,
+main button:not(.hero button)[aria-pressed="true"],
+main button:not(.hero button).is-active,
+main button:not(.hero button).is-selected,
+main button:not(.hero button).is-active:hover,
+main button:not(.hero button).is-selected:hover,
+.command-dialog button:not(.icon-button):hover,
+.command-dialog button:not(.icon-button):focus-visible,
+#backToTop:hover,
+#backToTop:focus-visible {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border-color: var(--line-strong) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Undo inverse-filled selected technology buttons; selection is shown by outline. */
+main .tech-node.is-selected,
+main .tech-node.is-selected:hover,
+main .tech-node.is-selected:focus-visible {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line-strong) !important;
+  box-shadow: inset 0 0 0 1px var(--line-strong) !important;
+}
+main .tech-node.is-selected span,
+main .tech-node.is-selected small,
+main .tech-node.is-selected:hover span,
+main .tech-node.is-selected:hover small {
+  color: var(--text) !important;
+}
+
+/* Keep disabled controls unfilled and visually disabled. */
+main button:not(.hero button):disabled,
+.command-dialog button:not(.icon-button):disabled {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--faint) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+  opacity: .58;
+}
+
+/* Anchor-style action controls in non-intro sections use the same unfilled rail. */
+main a.button:not(.hero a.button),
+.contact-actions > a.button {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: none !important;
+}
+main a.button:not(.hero a.button):hover,
+main a.button:not(.hero a.button):focus-visible,
+.contact-actions > a.button:hover,
+.contact-actions > a.button:focus-visible {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border-color: var(--line-strong) !important;
+  box-shadow: none !important;
+}

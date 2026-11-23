@@ -110,18 +110,33 @@
 .motion-gate.is-blocked{opacity:.5;border-style:dashed}
 .motion-field{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--muted);font:9px var(--font)}
 
-/* Terminal renderer shared by the presentation and replay experiences. */
-.motion-terminal{overflow:hidden;border:1px solid var(--line-strong);border-radius:13px;background:#090909;color:#e7e7e7;font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
-.motion-terminal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.13);color:#a7a7a7;font:8px var(--font);letter-spacing:.1em}
-.motion-terminal-body{min-height:154px;max-height:260px;padding:14px;overflow:auto;overscroll-behavior:contain;scrollbar-color:#606060 #161616}
-.motion-terminal-prompt{color:#aaa}
-.motion-terminal-command{display:block;color:#f2f2f2;white-space:pre-wrap;overflow-wrap:anywhere}
-.motion-terminal-output{display:block;margin-top:7px;color:#bcbcbc;white-space:pre-wrap;overflow-wrap:anywhere}
-.motion-terminal-cursor{display:inline-block;width:7px;height:14px;vertical-align:-2px;margin-left:2px;background:#dedede;animation:motion-cursor-blink 1s steps(2,start) infinite}
+/* Terminal renderer shared by presentation and replay experiences. Its
+   surface, text, separators, and scrollbar invert with the site theme too. */
+.motion-terminal{
+  --terminal-bg:#090909;--terminal-ink:#e7e7e7;--terminal-muted:#a7a7a7;
+  --terminal-prompt:#aaa;--terminal-command:#f4f4f4;--terminal-output:#bcbcbc;
+  --terminal-faint:#777;--terminal-cursor:#dedede;--terminal-border:rgba(255,255,255,.13);
+  --terminal-scroll-thumb:#606060;--terminal-scroll-track:#161616;
+  overflow:hidden;border:1px solid var(--line-strong);border-radius:13px;
+  background:var(--terminal-bg);color:var(--terminal-ink);
+  font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace
+}
+html[data-theme="light"] .motion-terminal{
+  --terminal-bg:#f1f1f1;--terminal-ink:#181818;--terminal-muted:#5f5f5f;
+  --terminal-prompt:#555;--terminal-command:#141414;--terminal-output:#454545;
+  --terminal-faint:#777;--terminal-cursor:#333;--terminal-border:rgba(0,0,0,.14);
+  --terminal-scroll-thumb:#a0a0a0;--terminal-scroll-track:#dedede
+}
+.motion-terminal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;border-bottom:1px solid var(--terminal-border);color:var(--terminal-muted);font:8px var(--font);letter-spacing:.1em}
+.motion-terminal-body{min-height:154px;max-height:260px;padding:14px;overflow:auto;overscroll-behavior:contain;scrollbar-color:var(--terminal-scroll-thumb) var(--terminal-scroll-track)}
+.motion-terminal-prompt{color:var(--terminal-prompt)}
+.motion-terminal-command{display:block;color:var(--terminal-command);white-space:pre-wrap;overflow-wrap:anywhere}
+.motion-terminal-output{display:block;margin-top:7px;color:var(--terminal-output);white-space:pre-wrap;overflow-wrap:anywhere}
+.motion-terminal-cursor{display:inline-block;width:7px;height:14px;vertical-align:-2px;margin-left:2px;background:var(--terminal-cursor);animation:motion-cursor-blink 1s steps(2,start) infinite}
 .motion-terminal-line{display:block;margin:0 0 5px;line-height:1.65}
-.motion-terminal-line.is-command{color:#f4f4f4}
-.motion-terminal-line.is-output{color:#bcbcbc}
-.motion-terminal-line.is-muted{color:#777}
+.motion-terminal-line.is-command{color:var(--terminal-command)}
+.motion-terminal-line.is-output{color:var(--terminal-output)}
+.motion-terminal-line.is-muted{color:var(--terminal-faint)}
 .motion-terminal-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:12px}
 .motion-command-steps{display:grid;gap:6px;align-content:start}
 .motion-command-step{width:100%;padding:9px 10px;text-align:left;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text);cursor:pointer}

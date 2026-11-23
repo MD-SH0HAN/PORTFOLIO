@@ -6222,3 +6222,8 @@ body::after,
 @media (max-width: 820px) {
   .hero > .hero-bottomline { order: 9; }
 }
+
+/* Theme control reflects the mode that will be activated by the next click. */
+.site-header .theme-toggle .icon-moon { display: none; }
+html[data-theme="light"] .site-header .theme-toggle .icon-sun { display: none; }
+html[data-theme="light"] .site-header .theme-toggle .icon-moon { display: block; }

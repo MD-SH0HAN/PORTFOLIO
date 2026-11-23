@@ -35,11 +35,18 @@
 <link href="assets/favicon.png" rel="icon" type="image/png"/>
 <script>
     (() => {
-      try {
-        const saved = localStorage.getItem('shohan-theme');
-        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-        document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (systemPrefersLight ? 'light' : 'dark');
-      } catch (_) { /* Use the declared dark theme when storage or media preferences are unavailable. */ }
+      const root = document.documentElement;
+      let savedTheme = null;
+      let systemPrefersLight = false;
+      // Storage may be blocked (for example, in a privacy-restricted context).
+      // Resolve the operating-system theme independently so that a storage
+      // failure never prevents the system preference from being applied.
+      try { savedTheme = localStorage.getItem('shohan-theme'); } catch (_) { /* Fall back to the system preference. */ }
+      try { systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches; } catch (_) { /* Default to dark when media queries are unavailable. */ }
+      const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : (systemPrefersLight ? 'light' : 'dark');
+      root.dataset.theme = theme;
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      if (themeColor) themeColor.setAttribute('content', theme === 'light' ? '#ececec' : '#090909');
     })();
   </script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -64,8 +71,9 @@
 </a>
 <div aria-label="Portfolio tools and profile links" class="header-actions">
 <button aria-controls="commandDialog" aria-haspopup="dialog" aria-label="Open command palette" class="command-trigger" id="commandTrigger" title="Open command palette" type="button"><svg aria-hidden="true" class="icon command-icon" viewbox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg><span class="command-trigger-label">Quick jump</span></button>
-<button aria-label="Switch to light monochrome theme" class="icon-button theme-toggle" id="themeToggle" title="Switch theme" type="button">
+<button aria-label="Toggle light and dark theme" aria-pressed="false" class="icon-button theme-toggle" id="themeToggle" title="Switch to light theme" type="button">
 <svg aria-hidden="true" class="icon icon-sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3.7"></circle><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56m11.02 11.02 1.56 1.56M2 12h2.2m15.6 0H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path></svg>
+<svg aria-hidden="true" class="icon icon-moon" viewbox="0 0 24 24"><path d="M20.2 15.2A8.6 8.6 0 0 1 8.8 3.8 8.8 8.8 0 1 0 20.2 15.2Z"></path></svg>
 </button>
 <a aria-label="Download Technical Portfolio" class="icon-button header-icon-link cv-shortcut" download="MD-SHOHAN-DevOps-Portfolio.pdf" href="assets/MD-SHOHAN-DevOps-Portfolio.pdf" title="Download Technical Portfolio"><svg aria-hidden="true" class="icon" viewbox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M4 17v3h16v-3"></path></svg></a>
 <a aria-label="Go to contact section" class="icon-button header-icon-link contact-shortcut" href="#contact" title="Go to contact (C)"><svg aria-hidden="true" class="icon" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="m4 7 8 6 8-6"></path></svg></a>

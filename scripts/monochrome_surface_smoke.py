@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check that content cards use solid monochrome surfaces in both themes."""
+"""Check theme-aware primary and nested card surfaces in both themes."""
 from __future__ import annotations
 
 import os
@@ -46,17 +46,17 @@ PRIMARY_CARD_SELECTORS = [
 ]
 
 NESTED_CARD_EXPECTATIONS = {
-    ".slo-controls": "rgb(25, 25, 25)",
-    ".slo-results": "rgb(25, 25, 25)",
-    ".slo-metric": "rgb(25, 25, 25)",
-    ".simulation-metric": "rgb(25, 25, 25)",
-    ".simulation-chart-wrap": "rgb(11, 11, 11)",
-    ".slo-budget-note": "rgb(11, 11, 11)",
+    ".slo-controls": {"dark": "rgb(25, 25, 25)", "light": "rgb(245, 245, 245)"},
+    ".slo-results": {"dark": "rgb(25, 25, 25)", "light": "rgb(245, 245, 245)"},
+    ".slo-metric": {"dark": "rgb(25, 25, 25)", "light": "rgb(245, 245, 245)"},
+    ".simulation-metric": {"dark": "rgb(25, 25, 25)", "light": "rgb(245, 245, 245)"},
+    ".simulation-chart-wrap": {"dark": "rgb(11, 11, 11)", "light": "rgb(236, 236, 236)"},
+    ".slo-budget-note": {"dark": "rgb(11, 11, 11)", "light": "rgb(236, 236, 236)"},
 }
 
 
 def main() -> int:
-    """Check computed card colors, solid surfaces, shadow removal, and theme parity."""
+    """Check computed theme colors, solid surfaces, contrast, and responsive layout."""
     failures: list[str] = []
     checks: list[str] = []
     executable = os.environ.get("CHROMIUM_PATH")
@@ -91,8 +91,10 @@ def main() -> int:
                         failures.append(f"{theme}: {selector}[{index}] still has {result['backgroundImage']}")
                     if result["backgroundColor"] in ("rgba(0, 0, 0, 0)", "transparent"):
                         failures.append(f"{theme}: {selector}[{index}] has a transparent card fill")
-            # Main/bigger cards use the exact requested #111111 in both themes.
+            # Primary cards intentionally invert their surface/ink palette with the theme.
             primary_seen = 0
+            expected_primary = "rgb(17, 17, 17)" if theme == "dark" else "rgb(255, 255, 255)"
+            expected_ink = "rgb(242, 242, 242)" if theme == "dark" else "rgb(20, 20, 20)"
             for selector in PRIMARY_CARD_SELECTORS:
                 locator = page.locator(selector)
                 if locator.count() == 0:
@@ -104,20 +106,21 @@ def main() -> int:
                            boxShadow: style.boxShadow, color: style.color };
                 })""")
                 for index, result in enumerate(results):
-                    if result["backgroundColor"] != "rgb(17, 17, 17)":
-                        failures.append(f"{theme}: primary {selector}[{index}] is {result['backgroundColor']}, expected #111111")
+                    if result["backgroundColor"] != expected_primary:
+                        failures.append(f"{theme}: primary {selector}[{index}] is {result['backgroundColor']}, expected {expected_primary}")
                     if result["backgroundImage"] != "none":
                         failures.append(f"{theme}: primary {selector}[{index}] still has a gradient/image")
                     if result["boxShadow"] != "none":
                         failures.append(f"{theme}: primary {selector}[{index}] still has shadow {result['boxShadow']}")
-                    if result["color"] != "rgb(242, 242, 242)":
-                        failures.append(f"{theme}: primary {selector}[{index}] text is not using the accessible light foreground")
+                    if result["color"] != expected_ink:
+                        failures.append(f"{theme}: primary {selector}[{index}] text is {result['color']}, expected theme ink {expected_ink}")
             if primary_seen:
-                checks.append(f"{theme} theme: {primary_seen} primary cards use exact #111111 with no shadow")
+                checks.append(f"{theme} theme: {primary_seen} primary cards use theme-matched surfaces and readable ink")
             else:
                 failures.append(f"{theme}: no primary cards were found for color verification")
 
-            for selector, expected_color in NESTED_CARD_EXPECTATIONS.items():
+            for selector, expected_by_theme in NESTED_CARD_EXPECTATIONS.items():
+                expected_color = expected_by_theme[theme]
                 locator = page.locator(selector)
                 if locator.count() == 0:
                     continue
@@ -131,7 +134,19 @@ def main() -> int:
                         failures.append(f"{theme}: nested {selector}[{index}] has {result['backgroundColor']}, expected {expected_color}")
                     if result["backgroundImage"] != "none" or result["boxShadow"] != "none":
                         failures.append(f"{theme}: nested {selector}[{index}] still has a gradient or shadow")
-            checks.append(f"{theme} theme: SLO / reliability inner cards use flat, solid tonal layers")
+            checks.append(f"{theme} theme: SLO / reliability inner cards use matching, flat tonal layers")
+
+            # Interactive terminal panels are data cards too and must not stay dark in light mode.
+            terminal = page.locator(".motion-terminal").first
+            if terminal.count():
+                terminal_colors = terminal.evaluate("el => ({background: getComputedStyle(el).backgroundColor, color: getComputedStyle(el).color, head: getComputedStyle(el.querySelector('.motion-terminal-head')).color})")
+                expected_terminal = ("rgb(9, 9, 9)", "rgb(231, 231, 231)") if theme == "dark" else ("rgb(241, 241, 241)", "rgb(24, 24, 24)")
+                if terminal_colors["background"] == expected_terminal[0] and terminal_colors["color"] == expected_terminal[1]:
+                    checks.append(f"{theme} theme: interactive terminal surface and text follow the active palette")
+                else:
+                    failures.append(f"{theme}: terminal surface/text are {terminal_colors}, expected {expected_terminal}")
+            else:
+                failures.append(f"{theme}: no interactive terminal panel found")
 
             # The protected footer retains its original theme-specific surface.
             contact_background = page.locator(".contact-panel").evaluate("el => getComputedStyle(el).backgroundColor")
